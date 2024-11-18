@@ -57,6 +57,47 @@ def gaussA_exp(x1,x2,a11,a22,a12):
     c=exp(- ((x1 ** 2 * a11 + x2 ** 2 * a22) - 2 * x1 * x2 * a12))
     return c
 
+##############################################################################
+def Circulant_Sample(c):
+    N = c.size
+    d = np.fft.ifft(c) * N
+    xi = np.dot(np.random.randn(N, 2), [1, 1j])
+    Z = np.fft.fft(d**0.5 * xi) / sqrt(N)
+    X = np.real(Z)
+    Y = np.imag(Z)
+    return X, Y
+
+def Circulant_Embed_Sample(c):
+    N = c.size
+    c_tilde = np.hstack([c, c[-2:0:-1]])
+    X, Y = Circulant_Sample(c_tilde)
+    X = X[0:N]
+    Y = Y[0:N]
+    return X, Y
+
+def Circlulant_Exponential(t, l):
+    ''' 
+    t must be positioned uniformly
+    '''
+    c = np.exp(- np.abs(t) / l)
+    X, Y = Circulant_Embed_Sample(c)
+    return X, Y
+
+def Circulant_Embed_Approx(c):
+    c_tilde = np.hstack([c, c[-2:0:-1]])
+    N_tilde = c_tilde.size
+    d = np.real(np.fft.ifft(c_tilde)) * N_tilde
+    d_minus = np.maximum(-d, 0)
+    d_pos = np.maximum(d, 0)
+    if (np.max(d_minus) > 0):
+        print(f'rho(D_minus) = {np.max(d_minus):.4e}')
+    xi=np.dot(np.random.randn(N_tilde, 2), [1, 1j])
+    Z = np.fft.fft(d_pos**0.5 * xi) / sqrt(N_tilde)
+    N = c.size
+    X=np.real(Z[0:N]);    Y=np.imag(Z[0:N])
+    return X, Y
+
+###################################################################
 def Get_Ele_Info(h, p, q, f, ne):
     Kks=np.zeros((ne,2,2));    
     Kks[:,0,0]=p/h; Kks[:,0,1]=-p/h; Kks[:,1,0]=-p/h; Kks[:,1,1]=p/h;
@@ -179,3 +220,16 @@ def FEM_Solver2D_r1(ns, xv, yv, elt2vert, nvtx, ne, a, f):
 def g_eval(x,y):
     g=np.zeros(x.shape)
     return g      
+
+def oned_linear_FEM_b(ne,h,f):
+    nvtx=ne + 1
+    elt2vert=np.vstack([np.arange(0,ne,dtype='int'),
+                        np.arange(1,(ne + 1),dtype='int')])
+    bks=np.zeros((ne,2));    b=np.zeros(nvtx) 
+    bks[:,0]=f[:-1]*(h / 3) + f[1:]*(h / 6)
+    bks[:,1]=f[:-1]*(h / 6) + f[1:]*(h / 3)
+    for row_no in range(0,2):
+        nrow=elt2vert[row_no,:]
+        b[nrow]=b[nrow]+bks[:,row_no]
+    b=b[1:-1]
+    return b
