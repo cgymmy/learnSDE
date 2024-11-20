@@ -8,64 +8,128 @@ fft=np.fft.fft
 fft2=np.fft.fft2
 ifft=np.fft.ifft
 ifft2=np.fft.ifft2
+
+
 ##############################################################################################
-# Circulant Embedding method for stationary process
-def Circulant_Sample_2d(C_red, n1, n2, seed = 24):
-    N = n1 * n2
-    Lam = N * np.fft.ifft2(C_red)
-    d = np.ravel(np.real(Lam))
-    d_minus = np.maximum(- d, 0)
-    if np.max(d_minus > 0):
-        print(f'rho(D_minus)={np.max(d_minus)}')
+# special functions
+@vectorize([float64(float64)])
+def fNagumo(u):
+    return u * (1 - u) * (u + 0.5)
+
+@vectorize([float64(float64)])
+def fAC(u):
+    return u - u**3
+
+def sep_exp(x1, x2, ell_1, ell_2):
+    '''
+    2D speratable exponential covariance function
+    Input:
+        x1, x2: coordinates
+        ell_1, ell_2: corelated length
+    Output:
+        c: the covariance
+    '''
+    c = exp(- abs(x1) / ell_1 - abs(x2) / ell_2)
+    return c
+
+def gaussA_exp(x1, x2, a11, a22, a12):
+    '''
+    2D speratable exponential covariance function
+    Input:
+        x1, x2: coordinates
+        A: 2*2 symmetric matrix
+    Output:
+        c: covariance
+    '''
+    c = exp(- ((x1 ** 2 * a11 + x2 ** 2 * a22) - 2 * x1 * x2 * a12))
+    return c
+
+##############################################################################################
+# plot methods
+def Plot_wireframe(x, y, z, rstride = 5, cstride = 5, colors = 'k', name:str='Figure'):
+    fig = plt.figure()
+    ax = fig.add_subplot(111, projection='3d')
+    ax.plot_wireframe(x, y, z, rstride=rstride, cstride=cstride, colors=colors)
+    ax.set_xlabel(rf'$t$')
+    ax.set_ylabel(rf'$x$')
+    ax.set_zlabel(rf'$W$')
+    ax.set_title(rf'{name}') 
+    plt.show()
+    return fig, ax
+
+def Plot_contourf(x, y, z, levels:int=20, cmap:str='jet', name:str='Figure'):
+    fig, ax = plt.subplots(figsize=(8, 6))
+    pic = ax.contourf(x, y, z, levels=levels, cmap=cmap)
+    plt.colorbar(pic, ax=ax)
+    ax.set_xlabel(rf'$t$')
+    ax.set_ylabel(rf'$x$')
+    ax.set_title(rf'{name}') 
+    plt.show()
+    return fig, ax
+
+def Plot(x, y, xlabel: str='x', ylabel: str='y', name:str='Figure'):
+    plt.plot(x, y, 'k-')
+    plt.xlabel(rf'{xlabel}')
+    plt.ylabel(rf'{ylabel}')
+    plt.title(rf'{name}')
+    plt.show()
+
+def Generate_GIF(x, y, ut):
+    from matplotlib.animation import FuncAnimation, PillowWriter
+    fig, ax = plt.subplots(figsize=(8, 6))
+    N = ut.shape[2]
+    cmap = 'jet' 
+    contour = ax.contourf(x, y, ut[:, :, 0], levels=50, cmap=cmap)
+    cbar = plt.colorbar(contour, ax=ax)
+    cbar.set_label(r'$u$', fontsize=12)
+    ax.set_xlabel(r'$x$', fontsize=12)
+    ax.set_ylabel(r'$y$', fontsize=12)
+    ax.set_title('Time Evolution of $u$ at t = 0', fontsize=14)
+
+    def update(frame):
+        ax.clear() 
+        contour = ax.contourf(x, y, ut[:, :, frame], levels=50, cmap=cmap)
+        ax.set_xlabel(r'$x$', fontsize=12)
+        ax.set_ylabel(r'$y$', fontsize=12)
+        ax.set_title(f'Time Evolution of $u$ at t = {frame}', fontsize=14)
+        return contour
+
+    ani = FuncAnimation(fig, update, frames=N + 1, blit=False)
+    ani.save('evolution.gif', writer=PillowWriter(fps=100))
+    plt.show()
+
+##############################################################################################
+# stochastic process
+def BrownianMotion(T, N, seed=None):
+    '''
+    Input:
+        T: time doamin [0, T]
+        N: partition number of time
+        sedd: random seed = None as default
+    Output:
+        t, X
+    '''
+    X = np.zeros(N + 1)
+    t = np.linspace(0, T, N + 1)
+    X[0] = np.array(0)
     np.random.seed(seed)
-    xi=np.random.randn(n1,n2) + 1j*np.random.randn(n1,n2)
-    V=(Lam ** 0.5)*xi
-    Z = np.fft.fft2(V) / sqrt(N)
-    X=np.real(Z);    Y=np.imag(Z)
-    return X, Y
+    xi = np.random.randn(N)
+    for i in range(1, N+1):
+        dt = t[i] - t[i-1]
+        X[i] = X[i-1] + sqrt(dt)*xi[i-1]
+    return t, X
 
-def Reduced_Cov(n1, n2, dx1, dx2, c):
-    C_red = np.zeros((2*n1 - 1, 2*n2 - 1))
-    for i in range(2*n1 - 1):
-        for j in range(2*n2 - 1):
-            C_red[i, j] = c((i+1-n1)*dx1, (j+1-n2)*dx2)
-    return C_red
-
-def Circulant_Embed_Sample_2d(C_red, n1, n2, seed = 24):
-    N = n1 * n2
-    tilde_C_red = np.zeros((2 * n1, 2 * n2))
-    tilde_C_red[1:2*n1, 1:2*n2] = C_red
-    tilde_C_red = np.fft.fftshift(tilde_C_red)
-    u1, u2 = Circulant_Sample_2d(tilde_C_red, 2*n1, 2*n2, seed)
-    u1 = np.ravel(u1);  u2=np.ravel(u2)
-    u1 = u1[0:2*N]; u1 = u1.reshape((n1,2 * n2)); u1 = u1[:,::2]
-    u2 = u2[0:2*N]; u2 = u2.reshape((n1,2 * n2)); u2 = u2[:,::2]
-    return u1, u2
-
-def Circulant_Embed_Approx_2d(C_red,n1,n2,m1,m2, seed = 24):
-    nn1 = n1 + m1;    nn2 = n2 + m2
-    N=nn1 * nn2
-    tilde_C_red=np.zeros((2 * nn1,2 * nn2))
-    tilde_C_red[1:2 * nn1,1:2 * nn2]=C_red
-    tilde_C_red=np.fft.fftshift(tilde_C_red)
-    u1,u2=Circulant_Sample_2d(tilde_C_red, 2 * nn1, 2 * nn2, seed)
-    # print(u1.shape, u2.shape)
-    u1=np.ravel(u1);    u2=np.ravel(u2)
-    u1=u1[0:2 * N];    u1=u1.reshape((nn1,2 * nn2));    u1=u1[0:n1, 0:2*n2:2]
-    u2=u2[0:2 * N];    u2=u2.reshape((nn1,2 * nn2));    u2=u2[0:n1, 0:2*n2:2]
-    return u1,u2
-
-def sep_exp(x1,x2,ell_1,ell_2):
-    c=exp(- abs(x1) / ell_1 - abs(x2) / ell_2)
-    return c
-
-def gaussA_exp(x1,x2,a11,a22,a12):
-    c=exp(- ((x1 ** 2 * a11 + x2 ** 2 * a22) - 2 * x1 * x2 * a12))
-    return c
 
 ##############################################################################################
-# Circulant Embedding method for stochastic process
+# Circulant Embedding method for stochastic process, stationary process
 def Circulant_Sample(c):
+    '''
+    C is circculant matrix, smaple by circualnt sampling method
+    Input:
+        c: the first column of C(A circulant matrix)
+    Output:
+        X, Y: two uncorrelated processes
+    '''
     N = c.size
     d = np.fft.ifft(c) * N
     xi = np.dot(np.random.randn(N, 2), [1, 1j])
@@ -75,6 +139,13 @@ def Circulant_Sample(c):
     return X, Y
 
 def Circulant_Embed_Sample(c):
+    '''
+    C is a symmetric Toeplitz matrix, sample by circulant embedding
+    Input:
+        c: first column of C
+    Output:
+        X, Y: two uncorrelated processes
+    '''
     N = c.size
     c_tilde = np.hstack([c, c[-2:0:-1]])
     X, Y = Circulant_Sample(c_tilde)
@@ -82,15 +153,14 @@ def Circulant_Embed_Sample(c):
     Y = Y[0:N]
     return X, Y
 
-def Circlulant_Exponential(t, l):
-    ''' 
-    t must be positioned uniformly
-    '''
-    c = np.exp(- np.abs(t) / l)
-    X, Y = Circulant_Embed_Sample(c)
-    return X, Y
-
 def Circulant_Embed_Approx(c):
+    '''
+    circulant embedding method with padding
+    Input:
+        c: the first column of Toeplitz matrix after padding
+    Output:
+        X, Y: two uncorrelated processes
+    '''
     c_tilde = np.hstack([c, c[-2:0:-1]])
     N_tilde = c_tilde.size
     d = np.real(np.fft.ifft(c_tilde)) * N_tilde
@@ -104,34 +174,152 @@ def Circulant_Embed_Approx(c):
     X=np.real(Z[0:N]);    Y=np.imag(Z[0:N])
     return X, Y
 
+
+def Circlulant_Exponential(t, l):
+    ''' 
+    t must be positioned uniformly
+    '''
+    c = np.exp(- np.abs(t) / l)
+    X, Y = Circulant_Embed_Sample(c)
+    return X, Y
+
+
 ##############################################################################################
-# 1DFEM
+# Circulant Embedding method for stationary process
+
+def Reduced_Cov(n1, n2, dx1, dx2, c):
+    '''
+    given a covariance function c, get the reduced vector of covariance matrix.
+    Input:
+        n1, n2: resolution of x, y axis respectively
+        dx1:
+        dx2:
+        c: the covariance function, take two params as input
+    Output:
+        C_red: reduced vector of covariance matrix
+    '''
+    C_red = np.zeros((2*n1 - 1, 2*n2 - 1))
+    for i in range(2*n1 - 1):
+        for j in range(2*n2 - 1):
+            C_red[i, j] = c((i+1-n1)*dx1, (j+1-n2)*dx2)
+    return C_red
+
+def Circulant_Sample_2d(C_red, n1, n2, seed = 24):
+    '''
+    If the covariance matrix is BCCB matrix with reduced vector C_red, use cirrculant embedding method to sample 2D random field.
+    Input:
+        C_red: the reduced vector of covariance matrix
+        n1: resolution of x axis
+        n2: resolution of y axis
+    Output:
+        X, Y: two unrealted realizations
+    '''
+    N = n1 * n2
+    Lam = N * np.fft.ifft2(C_red)
+    d = np.ravel(np.real(Lam))
+    d_minus = np.maximum(- d, 0)
+    if np.max(d_minus > 0):
+        print(f'rho(D_minus)={np.max(d_minus)}')
+    np.random.seed(seed)
+    xi = np.random.randn(n1, n2) + 1j*np.random.randn(n1, n2)
+    V = (Lam ** 0.5)*xi
+    Z = np.fft.fft2(V) / sqrt(N)
+    X = np.real(Z);    Y = np.imag(Z)
+    return X, Y
+
+def Circulant_Embed_Sample_2d(C_red, n1, n2, seed = None):
+    '''
+    If the covariance matrix is BTTB matrix, embed the matrix into BCCB to sample.
+    Input:
+        C_red: reduced vector of covariance matrix
+        n1, n2: resolution of x, y axis
+        seed: the random seed, default as None
+    Output:
+        u1, u2: uncorrelated realizations
+    '''
+    N = n1 * n2
+    tilde_C_red = np.zeros((2 * n1, 2 * n2))
+    tilde_C_red[1:2*n1, 1:2*n2] = C_red
+    tilde_C_red = np.fft.fftshift(tilde_C_red)
+    u1, u2 = Circulant_Sample_2d(tilde_C_red, 2*n1, 2*n2, seed)
+    u1 = np.ravel(u1);  u2=np.ravel(u2)
+    u1 = u1[0:2*N]; u1 = u1.reshape((n1,2 * n2)); u1 = u1[:,::2]
+    u2 = u2[0:2*N]; u2 = u2.reshape((n1,2 * n2)); u2 = u2[:,::2]
+    return u1, u2
+
+def Circulant_Embed_Approx_2d(C_red, n1, n2, m1, m2, seed = None):
+    '''
+    Circulant embedding with padding.
+    Input:
+        C_red: the reduced vvector of covariance matrix
+        n1, n2: resolution of x, y axis
+        m1, m2: padding size of x, y axis
+        seed: random seed, default as None
+    Output:
+        u1, u2: uncorrelated realizations
+    '''
+    nn1 = n1 + m1;    nn2 = n2 + m2
+    N = nn1 * nn2
+    tilde_C_red = np.zeros((2 * nn1, 2 * nn2))
+    tilde_C_red[1:2 * nn1, 1:2 * nn2] = C_red
+    tilde_C_red = np.fft.fftshift(tilde_C_red)
+    u1, u2 = Circulant_Sample_2d(tilde_C_red, 2 * nn1, 2 * nn2, seed)
+    # print(u1.shape, u2.shape)
+    u1 = np.ravel(u1);    u2 = np.ravel(u2)
+    u1 = u1[0:2 * N];    u1 = u1.reshape((nn1, 2 * nn2));    u1 = u1[0:n1, 0:2*n2:2]
+    u2 = u2[0:2 * N];    u2 = u2.reshape((nn1, 2 * nn2));    u2 = u2[0:n1, 0:2*n2:2]
+    return u1, u2
+
+##############################################################################################
+# 1D stationary FEM
 def Get_Ele_Info(h, p, q, f, ne):
-    Kks=np.zeros((ne,2,2));    
-    Kks[:,0,0]=p/h; Kks[:,0,1]=-p/h; Kks[:,1,0]=-p/h; Kks[:,1,1]=p/h;
-    Mks=np.zeros_like(Kks)
-    Mks[:,0,0]=q*h/3; Mks[:,0,1]=q*h/6; Mks[:,1,0]=q*h/6; Mks[:,1,1]=q*h/3
-    bks=np.zeros((ne,2))
-    bks[:,0]=f*(h / 2); bks[:,1]=f*(h / 2)
+    '''
+    Get local FEM information of 1D problem
+    Input: 
+        h: the uniform length of interval
+        p: diffusion coefficient p(x)
+        q: mass coefficients q(x)
+        ne: number of elements
+    Output:
+        Kks: element diffusion matrices
+        Mks: element mass matrices
+        bks: element vectors
+    '''
+    Kks = np.zeros((ne, 2, 2));    
+    Kks[:, 0, 0] = p/h; Kks[:, 0, 1] = -p/h; Kks[:, 1, 0] = -p/h; Kks[:, 1, 1] = p/h
+    Mks = np.zeros_like(Kks)
+    Mks[:, 0, 0] = q*h/3; Mks[:, 0, 1] = q*h/6; Mks[:, 1, 0] = q*h/6; Mks[:, 1, 1] = q*h/3
+    bks = np.zeros((ne, 2))
+    bks[:, 0] = f*(h / 2); bks[:, 1] = f*(h / 2)
     return Kks, Mks, bks
 
 
 def FEM_Solver1D_r1(ne, p, q, f):
+    '''
+    Solve 1D BVP wiith homogenous boundary conditions by FEM using linear basis.
+    Input:
+        ne: number of elements
+        p: diffusion coefficients
+        q: mass coefficients
+        f: source term
+    Output:
+        x: gird points
+        uh: solution
+        A: FEM matrix
+        b: rhs
+        K: Diffusion matrix
+        M: Mass matrix
+    '''
     h = 1 / ne
     x = np.linspace(0, 1, ne + 1)
     nvtx = ne + 1
-    Kks,Mks,bks=Get_Ele_Info(h,p,q,f,ne)
-    elt2vert=np.vstack((np.arange(0, nvtx - 1, dtype='int'),
-                        np.arange(1, nvtx, dtype='int')))
+    Kks, Mks, bks = Get_Ele_Info(h, p, q, f, ne)
+    elt2vert = np.vstack((np.arange(0, nvtx - 1, dtype = 'int'), np.arange(1, nvtx, dtype = 'int')))
     b = np.zeros(nvtx)
-    K = sum(sparse.csc_matrix((Kks[:, row_no, col_no], (elt2vert[row_no, :], elt2vert[col_no, :])), 
-                               (nvtx, nvtx))
-              for row_no in range(2)  for col_no in range(2))
-    M = sum(sparse.csc_matrix((Mks[:, row_no, col_no], (elt2vert[row_no, :], elt2vert[col_no, :])), 
-                               (nvtx, nvtx))
-              for row_no in range(2)  for col_no in range(2))
+    K = sum(sparse.csc_matrix((Kks[:, row_no, col_no], (elt2vert[row_no, :], elt2vert[col_no, :])), (nvtx, nvtx)) for row_no in range(2)  for col_no in range(2))
+    M = sum(sparse.csc_matrix((Mks[:, row_no, col_no], (elt2vert[row_no, :], elt2vert[col_no, :])), (nvtx, nvtx)) for row_no in range(2)  for col_no in range(2))
     for row_no in range(2):
-        nrow=elt2vert[row_no, :]
+        nrow = elt2vert[row_no, :]
         b[nrow] = b[nrow] + bks[:, row_no]
     A = K + M
     # impose homogeneous boundary condition
@@ -142,23 +330,23 @@ def FEM_Solver1D_r1(ne, p, q, f):
     # add in boundary data 
     uh = np.hstack([0, u_int, 0])
     # plotting commands removed 
-    return uh, A, b, K, M
-
+    return x, uh, A, b, K, M
 
 def oned_linear_FEM_b(ne, h, f):
-    nvtx=ne + 1
-    elt2vert=np.vstack([np.arange(0, ne, dtype='int'), 
-                        np.arange(1, (ne + 1), dtype='int')])
-    bks=np.zeros((ne, 2));    b=np.zeros(nvtx) 
-    bks[:, 0]=f[:-1]*(h / 3) + f[1:]*(h / 6)
-    bks[:, 1]=f[:-1]*(h / 6) + f[1:]*(h / 3)
+    nvtx = ne + 1
+    elt2vert = np.vstack([np.arange(0, ne, dtype = 'int'), 
+                        np.arange(1, (ne + 1), dtype = 'int')])
+    bks = np.zeros((ne, 2));    b = np.zeros(nvtx) 
+    bks[:, 0] = f[:-1]*(h / 3) + f[1:]*(h / 6)
+    bks[:, 1] = f[:-1]*(h / 6) + f[1:]*(h / 3)
     for row_no in range(0, 2):
-        nrow=elt2vert[row_no, :]
-        b[nrow]=b[nrow]+bks[:, row_no]
-    b=b[1:-1]
+        nrow = elt2vert[row_no, :]
+        b[nrow] = b[nrow]+bks[:, row_no]
+    b = b[1:-1]
     return b
+
 ##############################################################################################
-# 2D FEM
+# 2D stationary FEM
 def Uniform_Mesh(ns):
     '''
     Generate uniformly mesh, grid index from left bottom to right top. Vertex of element is by anticlockwise 
@@ -299,36 +487,191 @@ def g_eval(x,y):
     g=np.zeros(x.shape)
     return g      
 
+##############################################################################################
+# Time-dependent PDE
+def Pde_MOL_FDM_1D_Semilinear(u0, T, a, N, J, epsilon, fhandle, bctype):
+    '''
+    Solve semilinear PDE with method of line for time and FDM for space
+    Input:
+        u0: initial condition
+        T: time domain [0, T]
+        a: space domain [0, a]
+        N: number of temporal intervals
+        J: number of spatial intervals
+        epsilon: param of semilinear PDE
+        fhandle: nonlinear term f(u)
+        bdtype: 'd' for Dirichlet; 'p' for Period; 'n' for Nuemann
+    Ouput:
+        t, x: time grids and space grids
+        ut: [J + 1, N + 1] space-time solution
+    '''
+    Dt = T / N;     
+    t = np.linspace(0, T, N + 1)
+    h = a / J
+    x = np.linspace(0, a, J + 1)
+    # set matrix A according to boundary conditions
+    A = scipy.sparse.diags([-1, 2, -1], [-1, 0, 1],  shape = (J+1, J+1), format = 'csc')
+    if 'd' == bctype.lower():
+        ind = np.arange(1, J)
+        A = A[:, ind]
+        A = A[ind, :]
+    else:
+        if 'p' == bctype.lower():
+            ind = np.arange(0, J)
+            A = A[:, ind]; A = A[ind, :]
+            A[1, -1] = -1; A[-1, 1] = -1
+        elif 'n' == bctype.lower():
+            ind = np.arange(0, J + 1)
+            A[0, 1] = -2; A[-1, -2] = -2 
+    EE = scipy.sparse.identity(ind.size, format = 'csc') + (Dt * epsilon/h**2) * A 
+    ut = np.zeros((J + 1, t.size)) # initialize vectors
+    ut[:, 0] = u0; u_n = u0[ind] # set initial condition
+    #
+    EEinv = sparse.linalg.factorized(EE)
+    #
+    for k in range(N): # time loop
+        fu = fhandle(u_n) # evaluate f(u_n)
+        u_n = EEinv(u_n + Dt * fu) # linear solve for EE
+        ut[ind, k + 1] = u_n
+    if bctype.lower() == 'p':
+        ut[-1, :] = ut[0, :] # correct for periodic case  
+    return t, x, ut
 
+def Pde_MOL_Galerkin_1D_Semilinear(u0, T, a, N, J, epsilon, fhandle):
+    """
+    Use semi-implicit Euler method plus Galerkin method to solve 1d semilinear equation with periodic boundary
+    Input:
+        u0: initial condition
+        T: time domain [0, T]
+        a: space domain [0, a]
+        N: number of time intervals
+        J: number of space intervals
+        epsilon: param of semilinear equation
+        fhandle: nonlinear term f(u)
+    Output:
+        t, x: time grids and space grids
+        ut: [J + 1, N + 1] space-time solution
+    """
+    Dt = T/N
+    t = np.linspace(0, T, N+1)
+    x = np.linspace(0, a, J+1)
+    ut = np.zeros((J + 1, N + 1))
+    # set linear operator 
+    lam = (2 * pi/ a) * np.hstack([np.arange(0, J / 2+1), np.arange(- J / 2 + 1, 0)]) 
+    M = epsilon * lam ** 2
+    EE = 1.0 / (1 + Dt * M) # diagonal of (1+ Dt M)^{-1}
+    ut[:, 0] = u0;    u = u0[0:J];     uh = fft(u) # set initial condition
+    #
+    for n in range(0, N): # time loop
+        fhu = fft(fhandle(u)) # evaluate fhat(u)
+        uh = EE*(uh + Dt * fhu) # semi-implicit Euler step
+        u = np.real(ifft(uh))
+        ut[0:J, n + 1] = u
+    ut[J, :] = ut[0, :] # make periodic
+    return t, x, ut
+
+def Pde_MOL_Galerkin_2D_Semilinear(u0, T, a, N, J, epsilon, fhandle):
+    """
+    Use semi-implicit Euler method plus Galerkin method to solve 2d semilinear equation with periodic boundary
+    Input:
+        u0: initial condition
+        T: time domain [0, T]
+        a: space domain [0, a]
+        N: number of time intervals
+        J: number of space intervals
+        epsilon: param of semilinear equation
+        fhandle: nonlinear term f(u)
+    Output:
+        t, x: time grids and space grids
+        ut: [J + 1, N + 1] space-time solution
+    """
+    Dt = T / N
+    t = np.linspace(0, T, N+1)
+    x  =  np.linspace(0,  a,  J + 1)
+    ut = np.zeros((J[0] + 1, J[1] + 1, N+1))
+    # set linear operators
+    lambdax = (2*pi/a[0]) * np.hstack([np.arange(0, J[0] / 2+1), np.arange(- J[0] / 2 + 1, 0)])
+    lambday = (2*pi/a[1]) * np.hstack([np.arange(0, J[1] / 2+1), np.arange(- J[1] / 2 + 1, 0)])
+    lambdaxx, lambdayy = np.meshgrid(lambdax, lambday, indexing = 'ij')
+    M = epsilon * (lambdaxx ** 2 + lambdayy ** 2)
+    EE = 1.0 / (1 + Dt * M)
+    ut[:, :, 0] = u0;  u = u0[0:-1, 0:-1];  uh = fft2(u)# set initial data 
+    for n in range(N): # time loop
+        fhu = fft2(fhandle(u)) # compute fhat
+        uh_new = EE*(uh + Dt * fhu)
+        u = np.real(ifft2(uh_new))
+        ut[0:J[0], 0:J[1], n + 1] = u
+        uh = uh_new
+    ut[J[0], :, :] = ut[0, :, :]
+    ut[:, J[1] , :] = ut[:, 0, :] # make periodic
+    return t, x, ut
+
+def oned_linear_FEM_b_r1(ne, h, f):
+    '''
+    Project f(u_J to \hat{u_J})
+    Input:
+        ne: number of space intervals
+        h: length of each interval
+        f: f(u)
+    Output:
+        b: <f(u), \phi_j>_{L^2}
+    '''
+    nvtx = ne + 1
+    elt2vert = np.vstack([np.arange(0, ne, dtype='int'), np.arange(1, (ne + 1), dtype='int')])
+    bks = np.zeros((ne, 2));    
+    b = np.zeros(nvtx) 
+    bks[:, 0] = f[:-1]*(h / 3) + f[1:]*(h / 6)
+    bks[:, 1] = f[:-1]*(h / 6) + f[1:]*(h / 3)
+    for row_no in range(0,2):
+        nrow = elt2vert[row_no, :]
+        b[nrow] = b[nrow] + bks[:, row_no]
+    b=b[1:-1]
+    return b
+
+def Pde_MOL_FEM_1D_Semilinear_r1(u0, T, a, N, ne, epsilon, fhandle):
+    """
+    Use semi-implicit Euler method plus FEM with linear basis to solve 1d semilinear equation with dirichlet boundary
+    Input:
+        u0: initial condition
+        T: time domain [0, T]
+        a: space domain [0, a]
+        N: number of time intervals
+        ne: number of space intervals
+        epsilon: param of semilinear equation
+        fhandle: nonlinear term f(u)
+    Output:
+        t, x: time grids and space grids
+        ut: [nvtx, N + 1] space-time solution
+    """
+    h = a / ne;    nvtx=ne + 1;    Dt=T / N
+    t = np.linspace(0, T, N+1)
+    p = epsilon
+    q = 1
+    f = 1
+    x, uh, A, b, KK, MM = FEM_Solver1D_r1(ne, p, q, f)
+    EE = (MM + Dt * KK)
+    # set initial condition
+    ut=np.zeros((nvtx,N + 1))
+    ut[:, 0] = u0
+    u = np.copy(u0)
+    EEinv = sparse.linalg.factorized(EE)
+    for n in range(N):# time loop
+        fu = fhandle(u)
+        b = oned_linear_FEM_b(ne, h, fu)
+        u_new = EEinv(MM.dot(u[1:-1]) + Dt * b)
+        u = np.hstack([0, u_new, 0])
+        ut[:, n + 1] = u
+    return t, x, ut
 
 ##############################################################################################
-# plot methods
-def Plot_wireframe(x, y, z, rstride = 5, cstride = 5, colors = 'k', name:str='Figure'):
-    fig = plt.figure()
-    ax = fig.add_subplot(111, projection='3d')
-    ax.plot_wireframe(x, y, z, rstride=rstride, cstride=cstride, colors=colors)
-    ax.set_xlabel(r'$t$')
-    ax.set_ylabel(r'$x$')
-    ax.set_zlabel(r'$W$')
-    ax.set_title(f'{name}') 
-    plt.show()
-    return fig, ax
+# SPDE with random data
 
-def Plot_contourf(x, y, z, levels:int=20, cmap:str='jet', name:str='Figure'):
-    fig, ax = plt.subplots(figsize=(8, 6))
-    pic = ax.contourf(x, y, z, levels=levels, cmap=cmap)
-    plt.colorbar(pic, ax=ax)
-    ax.set_xlabel(r'$t$')
-    ax.set_ylabel(r'$x$')
-    ax.set_title(f'{name}') 
-    plt.show()
-    return fig, ax
 
 
 ##############################################################################################
 # 1D H^r_0([0, a])-valued Weiner Process
 def icspde_dst1(u):
-    return scipy.fftpack.dst(u,type=1,axis=0)/2
+    return scipy.fftpack.dst(u, type=1, axis=0)/2
 
 def get_onedD_bj(dtref, J, a, r):
     '''
@@ -428,15 +771,6 @@ def Get_twod_dW(bj, kappa, M):
     dW2 = np.imag(tmp)
     return dW1, dW2
 
-##############################################################################################
-# special functions
-@vectorize([float64(float64)])
-def fNagumo(u):
-    return u * (1 - u) * (u + 0.5)
-
-@vectorize([float64(float64)])
-def fAC(u):
-    return u - u**3
 
 
 ##############################################################################################
