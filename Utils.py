@@ -44,6 +44,23 @@ def gaussA_exp(x1, x2, a11, a22, a12):
     c = exp(- ((x1 ** 2 * a11 + x2 ** 2 * a22) - 2 * x1 * x2 * a12))
     return c
 
+def Whittle_Matern_Cov(t, q=0.5):
+    '''
+    Whittle Matern covariance, it is a stationary covariance function
+    Input:
+        t: time grid
+        q: parameter to control the regularity
+    Output:
+        result: covariance value on t
+    '''
+    from scipy.special import kv
+    factor = (2 ** (1 - q)) / gamma(q)
+    # t = np.asarray(t)
+    result = np.ones_like(t)
+    non_zero_mask = t != 0
+    result[non_zero_mask] = factor * (t[non_zero_mask] ** q) * kv(q, t[non_zero_mask])
+    return result
+
 ##############################################################################################
 # plot methods
 def Plot_wireframe(x, y, z, rstride = 5, cstride = 5, colors = 'k', name:str='Figure'):
@@ -58,16 +75,17 @@ def Plot_wireframe(x, y, z, rstride = 5, cstride = 5, colors = 'k', name:str='Fi
     return fig, ax
 
 def Plot_contourf(x, y, z, levels:int=20, cmap:str='jet', name:str='Figure'):
-    fig, ax = plt.subplots(figsize=(8, 6))
+    fig, ax = plt.subplots(figsize=(6, 4))
     pic = ax.contourf(x, y, z, levels=levels, cmap=cmap)
     plt.colorbar(pic, ax=ax)
-    ax.set_xlabel(rf'$t$')
-    ax.set_ylabel(rf'$x$')
+    ax.set_xlabel(rf'$x$')
+    ax.set_ylabel(rf'$y$')
     ax.set_title(rf'{name}') 
     plt.show()
     return fig, ax
 
-def Plot(x, y, xlabel: str='x', ylabel: str='y', name:str='Figure'):
+def Plot(x, y, xlabel: str='x', ylabel: str='y', name:str='Figure', figsize: tuple = (6, 4)):
+    plt.figure(figsize=figsize)
     plt.plot(x, y, 'k-')
     plt.xlabel(rf'{xlabel}')
     plt.ylabel(rf'{ylabel}')
@@ -118,6 +136,82 @@ def BrownianMotion(T, N, seed=None):
         dt = t[i] - t[i-1]
         X[i] = X[i-1] + sqrt(dt)*xi[i-1]
     return t, X
+
+def BrownianBridge(T, N, seed=None):
+    '''
+    Brownian Bridge
+    Input:
+        T: time domain [0, T]
+        N: partition into N intervals
+    Output:
+        t, B
+    '''
+    t, W = BrownianMotion(T, N, seed=seed)
+    B = W - W[-1] * (t - t[0]) / (t[-1] - t[0])
+    return t, B
+
+##############################################################################################
+# some processes sampled by discrete KL expansion(spectral decomposition of covariance matrix)
+
+def GP_Exponential_KL(T, N, l, seed=None):
+    '''
+    Gaussian process with exponential covariance
+    Input:
+        T: time domain [0, T]
+        N: partition into N intervals
+        l: param of exponential covariance function
+        seed: random seed
+    Output:
+        t, X
+    '''
+    t = np.linspace(0, T, N + 1)
+    C = np.zeros((N + 1, N + 1))
+    for i in range(N + 1):
+        for j in range(N + 1):
+            ti = t[i]; tj = t[j]
+            C[i, j] = exp(-abs(ti-tj)/l)
+    S, U = np.linalg.eig(C)
+    np.random.seed(seed)
+    xi = np.random.randn(N + 1)
+    X = np.dot(U, S**0.5 * xi)
+    return t, X
+
+def GP_Gaussian_KL(T, N, l, seed=None):
+    '''
+    Gaussian process with gaussian covariance
+    Input:
+        T: time domain [0, T]
+        N: partition into N intervals
+        l: param of gaussian covariance function
+        seed: random seed
+    Output:
+        t, X
+    '''
+    t = np.linspace(0, T, N + 1)
+    C = np.zeros((N + 1, N + 1))
+    for i in range(N + 1):
+        for j in range(N + 1):
+            ti = t[i]; tj = t[j]
+            C[i, j] = exp(-(ti-tj)**2/l**2)
+    S, U = np.linalg.eig(C)
+    np.random.seed(seed)
+    xi = np.random.randn(N + 1)
+    X = np.dot(U, S**0.5 * xi)
+    return t, X
+
+def Gaussian_Whittle_Matern_KL(t, q, seed=None):
+    N = t.size
+    C = np.zeros((N, N))
+    for i in range(N):
+        for j in range(N):
+            ti = t[i]; tj = t[j]
+            h = abs(ti - tj)
+            C[i, j] = Utils.Whittle_Matern_Cov(h, q)
+    S, U = np.linalg.eig(C)
+    np.random.seed(seed)
+    xi = np.random.randn(N) 
+    X = np.dot(U, S**0.5 * xi)
+    return X  
 
 
 ##############################################################################################
@@ -183,6 +277,33 @@ def Circlulant_Exponential(t, l):
     X, Y = Circulant_Embed_Sample(c)
     return X, Y
 
+def rho_D_minus(c):
+    c_tilde = np.hstack([c, c[-2:0:-1]])
+    N_tilde = c_tilde.size
+    d = np.real(np.fft.ifft(c_tilde)) * N_tilde
+    d_minus = np.maximum(-d, 0)
+    return np.max(d_minus)
+
+def rho_WM(N, dt, q):
+    M = np.linspace(100, 10000, 100)
+    rho = np.zeros(M.size)
+    for i, m in enumerate(M):
+        m = int(m)
+        Ndash = N + m - 1
+        T=(Ndash+1)*dt
+        t=np.linspace(0,T,Ndash+1)
+        c = rho_D_minus(Whittle_Matern_Cov(t, q))
+        rho[i] = c
+    return  N+M, rho
+
+def Circulant_Approx_WM(N, M, dt, q):
+    Ndash = N + M - 1
+    T = (Ndash + 1) * dt
+    t = np.linspace(0, T, Ndash+1)
+    c = Whittle_Matern_Cov(t, q)
+    X, Y = Circulant_Embed_Approx(c)
+    X = X[0:N];    Y = Y[0:N];    t = t[0:N]
+    return t, X, Y, c
 
 ##############################################################################################
 # Circulant Embedding method for stationary process
