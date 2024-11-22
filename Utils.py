@@ -1,4 +1,5 @@
 import numpy as np
+import numpy.matlib
 import matplotlib.pyplot as plt
 from math import *
 import scipy
@@ -11,7 +12,61 @@ ifft2=np.fft.ifft2
 
 
 ##############################################################################################
-# special functions
+# plot methods
+def Plot_wireframe(x, y, z, rstride = 5, cstride = 5, colors = 'k', xlabel: str='x', ylabel: str='y', name:str='Figure'):
+    fig = plt.figure()
+    ax = fig.add_subplot(111, projection='3d')
+    ax.plot_wireframe(x, y, z, rstride=rstride, cstride=cstride, colors=colors)
+    ax.set_xlabel(rf'{xlabel}')
+    ax.set_ylabel(rf'{ylabel}')
+    ax.set_zlabel(rf'$u$')
+    ax.set_title(rf'{name}') 
+    plt.show()
+    return fig, ax
+
+def Plot_contourf(x, y, z, levels:int=20, cmap:str='jet', xlabel: str='x', ylabel: str='y', name:str='Figure'):
+    fig, ax = plt.subplots(figsize=(6, 4))
+    pic = ax.contourf(x, y, z, levels=levels, cmap=cmap)
+    plt.colorbar(pic, ax=ax)
+    ax.set_xlabel(rf'{xlabel}')
+    ax.set_ylabel(rf'{ylabel}')
+    ax.set_title(rf'{name}') 
+    plt.show()
+    return fig, ax
+
+def Plot(x, y, xlabel: str='x', ylabel: str='y', name:str='Figure', figsize: tuple = (6, 4)):
+    plt.figure(figsize=figsize)
+    plt.plot(x, y, 'k-')
+    plt.xlabel(rf'{xlabel}')
+    plt.ylabel(rf'{ylabel}')
+    plt.title(rf'{name}')
+    plt.show()
+
+
+
+def Generate_GIF(x, y, ut, xlabel: str='x', ylabel: str='y', name:str='Figure', figsize: tuple = (6, 4)):
+    from matplotlib.animation import FuncAnimation, PillowWriter
+    fig, ax = plt.subplots(figsize=figsize)
+    N = ut.shape[2]
+    cmap = 'jet' 
+    contour = ax.contourf(x, y, ut[:, :, 0], levels=50, cmap=cmap)
+    ax.set_xlabel(rf'{xlabel}', fontsize=12)
+    ax.set_ylabel(rf'{ylabel}', fontsize=12)
+    ax.set_title(rf'{name} at frame 0', fontsize=14)
+
+    def update(frame):
+        ax.clear() 
+        contour = ax.contourf(x, y, ut[:, :, frame], levels=50, cmap=cmap)
+        ax.set_xlabel(r'$x$', fontsize=12)
+        ax.set_ylabel(r'$y$', fontsize=12)
+        ax.set_title(rf'{name} at frame {frame}', fontsize=14)
+        return contour
+
+    ani = FuncAnimation(fig, update, frames=N, blit=False)
+    ani.save(f'{name}.gif', writer=PillowWriter(fps=100))
+
+##############################################################################################
+# specific functions
 @vectorize([float64(float64)])
 def fNagumo(u):
     return u * (1 - u) * (u + 0.5)
@@ -60,61 +115,6 @@ def Whittle_Matern_Cov(t, q=0.5):
     non_zero_mask = t != 0
     result[non_zero_mask] = factor * (t[non_zero_mask] ** q) * kv(q, t[non_zero_mask])
     return result
-
-##############################################################################################
-# plot methods
-def Plot_wireframe(x, y, z, rstride = 5, cstride = 5, colors = 'k', name:str='Figure'):
-    fig = plt.figure()
-    ax = fig.add_subplot(111, projection='3d')
-    ax.plot_wireframe(x, y, z, rstride=rstride, cstride=cstride, colors=colors)
-    ax.set_xlabel(rf'$t$')
-    ax.set_ylabel(rf'$x$')
-    ax.set_zlabel(rf'$W$')
-    ax.set_title(rf'{name}') 
-    plt.show()
-    return fig, ax
-
-def Plot_contourf(x, y, z, levels:int=20, cmap:str='jet', name:str='Figure'):
-    fig, ax = plt.subplots(figsize=(6, 4))
-    pic = ax.contourf(x, y, z, levels=levels, cmap=cmap)
-    plt.colorbar(pic, ax=ax)
-    ax.set_xlabel(rf'$x$')
-    ax.set_ylabel(rf'$y$')
-    ax.set_title(rf'{name}') 
-    plt.show()
-    return fig, ax
-
-def Plot(x, y, xlabel: str='x', ylabel: str='y', name:str='Figure', figsize: tuple = (6, 4)):
-    plt.figure(figsize=figsize)
-    plt.plot(x, y, 'k-')
-    plt.xlabel(rf'{xlabel}')
-    plt.ylabel(rf'{ylabel}')
-    plt.title(rf'{name}')
-    plt.show()
-
-def Generate_GIF(x, y, ut):
-    from matplotlib.animation import FuncAnimation, PillowWriter
-    fig, ax = plt.subplots(figsize=(8, 6))
-    N = ut.shape[2]
-    cmap = 'jet' 
-    contour = ax.contourf(x, y, ut[:, :, 0], levels=50, cmap=cmap)
-    cbar = plt.colorbar(contour, ax=ax)
-    cbar.set_label(r'$u$', fontsize=12)
-    ax.set_xlabel(r'$x$', fontsize=12)
-    ax.set_ylabel(r'$y$', fontsize=12)
-    ax.set_title('Time Evolution of $u$ at t = 0', fontsize=14)
-
-    def update(frame):
-        ax.clear() 
-        contour = ax.contourf(x, y, ut[:, :, frame], levels=50, cmap=cmap)
-        ax.set_xlabel(r'$x$', fontsize=12)
-        ax.set_ylabel(r'$y$', fontsize=12)
-        ax.set_title(f'Time Evolution of $u$ at t = {frame}', fontsize=14)
-        return contour
-
-    ani = FuncAnimation(fig, update, frames=N + 1, blit=False)
-    ani.save('evolution.gif', writer=PillowWriter(fps=100))
-    plt.show()
 
 ##############################################################################################
 # stochastic process
@@ -206,7 +206,7 @@ def Gaussian_Whittle_Matern_KL(t, q, seed=None):
         for j in range(N):
             ti = t[i]; tj = t[j]
             h = abs(ti - tj)
-            C[i, j] = Utils.Whittle_Matern_Cov(h, q)
+            C[i, j] = Whittle_Matern_Cov(h, q)
     S, U = np.linalg.eig(C)
     np.random.seed(seed)
     xi = np.random.randn(N) 
@@ -278,6 +278,9 @@ def Circlulant_Exponential(t, l):
     return X, Y
 
 def rho_D_minus(c):
+    '''
+    compute maximun eigenvalue of D_ by reduced vector of embeded BTTB matrix
+    '''
     c_tilde = np.hstack([c, c[-2:0:-1]])
     N_tilde = c_tilde.size
     d = np.real(np.fft.ifft(c_tilde)) * N_tilde
@@ -306,7 +309,7 @@ def Circulant_Approx_WM(N, M, dt, q):
     return t, X, Y, c
 
 ##############################################################################################
-# Circulant Embedding method for stationary process
+# Circulant Embedding method for Gaussian stationary Random Fields
 
 def Reduced_Cov(n1, n2, dx1, dx2, c):
     '''
@@ -364,8 +367,8 @@ def Circulant_Embed_Sample_2d(C_red, n1, n2, seed = None):
     tilde_C_red = np.fft.fftshift(tilde_C_red)
     u1, u2 = Circulant_Sample_2d(tilde_C_red, 2*n1, 2*n2, seed)
     u1 = np.ravel(u1);  u2=np.ravel(u2)
-    u1 = u1[0:2*N]; u1 = u1.reshape((n1,2 * n2)); u1 = u1[:,::2]
-    u2 = u2[0:2*N]; u2 = u2.reshape((n1,2 * n2)); u2 = u2[:,::2]
+    u1 = u1[0:2*N]; u1 = u1.reshape((n1, 2 * n2)); u1 = u1[:,::2]
+    u2 = u2[0:2*N]; u2 = u2.reshape((n1, 2 * n2)); u2 = u2[:,::2]
     return u1, u2
 
 def Circulant_Embed_Approx_2d(C_red, n1, n2, m1, m2, seed = None):
@@ -390,6 +393,73 @@ def Circulant_Embed_Approx_2d(C_red, n1, n2, m1, m2, seed = None):
     u1 = u1[0:2 * N];    u1 = u1.reshape((nn1, 2 * nn2));    u1 = u1[0:n1, 0:2*n2:2]
     u2 = u2[0:2 * N];    u2 = u2.reshape((nn1, 2 * nn2));    u2 = u2[0:n1, 0:2*n2:2]
     return u1, u2
+
+##############################################################################################
+# KL expansion for Random Fields
+
+# specific case for seperable exponential covariance
+from scipy.optimize import root_scalar
+
+def f_odd(w, l, a):
+    return l**(-1) * np.cos(w * a) - w * np.sin(w * a)
+
+def f_even(w, l, a):
+    return l**(-1) * np.sin(w * a) + w * np.cos(w * a)
+
+def root_w(n, l, a):
+    roots = []
+    for i in range(1,n+1):
+        if i%2 == 0:
+            f = lambda x: f_even(x, l, a)
+        else:
+            f = lambda x: f_odd(x, l, a)
+        left = (i - 1) * np.pi/2
+        right = i * np.pi/2
+        try:
+            result = root_scalar(f, bracket=[left, right], method='brentq')
+            if result.converged:
+                roots.append(result.root)
+        except ValueError:
+            print(f'{left}and{right}error')
+            pass
+    return np.array(roots)
+
+def eigen_v(w, l):
+    return 2*l**(-1) / (w**2 + l**(-2))
+
+def phi(x, i, w, a):
+    w = w[i]
+    if i%2 == 0:
+        coe = 1/sqrt(a + np.sin(w**a)/(2*w))
+        return coe * np.cos(w * x)
+    else:
+        coe = 1/sqrt(a - np.sin(w**a)/(2*w))
+        return coe * np.sin(w * x)
+    
+def Exponential_Gaussian_RF_KL(grid, J, l, a):
+    '''
+    Sample by KL expansion of random fields.
+    Input:
+        grid: grid points coordinates
+        J: number of truncated terms
+        l: param for exponential covariance function
+        a: space domain [-a, a]
+    Output:
+        random field value
+    '''
+    w = root_w(J, l, a)
+    v = eigen_v(w, l)
+    x1 = grid[:, 0]; x2 = grid[:, 1]
+    np.random.seed(24)
+    xi = np.random.randn(J)
+    Phi = []
+    for i in range(J):
+        phix1 = phi(x1, i, w, a)
+        phix2 = phi(x2, i, w, a)
+        Phi.append(phix1 * phix2)
+    Phi = np.array(Phi).T
+    return np.sum(Phi * v**(0.5) * xi, 1)
+
 
 ##############################################################################################
 # 1D stationary FEM
@@ -786,15 +856,235 @@ def Pde_MOL_FEM_1D_Semilinear_r1(u0, T, a, N, ne, epsilon, fhandle):
 
 ##############################################################################################
 # SPDE with random data
+# Monte Carlo Method
+def MC_FEM_1d(ne, sigma, mu, P, Q):
+    '''
+    Input:
+        ne: number of space intervals
+        sigma: param of diffusion coefficients
+        mu: the mean of a(x, w)
+        P: number of truncated KL expansion of a(x)
+        Q: number of MC methods
+    '''
+    h = 1 / ne
+    nvtx = ne + 1
+    x = np.arange(h/2, 1, h)
+    mean = 0
+    var = 0
+    for i in range(Q):
+        xi = np.random.uniform(-1, 1, ne)
+        a = mu * np.ones(ne)
+        for k in range(1, P+1):
+            a = a + sigma * (k * pi)**(-2) * np.cos(x * k * pi) * xi[k]
+        _, uh, A, b, K, M = FEM_Solver1D_r1(ne, a, np.zeros(ne), np.ones(ne))
+        mean = mean + uh
+        var = var + uh**2
+    mean = mean / Q
+    var = (var - mean**2 * Q)/ (Q - 1)
+    return mean, var
 
+def MC_FEM_2D(ns, Q, l, alpha):
+    '''
+    Input:
+        ns: number of space intervals each edge
+        Q: do Monte Carlo Q times
+        l: param of Gaussian covariance
+        alpha: param of padding
+    Ouput: 
+        xv, yv, mean, var
+    '''
+    h, xv, yv, elt2vert, nvtx, ne = Uniform_Mesh(ns)
+    n = ns + 1
+    fhandle = lambda x1, x2: gaussA_exp(x1, x2, l**(-2), l**(-2), 0)
+    m1 = n * alpha; m2 = n * alpha
+    C_red = Reduced_Cov(n + m1, n + m2, 1/ns, 1/ns, fhandle)
+    sum_u = np.zeros(nvtx)
+    sum_sq = np.zeros(nvtx)
+    Q2 = Q // 2
 
+    for i in range(Q2):
+        z1, z2 = Circulant_Embed_Approx_2d(C_red, n, n, m1, m2, seed=None)
+        v1 = np.exp(z1).ravel()
+        v2 = np.exp(z2).ravel()
+        a1 = (v1[elt2vert[:, 0]] + v1[elt2vert[:, 1]] + v1[elt2vert[:, 2]]) / 3
+        a2 = (v2[elt2vert[:, 0]] + v2[elt2vert[:, 1]] + v2[elt2vert[:, 2]]) / 3
+        uh1, uint1, A1, rhs1 = FEM_Solver2D_r1(ns, xv, yv, elt2vert, nvtx, ne, a1, np.ones(ne))
+        uh2, uint2, A2, rhs2 = FEM_Solver2D_r1(ns, xv, yv, elt2vert, nvtx, ne, a2, np.ones(ne))
+        sum_u = sum_u + uh1 + uh2
+        sum_sq = sum_sq + (uh1**2 + uh2**2)
+    #     print('ok')
+    Q = Q2 * 2 
+    mean = sum_u / Q
+    var = (sum_sq - sum_u**2/Q)/(Q-1)
+    return xv, yv, mean, var, z1
+
+# Stochastic Galerkin Method
+def twoD_Eigenpairs(m, ell, x, y):
+    '''
+    Generate eigenpairs total order less than m
+    Input: 
+        m: max order
+        ell: param of stationary covariance
+        x, y: x,y coordinates
+    Output:
+        P: dimention of eigen space
+        nu: eigenvalues
+        phi: eigenfunctions evaluated on (x, y)
+    '''
+    P = comb(m + 2, 2)
+    n = x.size
+    nu = np.zeros(P)
+    phi = np.zeros((n, P))
+    cnt = 0
+    for i in range(m + 1):
+        for j in range(m + 1 -i):
+            nu[cnt] = exp(-pi * (i**2 + j**2) * ell**2)/4
+            phi[:, cnt] = 2 * np.cos(i * pi * x) * np.cos(j * pi * y)
+            cnt += 1
+    return P, nu, phi
+
+def SGFEM(ns, xv, yv, elt2vert, nvtx, ne, mu_a, nu_a, phi_a, mu_f, nu_f, phi_f, P, N):
+    '''
+    Give the finite element oart of Stochastic Galerkin method
+    Input: 
+        ns: number of space partition
+        xv, yv: xy coordinates of grid points
+        elt2vert: index of elements
+        nvtx: number of vertices
+        ne: number of elements
+        mu_a: mean of a
+        nu_a: eigenvalues of a
+        phi_a: eigenfunctions of a
+        mu_f: mean of f
+        nu_f: eigenvalued of f
+        phi_f: eigenfunctions of f
+        P: truncated number of a
+        N: truncated number of f
+    Output:
+        f
+        K_mats:
+        KB_mats:
+        wB:
+    '''
+    Jks, invJks, detJks = Get_Jacobian_Info(xv, yv, ne, elt2vert)
+    b_nodes = np.where((xv == 0) | (xv == 1) | (yv == 0) | (yv == 1))[0]
+    int_nodes = np.arange(nvtx) 
+    int_nodes = np.setdiff1d(int_nodes, b_nodes)    
+    # int_nodes = np.ones(nvtx, dtype='bool'); int_nodes[b_nodes]=False;  
+    # inx = np.arange(0, nvtx); int_nodes = inx[int_nodes]
+    wB = g_eval(xv[b_nodes], yv[b_nodes])
+    M = max(P, N)
+    f_vecs = []
+    KB_mats = []
+    K_mats = []
+    for ell in range(M):
+        if ell == 0:
+            a = mu_a * np.zeros(ne)
+            f = mu_f * np.zeros(ne)
+        else:
+            if ell <= P:
+                a = sqrt(nu_a[ell]) * phi_a[:, ell]
+            else:
+                a = np.zeros(ne)
+            if ell <= N:
+                f = sqrt(nu_f[ell]) * phi_f[:, ell]
+            else:
+                f = np.zeros(ne)
+        Aks, bks = Get_Integration_Info_r1(ne, invJks, detJks, a, f)
+        A_ell = sparse.csc_matrix((nvtx, nvtx))
+        b_ell = sparse.csc_matrix((nvtx, 1))
+        for row_n in range(3):
+            nrow = elt2vert[:, row_n]
+            for col_n in range(3):
+                ncol = elt2vert[:, col_n]
+                A_ell = A_ell + sparse.csc_matrix((Aks[:, row_n, col_n], (nrow, ncol)), (nvtx,nvtx))
+            b_ell = b_ell + sparse.csc_matrix((bks[:, row_n], (nrow, np.zeros_like(nrow))), (nvtx, 1))
+        f_vecs.append(b_ell[int_nodes, np.zeros_like(int_nodes)])
+        print(b_ell[int_nodes, :][:, 0])
+        KB_mats.append(A_ell[int_nodes, :][:, b_nodes])
+        K_mats.append(A_ell[int_nodes, :][:, int_nodes])
+    return f_vecs, KB_mats, K_mats, wB
+##############################################################################################
+# SODEs
+def EulerMaruyama(u0, T, N, d, m, f, G):
+    '''
+    Input:
+        u0: inital u(0)
+        T: time doamin [0, T]
+        N: number of time interval
+        d: the dimension of u
+        m: dim of W(t)
+        f: drift term
+        G: diffusion term
+        seed: random seed
+    Output:
+        t: time grids
+        u: solution u
+    '''
+    dt = T / N
+    u = np.zeros((d, N+1))
+    t = np.linspace(0, T, N+1)
+    u_n = np.copy(u0)
+    u[:,0] = u_n
+    for n in range(N):
+        dW = sqrt(dt) * np.random.randn(m)
+        u_n = u_n + f(u_n)*dt + np.dot(G(u_n), dW)
+        u[:, n+1] = u_n
+    return t, u
+
+def EulerMaruyamaTheta(u0, T, N, d, m, f, G, theta):
+    '''
+    u0: inital u(0)
+    u:d-dim
+    W:m-dim
+    N: number of time interval
+    '''
+    dt = T / N
+    u = np.zeros((d, N+1))
+    t = np.linspace(0, T, N+1)
+    u_n = np.copy(u0)
+    u[:,0] = u_n
+    for n in range(N):
+        dW = sqrt(dt) * np.random.randn(m)
+        u_init=u_n + dt * f(u_n) + np.dot(G(u_n), dW)
+        u_n = scipy.optimize.fsolve(lambda u: -u + u_n + (1-theta)*dt*f(u_n)+theta*dt*f(u)+np.dot(G(u_n), dW), u_init)
+        u[:, n+1] = u_n
+    return t, u
+
+def GBM_exact(u0, T, N, d, m, r, sigma, seed=None):
+    '''
+    exact solution for Geometric Brownian Motion
+    Input:
+        u0: inital u(0)
+        T: time doamin [0, T]
+        N: number of time interval
+        d: the dimension of u
+        m: dim of W(t)
+        r, sigma: param for GBM
+        seed: random seed
+    Output:
+        t: time grids
+        u: solution u
+    '''
+    np.random.seed(seed)
+    dt = T / N
+    u = np.zeros((d, N+1))
+    t = np.linspace(0, T, N+1)
+    u[:,0] = u0
+    W = 0
+    for n in range(N):
+        W = W + sqrt(dt) * np.random.randn(m)
+        u[:, n+1] = np.exp((r-sigma**2/2)*t[n]+sigma*W)*u0
+    return t, u
 
 ##############################################################################################
+# time-dependent SPDE
+
 # 1D H^r_0([0, a])-valued Weiner Process
 def icspde_dst1(u):
     return scipy.fftpack.dst(u, type=1, axis=0)/2
 
-def get_onedD_bj(dtref, J, a, r):
+def Get_onedD_bj(dtref, J, a, r):
     '''
     Input:
         dtref: the reference length of time interval
@@ -807,7 +1097,7 @@ def get_onedD_bj(dtref, J, a, r):
     eps=0.001
     return np.sqrt(2 * dtref * np.arange(1,J) ** (-(2 * r + 1 + eps)) / a)
 
-def get_onedD_dW(bj, kappa, iFspace, M):
+def Get_onedD_dW(bj, kappa, iFspace, M):
     '''
     Input:
         bj: coefficients
@@ -829,16 +1119,33 @@ def get_onedD_dW(bj, kappa, iFspace, M):
         dW = dW.reshape(X.shape)
     return dW
 
-##############################################################################################
 # 1D H^r_{per}([0, a])-valued Weiner Process
-def Get_oned_bj(dtref, J, a, r):
+def Get_onedP_bj(dtref, J, a, r):
+    '''
+    Input:
+        dtref: the reference length of time interval
+        J: number of sample points x_k
+        a: domain [0, a]
+        r: H^r_{per}([0, a])
+    Output:
+        bj: coefficients
+    '''
     j = np.hstack([np.arange(1, J//2 + 1), np.arange(-J//2+1, 0)])
     eps = 0.001
     qj = np.hstack([[0], np.abs(j)**(-(2*r + 1 + eps)/2)])
     bj = np.sqrt(qj * dtref / a) * J
     return bj
 
-def Get_oned_dW(bj, kappa, iFspace, M):
+def Get_onedP_dW(bj, kappa, iFspace, M):
+    '''
+    Input:
+        bj: coefficients
+        kappa: dt = kappa * dt_{ref}
+        iFspace: a flag
+        M: number of independent realizations to compute
+    Output:
+        dW
+    '''
     J = bj.size
     if kappa == 1:
         nn = np.random.randn(M, J)
@@ -1002,16 +1309,17 @@ def Spde_oned_AC_EM_Galerkin(u0, T, a, N, kappa, Jref, J, epsilon, fhandle, ghan
     EE=1 / (1 + dt * MM);    EE[IJJ]=0;    #EE=EE.reshape((1,EE.size));
     # initiliase noise
     iFspace=1
-    bj=Get_oned_bj(dtref,Jref,a,r);    bj[IJJ]=0
+    bj=Get_onedP_bj(dtref,Jref,a,r);    bj[IJJ]=0
     # set initial conditon
     ut=np.zeros((Jref+1,N//kappa+1))
     ut[:,0]=u0;     u=u0[0:Jref];    uh0=np.copy(fft(u))
+
     uh=np.matlib.repmat(uh0,M,1);    u=(ifft(uh))
     #
     for n in range(N // kappa):
         uh[:,IJJ]=0
         fhu=fft(fhandle(np.real(u)));                fhu[:,IJJ]=0
-        dW=Get_oned_dW(bj,kappa,iFspace,M);        dW[:,IJJ]=0
+        dW=Get_onedP_dW(bj,kappa,iFspace,M);        dW[:,IJJ]=0
         gdWh=fft(ghandle(u)*np.real(ifft(dW)));     gdWh[:,IJJ]=0
         uh_new=EE*(uh + dt * fhu + gdWh);   uh=uh_new
         u=np.real(np.copy((ifft(uh))))
@@ -1093,10 +1401,10 @@ def Spde_EM_FEM(u0, T, a, Nref, kappa, neref, L, epsilon, fhandle, ghandle, r, M
     p = epsilon * np.ones(ne)
     q = np.ones(ne)
     f = np.ones(ne)
-    uh, A, b, KK, MM = FEM_Solver1D_r1(ne, p, q, f)
+    _, uh, A, b, KK, MM = FEM_Solver1D_r1(ne, p, q, f)
     EE = MM + dt * KK
     ZM = np.zeros((M, 1))
-    bj = get_onedD_bj(dtref, neref, a, r)
+    bj = Get_onedD_bj(dtref, neref, a, r)
     bj[ne:-1] = 0
     iFspace = 0
     u = np.matlib.repmat(u0, M, 1)
@@ -1106,7 +1414,7 @@ def Spde_EM_FEM(u0, T, a, Nref, kappa, neref, L, epsilon, fhandle, ghandle, r, M
     gdw = np.copy(b)
     EEinv = scipy.sparse.linalg.factorized(EE)
     for k in range(Nref//kappa):
-        dWJ = get_onedD_dW(bj, kappa, iFspace, M)
+        dWJ = Get_onedD_dW(bj, kappa, iFspace, M)
         dWL = np.hstack([ZM, dWJ, ZM])
         dWL = dWL[:, ::L]
         gdW = ghandle(u) * dWL
