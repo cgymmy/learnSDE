@@ -1,4 +1,5 @@
-\documentclass{ctexart}
+% \documentclass{ctexart}
+\documentclass{article}
 \usepackage{listings}                                           %插入代码
 \usepackage{geometry}                                           %设置页面大小边距等
 \usepackage{graphicx}                                           %插入图片
@@ -53,12 +54,15 @@
 \newtheorem{definition}{Definition}
 \newtheorem{algorithm}{Algorithm}
 \newtheorem{lemma}{Lemma}
+\newtheorem{example}{Example}
 \newtheorem{problem}{Problem}
 
 \title{About Stochastic Differential Equation}
+\author{Guanyu Chen}
 \date{\today}
 \begin{document}
 \maketitle
+\tableofcontents
 \newpage
 \section{Fokker-Planck-Kolmogorov equation}
 \begin{problem}
@@ -76,6 +80,12 @@ $G(X_t, t)\in \mathcal{L}(\mathbf{R}^{m+1}, \mathbf{R}^d)$, with initial conditi
     \end{equation}
     Where  $\phi$  is a suitable regular function.
 \end{definition}
+This leads to Dynkin's Formula very naturally.
+\begin{theorem}[Dynkin's Formula]
+    \begin{equation}
+        E[f(X_t)]=f(X_0)+E\left[\int_0^t\mathcal{A}(f(X_s))ds\right]
+    \end{equation}
+\end{theorem}
 
 \begin{theorem}
     If  $X(t)$  s.t. \ref{sde}, then the generator is given:
@@ -83,6 +93,13 @@ $G(X_t, t)\in \mathcal{L}(\mathbf{R}^{m+1}, \mathbf{R}^d)$, with initial conditi
     \mathcal{A}(\cdot)=\sum_{i} \frac{\partial(\cdot)}{\partial x_{i}} f_{i}(X_t, t)+\frac{1}{2} \sum_{i, j}\left(\frac{\partial^{2}(\cdot)}{\partial x_{i} \partial x_{j}}\right)\left[G(X_t, t)Q G^{\top}(X_t, t)\right]_{i j}
 \end{equation}
 \end{theorem}
+\begin{proof}
+    See P119 of SDE by Oksendal.
+\end{proof}
+
+\begin{example}
+    If $dX_t=dW_t$, then $\mathcal{A}=\frac{1}{2}\Delta$, where $\Delta$ is the Laplace operator.
+\end{example}
 
 \begin{definition}[Generalized Generator]
     For $\phi(x, t)$, i.e. $\phi(X_t, t)$, the generator can be defined as:
@@ -140,7 +157,7 @@ We want to consider the density distribution of $X_t, P(x, t)$
 \begin{remark}
     When SDE is time independent:  
     \begin{equation}
-        d X=f(X) d t+G(X) d W_{t}  
+        d X_t=f(X_t) d t+G(X_t) d W_{t}  
     \end{equation}
     then the solution of FPK often converges to a stationary solution s.t.  $\frac{\partial P}{\partial t}=0$.
 \end{remark}
@@ -260,4 +277,5 @@ This means we can get the value of PDE at $(x', t')$ by simulating SDE paths beg
 \end{theorem}
 
 \section{Linear Filtering Problem}
+\section{Parameter Estimation in SDE}
 \end{document} 

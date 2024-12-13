@@ -1,2 +1,2 @@
 # learnSDE
-Code for SDE from scratch
+Code and notes of learning SDE from scratch
