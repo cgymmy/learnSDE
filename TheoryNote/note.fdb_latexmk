@@ -1,6 +1,6 @@
 # Fdb version 4
-["pdflatex"] 1733724672.16931 "d:/Research/github/learnSDE/TheoryNote/note.tex" "note.pdf" "note" 1733724673.80262 0
-  "d:/Research/github/learnSDE/TheoryNote/note.tex" 1733724669 15344 46c3426e66f7a2a0eb3b18163db2dcd4 ""
+["pdflatex"] 1734763342.2385 "d:/Research/github/learnSDE/TheoryNote/note.tex" "note.pdf" "note" 1734763344.0148 0
+  "d:/Research/github/learnSDE/TheoryNote/note.tex" 1734763339 27576 7eaca42ab0ceb25333852edf0c772721 ""
   "d:/texlive/2024/texmf-dist/fonts/map/fontname/texfonts.map" 1733058606 3524 cb3e574dea2d1052e39280babc910dc8 ""
   "d:/texlive/2024/texmf-dist/fonts/tfm/public/amsfonts/cmextra/cmex7.tfm" 1733058174 1004 54797486969f23fa377b128694d548df ""
   "d:/texlive/2024/texmf-dist/fonts/tfm/public/amsfonts/cmextra/cmex8.tfm" 1733058174 988 bdf658c3bfc2d96d3c8b02cfc1c94c20 ""
@@ -14,6 +14,7 @@
   "d:/texlive/2024/texmf-dist/fonts/tfm/public/cm/cmbx12.tfm" 1733058346 1324 c910af8c371558dc20f2d7822f66fe64 ""
   "d:/texlive/2024/texmf-dist/fonts/tfm/public/cm/cmbx5.tfm" 1733058346 1332 f817c21a1ba54560425663374f1b651a ""
   "d:/texlive/2024/texmf-dist/fonts/tfm/public/cm/cmbx7.tfm" 1733058346 1336 3125ccb448c1a09074e3aa4a9832f130 ""
+  "d:/texlive/2024/texmf-dist/fonts/tfm/public/cm/cmbxti10.tfm" 1733058346 1532 9162035f4e7176612125649e348e2195 ""
   "d:/texlive/2024/texmf-dist/fonts/tfm/public/cm/cmex10.tfm" 1733058346 992 662f679a0b3d2d53c1b94050fdaa3f50 ""
   "d:/texlive/2024/texmf-dist/fonts/tfm/public/cm/cmmi12.tfm" 1733058346 1524 4414a8315f39513458b80dfc63bff03a ""
   "d:/texlive/2024/texmf-dist/fonts/tfm/public/cm/cmmi6.tfm" 1733058346 1512 f21f83efb36853c0b70002322c1ab3ad ""
@@ -31,6 +32,7 @@
   "d:/texlive/2024/texmf-dist/fonts/tfm/public/rsfs/rsfs7.tfm" 1733059354 692 1b6510779f0f05e9cbf03e0f6c8361e6 ""
   "d:/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb" 1733058174 34811 78b52f49e893bcba91bd7581cdc144c0 ""
   "d:/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb" 1733058174 32080 340ef9bf63678554ee606688e7b5339d ""
+  "d:/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmbxti10.pfb" 1733058174 36554 b67dc2cfa451409e100b3fcf5f506509 ""
   "d:/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb" 1733058174 30251 6afa5cb1d0204815a708a080681d4674 ""
   "d:/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb" 1733058174 36299 5f9df58c2139e7edcf37c8fca4bd384d ""
   "d:/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi5.pfb" 1733058174 37912 07513ec114ac737ab54cea0152f4424b ""
@@ -181,10 +183,10 @@
   "d:/texlive/2024/texmf-var/fonts/map/pdftex/updmap/pdftex.map" 1733059852 5421091 287ecf793ecd0deda92deb72de2a5ec0 ""
   "d:/texlive/2024/texmf-var/web2c/pdftex/pdflatex.fmt" 1733060056 6862173 0da567ec12f498cd2af12c8ed049759d ""
   "d:/texlive/2024/texmf.cnf" 1733059827 713 e69b156964470283e0530f5060668171 ""
-  "note.aux" 1733724673 899 fa4a8bd219b55eb693e19ad6e7ea6ff9 "pdflatex"
-  "note.out" 1733724673 708 4b650a85d1ed62a1aa0e2570f3023d41 "pdflatex"
-  "note.tex" 1733724669 15344 46c3426e66f7a2a0eb3b18163db2dcd4 ""
-  "note.toc" 1733724673 327 7be6d7ed3605fdb8f3b881138208bb0f "pdflatex"
+  "note.aux" 1734763343 1511 ddd27d1bb06f340e80bfa1703e4d42ec "pdflatex"
+  "note.out" 1734763343 1130 8c32d020ea16a8ace43fb8b45d407448 "pdflatex"
+  "note.tex" 1734763339 27576 7eaca42ab0ceb25333852edf0c772721 ""
+  "note.toc" 1734763343 550 7b468769bc739901fe3eac9c827d32c1 "pdflatex"
   (generated)
   "note.aux"
   "note.log"

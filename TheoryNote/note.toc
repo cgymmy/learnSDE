@@ -1,4 +1,7 @@
 \contentsline {section}{\numberline {1}Fokker-Planck-Kolmogorov equation}{2}{section.1}%
-\contentsline {section}{\numberline {2}Feynman-Kac Formula}{4}{section.2}%
-\contentsline {section}{\numberline {3}Linear Filtering Problem}{5}{section.3}%
-\contentsline {section}{\numberline {4}Parameter Estimation in SDE}{5}{section.4}%
+\contentsline {section}{\numberline {2}Means and Covariances of SDE}{4}{section.2}%
+\contentsline {section}{\numberline {3}Linear SDE}{4}{section.3}%
+\contentsline {section}{\numberline {4}Feynman-Kac Formula}{5}{section.4}%
+\contentsline {section}{\numberline {5}Linear Filtering Problem}{6}{section.5}%
+\contentsline {section}{\numberline {6}Parameter Estimation in SDE}{6}{section.6}%
+\contentsline {section}{\numberline {7}Conservation Laws}{7}{section.7}%

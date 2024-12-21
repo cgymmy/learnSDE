@@ -174,7 +174,14 @@ Where $\mathcal{A}$ has been mentioned above. If we note the adjoint operator of
 Hence we have 
 \begin{theorem}[FPK Equation]
     \begin{equation}
-    \frac{dP}{dt}=\mathcal{A}^*(P),\operatorname{where} \mathcal{A}^*(\cdot)=-\sum_{i} \frac{\partial}{\partial x_{i}}\left(f_{i}(x, t) (\cdot)\right)+\frac{1}{2} \sum_{i=1} \frac{\partial^{2}}{\partial X_{i} \partial X_{j}}\left(\left[G Q G^{\top}\right]_{i j}(\cdot)\right)
+    \frac{dP}{dt}=\mathcal{A}^*(P),\operatorname{where} \mathcal{A}^*(\cdot)=-\sum_{i} \frac{\partial}{\partial x_{i}}\left(f_{i}(x, t) (\cdot)\right)+\frac{1}{2} \sum_{i=1} \frac{\partial^{2}}{\partial x_{i} \partial x_{j}}\left(\left[G Q G^{\top}\right]_{i j}(\cdot)\right)
+\end{equation}
+It can be rewritten as:
+\begin{equation}
+    \begin{aligned}
+        \frac{\partial P}{\partial t} &= -\nabla\cdot\left[f(x, t) p(x, t)\right]+\frac{1}{2} \nabla^2\cdot\left[\left(G Q G^{\top}\right) p(x, t)\right] \\
+        &=-\nabla\cdot\left[f(x, t) p(x, t)-\frac{1}{2} \nabla\cdot\left[\left(G Q G^{\top}\right) p(x, t)\right]\right]
+    \end{aligned}
 \end{equation}
 \end{theorem}
 
@@ -193,6 +200,127 @@ Hence we have
     \end{equation}
 \end{theorem}
 
+\section{Means and Covariances of SDE}
+After we derived the FPK equation, which is the complete probabilistic description of SDE, we can derive the mean and covariance of SDE.
+By takeing $\phi(x, t)$, then
+\begin{equation}
+    \frac{d E[\phi]}{d t}=E\left[\frac{\partial \phi}{\partial t}\right]+\sum_{i} E\left[\frac{\partial \phi}{\partial x_{i}} f_{i}(X_t, t)\right]+\frac{1}{2} \sum_{i j} E\left[\frac{\partial^{2} \phi}{\partial x_{i} \partial x_{j}}\left[G Q G^{\top}\right]_{i j}\right]
+\end{equation}
+By taking $\phi(X, t)=x_i$ and $\phi(X, t)=x_ix_j-m(t)_im(t)_j$, we have the mean function $m(t)=E[X_t]$ 
+and covariance function $c(t)=E\left[\left(X_t-m(t)\right)\left(X_t-m(t)\right)^T\right]$ respectively, s.t.
+\begin{equation}\label{SDEMC}
+    \left\{
+        \begin{aligned}
+            &\frac{d m}{d t}=E\left[f(X_t, t)\right]\\
+            &\frac{d c}{d t}=E\left[f(X, t)(X-m(t)^T)\right]+E\left[(X-m(t)f^T(X, t))\right]+E\left[G(X_t, t)QG^T(X_t, t)\right]
+        \end{aligned}
+    \right.
+\end{equation}
+So we can estimate the mean and covariance of solution to SDE. However, these equations cannot be used as such, 
+because only in the Gaussian case do the expectation and covariance actually characterize the distribution. 
+
+\section{Linear SDE}
+The linear SDE has explicit solution. Assume the linear SDe has the form 
+\begin{equation}
+    dX_t =\left(K(t)X_t + B(t)\right)dt + G(t)dW_t
+\end{equation}
+where $K(t)\in \mathbf{R}^{d\times d}, B(t)\in \mathbf{R}^{d}, G(t)\in \mathbf{R}^{d\times m}$ are given functions. 
+$X_t \in \mathbf{R}^d$ is the state vector, $W_t \in \mathbf{R}^m$ is the Brownian Motion with diffusion matrix $Q$.
+
+\begin{theorem}
+    The explicit solution to the linear SDE is given by:
+    \begin{equation}\label{explicitsolLSDE}
+        X_t = \Psi(t, t_0)X_0 + \int_{t_0}^t \Psi(t, s)B(s)ds + \int_{t_0}^t \Psi(t, s)G(s)dW_s
+    \end{equation}
+    where $\Psi(t, t_0)$ is the transition matrix of the linear SDE, which satisfies the following matrix ODE:
+    \begin{equation}
+        \frac{d\Psi}{dt} = K(t)\Psi(t, t_0), \Psi(t_0, t_0) = I
+    \end{equation}
+    Hence, $X_t$ is a Gaussian process(A linear transformation of Brownian Motion which is a Gaussian process).
+\end{theorem}
+\begin{proof}
+    Multiply both sides of the SDE by Integrating factor $\Psi(t_0, t)$ and apply Ito's formula to $\Psi(t_0, t)X_t$.
+
+    See Sarkka P49.
+\end{proof}
+As discussed above, we can compute the mean and covariance function of solution to linear SDE. 
+\begin{theorem}
+    The mean and covariance function of solution to linear SDE are given by:
+    \begin{equation}
+        \left\{
+            \begin{aligned}
+                &\frac{d m}{d t} = K(t)m(t) + B(t)\\
+                &\frac{d c}{d t} = K(t)c(t) + c(t)K^T(t)+ G(t)QG^T(t)
+            \end{aligned}
+        \right.
+    \end{equation}
+    with initial condition $m_0 =m(t_0)=E[X_0], c_0 =c(t_0)=Cov(X_0)$. Then the solution is given by solving the above ODEs:
+    \begin{equation}\label{LSDEMC}
+        \left\{
+            \begin{aligned}
+                &m(t) = \Psi(t, t_0)m_0 + \int_{t_0}^t \Psi(t, s)B(s)ds\\
+                &c(t) = \Psi(t, t_0)c_0\Psi^T(t, t_0) + \int_{t_0}^t \Psi(t, s)G(s)QG^T(s)\Psi^T(t, s)ds
+            \end{aligned}
+        \right.
+    \end{equation}
+
+\end{theorem}
+\begin{proof}
+    Apply $F(X, t)=K(t)X + B(t), G(X, t)=G(t)$ to \ref{SDEMC}.
+\end{proof}
+
+Hence the solution to linear SDE is a Gaussian process with mean and covariance function given by the above ODEs.
+\begin{theorem}
+The solution to LSDE is Gaussian:
+\begin{equation}
+    p(X, t) = \mathcal{N}(X(t)|m(t), c(t))
+\end{equation}
+Specially when $X_0 = x_0$ is fixed, then 
+\begin{equation}\label{transitiondensity}
+    p(X,t|X_0=x_0) = \mathcal{N}(X(t)|m(t|x_0), c(t|x_0))
+\end{equation}
+That is, $m_0 = x_0, c_0 = 0$. Then we have:
+\begin{equation}
+    \left\{
+        \begin{aligned}
+            &m(t|x_0) = \Psi(t, t_0)x_0 + \int_{t_0}^t \Psi(t, s)B(s)ds\\
+            &c(t|x_0) = \int_{t_0}^t \Psi(t, s)G(s)QG^T(s)\Psi^T(t, s)ds
+        \end{aligned}
+    \right.
+\end{equation}
+\end{theorem}
+\begin{proof}
+    The proof is straight foward either by applying $m_0 = x_0, c_0 = 0$ to \ref{LSDEMC} or by eq \ref{explicitsolLSDE}.
+\end{proof}
+So, to sum up, linear SDE has great properties! The distribution is completedly decided by the inital condition.
+Also, if we generate $X_0$ to $X_{t_k}$, which means that we begin SDE at $t_i$ with $X_{t_i}$, we have the equivalent discretization of SDE:
+\begin{theorem}
+    Original SDE is weakly, in distribution, equivalent to the following discrete-time SDE:
+    \begin{equation}\label{DTSDE}
+        X_{t_{i+1}} = A_iX_{t_i} + B_i + G_i
+    \end{equation} 
+    where
+    \begin{equation}\left\{
+        \begin{aligned}
+            A_i &= \Psi(t_{i+1}, t_i)\\
+            B_i &= \int_{t_i}^{t_{i+1}} \Psi(t_{i+1}, s)B(s)ds\\
+            G_i &= \int_{t_i}^{t_{i+1}} \Psi(t_{i+1}, s)G(s)QG^T(s)\Psi^T(t_{i+1}, s)ds
+        \end{aligned}\right.
+    \end{equation}
+\end{theorem}
+\begin{proof}
+    The proof is straight forward.
+\end{proof}
+\begin{theorem}
+    The covariance of $X_t$ and $X_s(s<t)$ is given by:
+    \begin{equation}
+        Cov(X_t, X_s) = \Psi(t, s)c(s)
+    \end{equation}
+\end{theorem}
+
+\begin{proof}
+    See Sarkka P88-89.
+\end{proof}
 
 \section{Feynman-Kac Formula}
 The Feynman-Kac Formula bridges PDE and certain stochastic value of SDE solutions.
@@ -226,7 +354,7 @@ Integrating both sises from $t^{\prime}$  to  T:
 \end{equation}
 Take expectation of both sides:
 \begin{equation}
-    u\left(x^{\prime}, t^{\prime}\right)=E[\Psi(X(T))]
+    u\left(x^{\prime}, t^{\prime}\right)=E[\psi(X(T))]
 \end{equation}  
 This can be generalized to PDE like:
 \begin{equation}
@@ -237,7 +365,7 @@ By consider the Ito formula of $e^{-rt}u(x, t)$, we can similarly compute the re
     u(x', t') = e^{-r(T-t')}E\left[\psi(X(T))\right]
 \end{equation}
 This means we can get the value of PDE at $(x', t')$ by simulating SDE paths beginning at $(x', t')$, and compute corresponding $E\left[\psi(X(T))\right]$. We can get more generalized conclusion:
-\begin{theorem}[Solve Backward PDE]
+\begin{algorithm}[Solve Backward PDE]
 
     To compute the backward PDE: $(\mathcal{A}_t-r)(u)=0$, i.e.
     \begin{equation}
@@ -249,9 +377,9 @@ This means we can get the value of PDE at $(x', t')$ by simulating SDE paths beg
         dX_t=f(X_t, t)dt + G(X_t, t)dW_t\operatorname{with}X(t')=x'
     \end{equation}
     Step2. Estimate $u(x', t') = e^{-r(T-t')}E\left[\psi(X(T))\right]$
-\end{theorem}
+\end{algorithm}
 
-\begin{theorem}[Solve Forward PDE]
+\begin{algorithm}[Solve Forward PDE]
     Consider the solution $u(x, t)$ of forward PDE: $\frac{\partial u}{\partial t}=(\mathcal{A}-r)(u)$, i.e.
     \begin{equation}
         \frac{\partial u}{\partial t}=\sum_{i} \frac{\partial u(x, t)}{\partial x_{i}} f_{i}(x, t)+\frac{1}{2} \sum_{i, j}\left(\frac{\partial^{2}u(x, t)}{\partial x_{i} \partial x_{j}}\right)\left[G(x, t) Q G^{\top}(x, t)\right]_{i j} - ru(x, t)
@@ -262,8 +390,8 @@ This means we can get the value of PDE at $(x', t')$ by simulating SDE paths beg
         dX_t=f(X_t, t)dt + G(X_t, t)dW_t\operatorname{with}X(0)=x'
     \end{equation}
     Step2. Estimate $u(x', t') = e^{-rt'}E\left[\psi(X(t'))\right]$
-\end{theorem}
-\begin{theorem}[Solve Boundary Value Problem]
+\end{algorithm}
+\begin{algorithm}[Solve Boundary Value Problem]
     For solution $u(x)$ to the following elliptic PDE defined on some domain $D$:
     \begin{equation}
         \sum_{i} \frac{\partial u(x)}{\partial x_{i}} f_{i}(x)+\frac{1}{2} \sum_{i, j}\left(\frac{\partial^{2}u(x)}{\partial x_{i} \partial x_{j}}\right)\left[G(x) Q G^{\top}(x)\right]_{i j} - ru(x)=0
@@ -274,8 +402,129 @@ This means we can get the value of PDE at $(x', t')$ by simulating SDE paths beg
         dX_t=f(X_t)dt + G(X_t)dW_t\operatorname{with}X(t')=x'
     \end{equation}
     Step2. Estimate $u(x') = e^{-r(T_e-t')}E\left[\psi(X(T_e))\right]$
-\end{theorem}
+\end{algorithm}
 
 \section{Linear Filtering Problem}
+
 \section{Parameter Estimation in SDE}
+Consider the SDE with unknown parameters $\theta$:
+\begin{equation}
+    dX_t = f(X_t, t, \theta)dt + G(X_t, t, \theta)dW_t
+\end{equation}
+The diffusion matrix of $W_t$ might also depend on $\theta$, i.e. $Q=Q(\theta)$.
+The goal is to estimate the unknown parameter $\theta$ by observing the SDE solution $X_t$.
+\begin{definition}
+    Maximum likelihood method:
+    Give the observattion $X_{t_0}, X_{t_1}, \cdots, X_{t_n}$, the likelihood function is given by:
+    \begin{equation}
+        p(X_{t_0}, X_{t_1}, \cdots, X_{t_n}|\theta) = \prod_{i=0}^{n} p(X_{t_i}|X_{t_{i-1}}, \theta)
+    \end{equation}
+    where $p(X_{t_i}|X_{t_{i-1}}, \theta)$ is the transition density of SDE.
+
+    Then to maximize the likelihood function, it is equal to minimize the negative log-likelihood function:
+    \begin{equation}
+        L(\theta) = -\log p(\theta) = -\sum_{i=0}^{n} \log p(X_{t_i}|X_{t_{i-1}}, \theta)
+    \end{equation}
+    Then the posterior distribution of $\theta$ is given by:
+    \begin{equation}
+        \begin{aligned}
+            p(\theta|X_{t_0}, X_{t_1}, \cdots, X_{t_n}) &= \frac{p(X_{t_0}, X_{t_1}, \cdots, X_{t_n}|\theta)p(\theta)}{p(X_{t_0}, X_{t_1}, \cdots, X_{t_n})}\\
+            &= \frac{p(X_{t_0}, X_{t_1}, \cdots, X_{t_n}|\theta)p(\theta)}{p(X_{t_0}, X_{t_1}, \cdots, X_{t_n})}\\
+            &\propto \prod_{i=0}^{n} p(X_{t_i}|X_{t_{i-1}}, \theta)p(\theta)
+        \end{aligned}
+    \end{equation}
+    where $p(\theta)$ is the prior distribution of $\theta$. So we have \textbf{ML} and \textbf{MAP} estimation.
+\end{definition}
+
+We find that the difficulty of ML and MAP estimation is to compute the transition density $p(X_{t_i}|X_{t_{i-1}}, \theta)$, which is given by FPK equation. 
+However, we know that FPK equation is too difficult to solve. So we need to use some approximation methods to estimate the transition density.
+Among this we find that the transition density of linear SDE can be explicitly computed! That is great!
+\begin{theorem}
+    The transition density of linear SDE is given by eq \ref{transitiondensity}. Then the negative log-likelihood is given by:
+    \begin{equation}
+        L(\theta) = \sum_{i=0}^{T - 1} \left[\frac{1}{2}\log(|2\pi G_i|)+\frac{1}{2}(X_{t_{i+1}} - A_i(\theta)X_{t_i} - B_i(\theta))^\top G_i^{-1}(X_{t_{i+1}} - A_i(\theta)X_{t_i} - B_i(\theta))\right]
+    \end{equation}
+    where $A_i, B_i, G_i$ are given in eq \ref{DTSDE}.
+\end{theorem}
+
+\section{Conservation Laws}
+\begin{theorem}Two important theorems in calculus:
+
+    1.\textbf{Divergence Theorem}:
+    \begin{equation}
+        \int_{\Omega} \nabla \cdot \mathbf{F} d x = \int_{\partial \Omega} \mathbf{F} \cdot \mathbf{n} d S
+    \end{equation}
+
+    2.\textbf{Reynolds Transport Theorem}:
+    \textbf{Reynolds Transport Theorem}:
+    \begin{equation}
+        \frac{d}{dt}\int_{\Omega(t)} f(t, x) d x = \int_{\Omega (t)} \frac{\partial f}{\partial t} d x + \int_{\partial \Omega (t)} f(t, x) \mathbf{v} \cdot \mathbf{n} d S
+    \end{equation}
+    where $u$ is the velocity at $\partial \Omega (t)$.
+\end{theorem}
+Here the $\Omega(t)$ is the domain of the flow, and the $\partial \Omega(t)$ is the boundary of the flow, which is described by the flow map $\phi_s^t$. Here is the definition.
+\begin{definition}[Flow Map]
+    Assume a description of some characteristic of particle $\mathbf{P}$, like the position or the boundary, as $\mathbf{x}\in \mathcal{R}^m$, then we have a flow map $\phi_s^t(\mathbf{x})\in \mathcal{R}^m$, 
+    which means that the flow transimits the characteristic(position) $\mathbf{x}$ from $\mathbf{x}$ at $s$ to $\phi_s^t(\mathbf{x})$ at $t$, controlled by the vector field(velocity field) $\mathbf{F}: \mathcal{R}^m\times \mathcal{R}\to \mathcal{R}^m$:
+    \begin{equation}\left\{
+        \begin{aligned}
+            \frac{d\phi_s^t(\mathbf{x})}{dt} &= \mathbf{F}(\phi_s^t(\mathbf{x}), t)\\
+            \phi_s^s(\mathbf{x}) &= \mathbf{x}
+        \end{aligned}\right.
+    \end{equation}
+\end{definition}
+
+If we assume $\Omega(t)$ is composed of particles, i.e. $\Omega(t)=\phi_{t_0}^t(\Omega)$(when $t = t_0$, $\Omega(t_0)=\Omega$), 
+then we by \textbf{conservation of mass}, we have the following theorem:
+\begin{theorem}[Continuity Equation]
+    By conservation of mass, i.e. $\int_{\Omega(t)} \rho(t, \mathbf{x}) d\mathbf{x} = C$, we have:
+    \begin{equation}
+        \begin{aligned}
+            \frac{d}{dt}\int_{\Omega(t)} \rho(t, \mathbf{x}) d\mathbf{x} &= \int_{\Omega(t)} \frac{\partial \rho}{\partial t} d\mathbf{x} + \int_{\partial \Omega(t)} \rho(t, \mathbf{x}) \mathbf{u} \cdot \mathbf{n} d S\\ 
+            &= \int_{\Omega(t)} \left(\frac{\partial \rho}{\partial t}  + \nabla\cdot \left(\rho\mathbf{u}\right)\right) d\mathbf{x}=0
+        \end{aligned}
+    \end{equation}
+    Therefore:
+    \begin{equation}
+        \frac{\partial \rho}{\partial t}  + \nabla\cdot \left(\rho\mathbf{u}\right) = 0
+    \end{equation}
+    which is also called \textbf{continuity equation}.
+\end{theorem}
+\begin{theorem}[Conservation of Momentum]
+    By conservation of momentum, i.e. 
+    \begin{equation}
+        \frac{d}{dt}\int_{\Omega(t)} \rho(t, \mathbf{x})\mathbf{v}(t, \mathbf{x}) d\mathbf{x} = -\int_{\partial \Omega(t)} p\cdot \mathbf{n} d S
+    \end{equation}
+    we have:
+    \begin{equation}
+        \frac{\partial (\rho \mathbf{v})}{\partial t} + \nabla\cdot \left(\rho \mathbf{v} \otimes \mathbf{v} + p\right) = 0
+    \end{equation}
+    where $p$ is the pressure.
+\end{theorem}
+\begin{theorem}[Conservation of Energy]
+    \begin{equation}
+        \frac{\partial E}{\partial t} + \nabla\cdot \left(\mathbf{v}(E + p)\right) = 0
+    \end{equation}
+\end{theorem}
+Then we have can get the Euler's equation:
+\begin{theorem}[Euler's Equation]
+    The Euler's equation is given by:
+    \begin{equation}
+        \frac{\partial}{\partial t}\begin{bmatrix}
+        \rho\\ \rho \mathbf{v}\\E
+    \end{bmatrix}
+    + \nabla\cdot \begin{bmatrix}
+        \rho \mathbf{v}\\ \rho \mathbf{v}\otimes \mathbf{v} + p\\ \mathbf{v}(E + p)
+    \end{bmatrix} = 0
+\end{equation}
+So the general form of conservation laws is given by: suppose $U\in \mathcal{R}^d$ is the conserved quantity, $F$ is $\mathcal{R}^d\to \mathcal{R}^d$ is the flux, 
+then we have:
+\begin{equation}
+    \frac{\partial U}{\partial t} + \nabla\cdot \left(F(U)\right) = 0
+\end{equation}
+
+\end{theorem}
+
+
+
 \end{document} 

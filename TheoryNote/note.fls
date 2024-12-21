@@ -313,11 +313,13 @@ INPUT d:/texlive/2024/texmf-dist/fonts/tfm/public/rsfs/rsfs7.tfm
 INPUT d:/texlive/2024/texmf-dist/fonts/tfm/public/rsfs/rsfs5.tfm
 INPUT d:/texlive/2024/texmf-dist/fonts/tfm/public/cm/cmbx7.tfm
 INPUT d:/texlive/2024/texmf-dist/fonts/tfm/public/cm/cmbx5.tfm
+INPUT d:/texlive/2024/texmf-dist/fonts/tfm/public/cm/cmbxti10.tfm
 INPUT note.aux
 INPUT ./note.out
 INPUT ./note.out
 INPUT d:/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb
 INPUT d:/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb
+INPUT d:/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmbxti10.pfb
 INPUT d:/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb
 INPUT d:/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb
 INPUT d:/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi5.pfb
