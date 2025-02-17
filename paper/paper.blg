@@ -1,0 +1,49 @@
+This is BibTeX, Version 0.99d (TeX Live 2024)
+Capacity: max_strings=200000, hash_size=200000, hash_prime=170003
+The top-level auxiliary file: paper.aux
+The style file: unsrt.bst
+Database file #1: reference.bib
+Warning--entry type for "holderrieth2023fokker" isn't style-file defined
+--line 171 of file reference.bib
+You've used 8 entries,
+            1791 wiz_defined-function locations,
+            485 strings with 4928 characters,
+and the built_in function-call counts, 1370 in all, are:
+= -- 94
+> -- 91
+< -- 0
++ -- 34
+- -- 26
+* -- 63
+:= -- 230
+add.period$ -- 22
+call.type$ -- 8
+change.case$ -- 5
+chr.to.int$ -- 0
+cite$ -- 8
+duplicate$ -- 60
+empty$ -- 149
+format.name$ -- 26
+if$ -- 308
+int.to.chr$ -- 0
+int.to.str$ -- 8
+missing$ -- 8
+newline$ -- 40
+num.names$ -- 8
+pop$ -- 52
+preamble$ -- 1
+purify$ -- 0
+quote$ -- 0
+skip$ -- 25
+stack$ -- 0
+substring$ -- 0
+swap$ -- 8
+text.length$ -- 0
+text.prefix$ -- 0
+top$ -- 0
+type$ -- 0
+warning$ -- 0
+while$ -- 8
+width$ -- 9
+write$ -- 79
+(There was 1 warning)

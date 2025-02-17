@@ -1,0 +1,40 @@
+\begin{thebibliography}{1}
+
+\bibitem{song2021scorebasedgenerativemodelingstochastic}
+Yang Song, Jascha Sohl-Dickstein, Diederik~P. Kingma, Abhishek Kumar, Stefano Ermon, and Ben Poole.
+\newblock Score-based generative modeling through stochastic differential equations, 2021.
+
+\bibitem{chan2024tutorialdiffusionmodelsimaging}
+Stanley~H. Chan.
+\newblock Tutorial on diffusion models for imaging and vision, 2024.
+
+\bibitem{citeulike:1220946}
+Bernt {\O}ksendal.
+\newblock {\em {Stochastic Differential Equations: An Introduction with Applications (Universitext)}}.
+\newblock Springer, 6th edition, January 2014.
+
+\bibitem{lipman2024flowmatchingguidecode}
+Yaron Lipman, Marton Havasi, Peter Holderrieth, Neta Shaul, Matt Le, Brian Karrer, Ricky T.~Q. Chen, David Lopez-Paz, Heli Ben-Hamu, and Itai Gat.
+\newblock Flow matching guide and code, 2024.
+
+\bibitem{lord2014introduction}
+Gabriel~J. Lord, Catherine~E. Powell, and Tony Shardlow.
+\newblock {\em An Introduction to Computational Stochastic PDEs}.
+\newblock Cambridge University Press, Cambridge, 2014.
+
+\bibitem{Särkkä_Solin_2019}
+Simo Särkkä and Arno Solin.
+\newblock {\em Applied Stochastic Differential Equations}.
+\newblock Institute of Mathematical Statistics Textbooks. Cambridge University Press, 2019.
+
+\bibitem{holderrieth2023fokker}
+Peter Holderrieth.
+\newblock The fokker-planck equation and diffusion models,, 2023.
+\newblock https://www.peterholderrieth.com/blog/2023/The-Fokker-Planck-Equation-and-Diffusion-Models/.
+
+\bibitem{doi:10.1137/1.9780898718997}
+Rabi~N. Bhattacharya and Edward~C. Waymire.
+\newblock {\em Stochastic Processes with Applications}.
+\newblock Society for Industrial and Applied Mathematics, 2009.
+
+\end{thebibliography}

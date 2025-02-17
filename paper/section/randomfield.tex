@@ -1,0 +1,134 @@
+\section{Random Field}
+\subsection{Definitions}
+\begin{definition}[Random Field]
+    For a set $D\subset \mathbb{R}^d$, a (real-valued) random field ${u(x):x\in D}$ is a set of real-valued 
+    random variables on a probability space $(\Omega, \mathcal{F}, P)$. We usually speak of realizations of random field, instead of sample paths. 
+\end{definition}
+
+\begin{definition}[second-order random field]
+    A random field is called second-order random field if $u(x)\in L^2(\Omega)$ for $\forall x\in D$. With its mean and covariance function:
+    \begin{equation}\left\{
+        \begin{aligned}
+            \mu(x) &= \mathbf{E}[u(x)]\\
+            C(x, y) &= Cov(u(x), u(y))=\mathbf{E}[(u(x)-m(x))(u(y)-m(y))]\\
+        \end{aligned}\right.
+    \end{equation}
+\end{definition}
+
+\begin{definition}[Gaussian Random Field]
+    A second-order random field ${u(x):x\in D}$ is called Gaussian random field if 
+    \begin{equation}
+        u = u[u(x_1), u(x_2), \cdots, u(x_n)]^T \sim \mathcal{N}(\mu(x), C(x, y)),\ \forall x_i \in D
+    \end{equation}
+\end{definition}
+
+\begin{example}[$L^2(D)$-valued random variable]
+    For $D\subset \mathbb{R}^d$, consider $L^2(D)$-valued R.V. u with $\mu \in L^2(D)$ and $\mathscr{C}$.
+    Then $u(x)$ is a real-valued random field for each $x\in D$, and mean and covariance are well defined.
+
+    Meanwhile, for $\phi, \psi \in L^2(D)$, we have
+    \begin{equation}
+        \begin{aligned}
+            \langle \mathscr{C}\phi, \psi \rangle &= Cov\left(\langle u, \phi \rangle_{L^2(D)}, \langle u, \psi \rangle_{L^2(D)}\right)\\
+            &=E\left[\left(\int_D \phi(x)(u(x)-\mu(x))dx\right)\left(\int_D \psi(y)(u(y)-\mu(y))dy\right)\right]\\
+            &=\int_D \int_D \phi(x)\psi(y)E[(u(x)-mu(x))(u(y)-mu(y))]dxdy\\
+            &=\int_D \int_D \phi(x)\psi(y)Cov(u(x), u(y))dxdy\\
+        \end{aligned}
+    \end{equation}
+    So that
+    \begin{equation}
+        (\mathscr{C}\phi)(x) = \int_D Cov(u(x), u(y))\phi(y)dy
+    \end{equation}
+    which is the covariance function of the random field $u(x)$. So, any $L^2(D)$-valued random variable defines a second-order random field, 
+    with mean $\mu(x)$ and covariance $C(x, y) = Cov(u(x), u(y))$ which is the kernel of the covariance operator $\mathscr{C}$.
+\end{example}
+
+\begin{example}[Stationary Random Field]
+    A second-order random field ${u(x): x\in D}$ is called stationary if the mean is constant and covariance function 
+    depends only on the difference $x-y$, i.e. $\mu(x) = \mu,\ C(x, y) = C(x-y)$.
+\end{example}
+
+\begin{theorem}[Wiener-Khinchin Theorem]
+    There exists a stationary random field ${u(x): x\in D}$ with mean $\mu$ and covariance function $c(x)$ that is mean square continuous if and only if 
+    the function $c(x): \mathbb{R}^d\rightarrow \mathbb{R}$ is such that 
+    \begin{equation}
+        c(x) = \int_{\mathbb{R}^d} e^{iv \cdot x}dF(v) = (2\pi)^{\frac{d}{2}}\hat{f}(x)
+    \end{equation}
+    where $F(v)$ is some measure on $\mathbb{R}^d$ and $\hat{f}(x)$ is the Fourier transform of $f(x)$, f is the density function of $F$.
+    
+    Reversely, $f(v) = (2\pi)^{\frac{d}{2}}\hat{c}(v)$.
+    If $f$ is non-negative and integrable, then $c(x)$ is a valid covariance function.
+\end{theorem}
+
+\begin{example}[Isotropic Random Field]
+    A stationary random field is called isotropic if its covariance function depends only on the distance between points, i.e.
+    \begin{equation}
+        Cov(x) = c(\|x\|_2) = c^0(r)
+    \end{equation}
+    where $c^0$ is known as the isotropic covariance function.
+\end{example}
+\subsection{Algorithms}
+In 2D cases, the covariance matrices of samples of stationary random fields $u(x)$ at uniformly spaced points $x\in D$ are symmetric BTTB matrices.
+\begin{definition}[Uniformly spaced points]
+    Let $D = [0,a_1]\times[0,a_2]$, the uniformly spaced points are given by:
+    \begin{equation}
+        x_k = x_{i,j} = (i\Delta x_1, j\Delta x_2)^T,\ i = 0, 1, \cdots, n_1-1,\ j = 0, 1, \cdots, n_2-1, k=i+j n_1
+    \end{equation}
+    where $\Delta x_1 = \frac{a_1}{n_1-1}$ and $\Delta x_2 = \frac{a_2}{n_2-1}$. 
+    
+    With $N=n_1n_2$, $u = [u_0, u_1, \cdots, u_{N-1}]^T\sim \mathcal{N}(0, C)$ is the vector of samples of $u(x)$ at the uniformly spaced points.
+    Since $u(x)$ is stationary, $C$ is a $N\times N$ symmetric BTTB matrix with elements:
+    \begin{equation}
+        C_{kl} = Cov(u_k, u_l) = c(x_{{i+jn_1}} - x_{r+sn_1})
+    \end{equation}
+    where $c(x_k - x_l)$ is the covariance function of $u(x)$. 
+\end{definition}
+
+
+\begin{theorem}
+    The covariance matrix $C$ is always a symmetric BTTB matrix.
+\end{theorem}
+
+Since we have the Fourier representation of BCCB matrix and BTTB matrix can by extended to BCCB by even extension, we can use the following algorithm to generate the samples of $u(x)$.
+So, when the even BCCB extension $\tilde{C}\in \mathbb{R}^{4N\times 4N}$ is non-negative definite, then $N(0, \tilde{C})$ is a valid Gaussian distribution.
+
+\begin{algorithm}
+    Suppose the even BCCB extension $\tilde{C}\in \mathbb{R}^{4N\times 4N}$ is non-negative definite, and the leading principle submatrix $S\in \mathbb{R}^{2N\times 2N}$ is:
+    \begin{equation}
+        S = \begin{pmatrix}
+            \tilde{C}_0 & \tilde{C}_1^T & \cdots & \tilde{C}_{n_2-1}^T\\
+            \tilde{C}_1 & \tilde{C}_2 & \cdots & \tilde{C}_{n_2-2}^T\\
+            \vdots & \vdots & \ddots & \vdots\\
+            \tilde{C}_{n_2-1} & \tilde{C}_{n_2-2} & \cdots & \tilde{C}_0
+        \end{pmatrix},\quad \tilde{C}_i = \begin{pmatrix}
+            C_i & B_i\\
+            B_i & C_i
+        \end{pmatrix}
+    \end{equation}
+    where $C_i, B_i \in \mathbb{R}^{n_1\times n_1}$, $i = 0, 1, \cdots, n_2-1$. 
+    
+    Now given $\tilde{u}\sim N(0, \tilde{C})$, let $v$ be the first $2n_1n_2$ elements of $\tilde{u}$, 
+    then $v\sim N(0, S)$. Take the first $n_1$ elements of $v$ per $2n_1$ elements to get $\tilde{v}\sim N(0, C)$.
+\end{algorithm}
+
+However, when the even BCCB extension $\tilde{C}\in \mathbb{R}^{4N\times 4N}$ is indefinite, we can avoid this by padding. 
+But sometimes, padding leads to the size of matrix explosion. Approximate circulant embedding may be the only option.
+
+\subsection{KL expansion of R.F.}
+As mentioned before, we have the underlying covariance operator defined by:
+\begin{equation}
+    (\mathscr{C}\phi)(x) = \int_D Cov(u(x), u(y))\phi(y)dy=\int_D c(x-y)\phi(y)dy
+\end{equation}
+Hence, for the covariance operator $\mathscr{C}$, we have the eigenfunctions with corresponding eigenvalues $\{v_j, \phi_j\}_{j=1}^{\infty}, v_j\geq v_{j-1}$.
+\begin{theorem}[$L^2$ convergence of KL expansion]
+    Let $D\subset \mathbb{R}^d$, consider a random field $u(x): x\in D$ and $u\in L^2(\Omega, L^2(D))$, then:
+    \begin{equation}
+        u(x) = \mu(x) + \sum_{j=0}^{\infty} \sqrt{v_j} \phi_j(x) \xi_j
+    \end{equation}
+    where the sum converges in $L^2(\Omega, L^2(D))$, 
+    \begin{equation}
+        \xi_j = \frac{1}{\sqrt{v_j}}\int_D (u(x)-\mu(x))\phi_j(x)dx
+    \end{equation}
+    The random variables $\xi_j$ have mean zero, unit variance and are pairwise uncorrelated.
+    If u is Gaussian, then $\xi_j$ are i.i.d. Gaussian random variables with zero mean and unit variance.
+\end{theorem}

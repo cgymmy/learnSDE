@@ -1,0 +1,45 @@
+\contentsline {section}{\numberline {1}Introduction to SDEs}{3}{section.1}%
+\contentsline {subsection}{\numberline {1.1}SODEs}{3}{subsection.1.1}%
+\contentsline {subsection}{\numberline {1.2}The It'so and Stratonovich Stochastic Integrals}{3}{subsection.1.2}%
+\contentsline {subsection}{\numberline {1.3}Ito's Formula}{3}{subsection.1.3}%
+\contentsline {subsection}{\numberline {1.4}Mean and Covariance}{3}{subsection.1.4}%
+\contentsline {section}{\numberline {2}Fokker-Planck-Kolmogorov Equation}{4}{section.2}%
+\contentsline {subsection}{\numberline {2.1}FPK Equation}{4}{subsection.2.1}%
+\contentsline {subsection}{\numberline {2.2}Forward and backward Komogorov Equation}{6}{subsection.2.2}%
+\contentsline {subsection}{\numberline {2.3}Ornstein-Uhlenbeck Process}{6}{subsection.2.3}%
+\contentsline {subsection}{\numberline {2.4}Langevin SDE}{7}{subsection.2.4}%
+\contentsline {section}{\numberline {3}What is Diffusion After All?}{8}{section.3}%
+\contentsline {subsection}{\numberline {3.1}From SDEs}{8}{subsection.3.1}%
+\contentsline {subsection}{\numberline {3.2}From Flow Map}{8}{subsection.3.2}%
+\contentsline {subsection}{\numberline {3.3}Solution}{9}{subsection.3.3}%
+\contentsline {section}{\numberline {4}Reversible Diffusions}{10}{section.4}%
+\contentsline {subsection}{\numberline {4.1}Definition}{10}{subsection.4.1}%
+\contentsline {subsection}{\numberline {4.2}Schrödinger Operator}{11}{subsection.4.2}%
+\contentsline {section}{\numberline {5}Generative Model}{11}{section.5}%
+\contentsline {subsection}{\numberline {5.1}Variational Auto-Encoder}{11}{subsection.5.1}%
+\contentsline {subsection}{\numberline {5.2}Diffusion Model}{12}{subsection.5.2}%
+\contentsline {paragraph}{DDPM}{12}{section*.3}%
+\contentsline {subsection}{\numberline {5.3}Score Matching}{15}{subsection.5.3}%
+\contentsline {subsection}{\numberline {5.4}Denoising Diffusion}{17}{subsection.5.4}%
+\contentsline {subsubsection}{\numberline {5.4.1}With Classifier Guidance}{17}{subsubsection.5.4.1}%
+\contentsline {subsubsection}{\numberline {5.4.2}Classifier Guidance Free}{17}{subsubsection.5.4.2}%
+\contentsline {subsection}{\numberline {5.5}Flow Matching}{17}{subsection.5.5}%
+\contentsline {section}{\numberline {6}Random Field}{18}{section.6}%
+\contentsline {subsection}{\numberline {6.1}Definitions}{18}{subsection.6.1}%
+\contentsline {subsection}{\numberline {6.2}Algorithms}{19}{subsection.6.2}%
+\contentsline {subsection}{\numberline {6.3}KL expansion of R.F.}{20}{subsection.6.3}%
+\contentsline {section}{\numberline {7}Stationary SPDEs}{20}{section.7}%
+\contentsline {subsection}{\numberline {7.1}Definition}{20}{subsection.7.1}%
+\contentsline {subsection}{\numberline {7.2}Stochastic Galerkin Method}{21}{subsection.7.2}%
+\contentsline {subsection}{\numberline {7.3}Algorithm}{22}{subsection.7.3}%
+\contentsline {section}{\numberline {8}Semilinear Stochastic PDEs}{23}{section.8}%
+\contentsline {subsection}{\numberline {8.1}Definition}{23}{subsection.8.1}%
+\contentsline {subsection}{\numberline {8.2}Ito integral solution}{24}{subsection.8.2}%
+\contentsline {subsection}{\numberline {8.3}Solution}{24}{subsection.8.3}%
+\contentsline {section}{\numberline {A}Probability Theory}{27}{appendix.A}%
+\contentsline {section}{\numberline {B}Conservation Laws}{27}{appendix.B}%
+\contentsline {section}{\numberline {C}Linear Algebra}{28}{appendix.C}%
+\contentsline {section}{\numberline {D}Priori}{29}{appendix.D}%
+\contentsline {subsection}{\numberline {D.1}Hilbert space-valued random variable}{29}{subsection.D.1}%
+\contentsline {subsection}{\numberline {D.2}Hilbert-Schmidt operator}{29}{subsection.D.2}%
+\contentsline {subsection}{\numberline {D.3}Operator theory}{29}{subsection.D.3}%

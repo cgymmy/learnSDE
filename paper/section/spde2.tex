@@ -1,178 +1,5 @@
-% \documentclass{ctexart}
-\documentclass{article}
-\usepackage{listings}                                           %插入代码
-\usepackage{geometry}                                           %设置页面大小边距等
-\usepackage{graphicx}                                           %插入图片
-\usepackage{amssymb}                                            %为了用\mathbb
-\usepackage{amsmath}                                            %数学方程的显示
-\usepackage{listings}                                           %插入代码
-\usepackage{fancyhdr}                                           %设置页眉页脚
-\usepackage{lastpage}                                           %总页数
-\usepackage{hyperref}                                           %引用网页
-\usepackage{xcolor}
-\usepackage{tikz}
-\usepackage{float}
-\usepackage{subcaption} 
-\usepackage{mathrsfs}
-\usepackage{amsthm}
-
-
-
-\geometry{a4paper,left=2cm,right=2cm,top=2cm,bottom=2cm}        %一定要放在前面！
-\pagestyle{fancy}                                               %设置页眉页脚
-\lhead{Guanyu Chen}                                             %页眉左Fir                                        
-
-\rhead{Stochastic Partial Differential Equations} 
-\cfoot{\thepage/\pageref{LastPage}}                             %当前页，记得调用前文提到的宏包
-\lfoot{Zhejiang University}
-\rfoot{College Of Integrated Circuits}
-\renewcommand{\headrulewidth}{0.1mm}                            %页眉线宽，设为0可以去页眉线
-\renewcommand{\footrulewidth}{0.1mm}                            %页脚线宽，设为0可以去页眉线
-\setlength{\headwidth}{\textwidth}
-
-\hypersetup{                                                    %设置网页链接颜色等
-    colorlinks=true,                                            %链接将会有颜色，默认是红色
-    linkcolor=blue,                                             %内部链接，那些由交叉引用生成的链接将会变为蓝色（blue）
-    filecolor=magenta,                                          %链接到本地文件的链接将会变为洋红色（magenta）
-    urlcolor=blue,                                              %链接到网站的链接将会变为蓝绿色（cyan）
-}
-
-\lstset{  
-    basicstyle=\ttfamily,  
-    keywordstyle=\color{blue},  
-    language=Python,  
-    numbers=left,  
-    numberstyle=\tiny\color{gray},  
-    frame=single,  
-    breaklines=true  
-}  
-
-\newtheorem{theorem}{Theorem}
-% \newtheorem{proof}{Proof}
-\newtheorem{solution}{Solution:}
-\newtheorem{remark}{Remark}
-\newtheorem{definition}{Definition}
-\newtheorem{algorithm}{Algorithm}
-\newtheorem{lemma}{Lemma}
-\newtheorem{example}{Example}
-\newtheorem{problem}{Problem}
-
-\title{About Stochastic Partial Differential Equations}
-\author{Guanyu Chen}
-\date{\today}
-\begin{document}
-\maketitle
-\begin{abstract}
-    This report focuses on numerical methods for stochastic partial differential equations (SPDEs), covering various aspects such as the generation of (stationary) stochastic processes and random fields, numerical methods for stochastic ordinary differential equations (SODEs), SPDEs with random data and semilinear SPDEs. 
-    To facilitate solving SPDEs, we also implemented the finite element method (FEM) for standard partial differential equations (PDEs). 
-\end{abstract}
-\tableofcontents
-\newpage
-\section{Priori}
-\subsection{Hilbert space-valued random variable}
-\begin{definition}[$L^p(\Omega, H)$ space]
-    Let $(\Omega, \mathcal{F}, \mathbb{P})$ be a probability space and $H$ is a Hilbert space with norm $\|\cdot\|$. Then $\mathcal{L}^p(\Omega, H)$ with $1\leq p<\infty$ is the space
-    of H-valued $\mathcal{F}$-measurable random vaiables $X:\Omega\rightarrow H$ with $\mathbf{E}[\|X\|^p]<\infty$ and a Banach space with norm:
-    \begin{equation}
-        \|X\|_{\mathcal{L}^p(\Omega, H)}:=\left(\int_\Omega \|X(\omega)\|^pdP(\omega)\right)^{\frac{1}{p}}=\mathbf{E}[\|X\|^p]^{\frac{1}{p}}
-    \end{equation}
-\end{definition}
-Then we can define the inner product: 
-\begin{equation}
-    \langle X, Y\rangle_{\mathcal{L}^2(\Omega, H)}:=\int_\Omega \langle X(\omega), Y(\omega)\rangle dP(\omega)
-\end{equation}
-\begin{definition}[uncorrelated, covariance operator]
-    Let $H$ be a Hilbert space. A linear operator $\mathcal{C}:H\rightarrow H$ is the covariance of $H$-valued random variables $X$ and $Y$ if 
-    \begin{equation}
-        \langle\mathcal{C}\phi, \psi\rangle = \operatorname{Cov}\left(\langle X, \phi\rangle, \langle Y, \psi\rangle\right), \forall \phi, \psi \in H
-    \end{equation}
-    specially, we show that in finite dimensional case, the covariance matrix conincides with the covariance operator. 
-    when $H = \mathbb{R}^d$,
-    \begin{equation}
-        \begin{aligned}
-            &\operatorname{Cov}\left(\langle X, \phi\rangle, \langle Y, \psi\rangle\right) 
-            = \operatorname{Cov}\left(\phi^T X, \psi^T Y\right)\\
-            =&\mathbf{E}\left[\phi^T(X-\mu_X)(Y-\mu)^T\psi\right] 
-            = \phi^T\mathbf{E}\left[(X-\mu_X)(Y-\mu)^T\right]\psi\\
-            =&\langle C\phi, \psi\rangle
-        \end{aligned}
-    \end{equation}
-\end{definition}
-
-\begin{definition}[H-valued Gaussian random variable]
-    Let $H$ be a Hilbert space. An H-valued random variable $X$ is Gaussian if 
-    $\langle X, \phi\rangle$ is a real-valued Gaussian random variable for all $\phi \in H$.
-\end{definition}
-\subsection{Hilbert-Schmidt operator}
-\begin{definition}[Hilbert-Schmidt operator]
-    Let $U, H$ be two separable Hilbert spaces with norms $\|\cdot\|, \|\cdot\|_U$ respectively. 
-    For an orthonormal basis $\{\phi_j\}$ of $U$, define the Hilbert-Schmidt norm:
-    \begin{equation}
-        \|L\|_{\operatorname{HS}(U, H)}:=\left(\sum_{j=1}^\infty \|L\phi_j\|_H^2\right)^{\frac{1}{2}}
-    \end{equation}
-    where $\operatorname{HS}(U, H): = \{L\in \mathcal{L}(U, H): \|L\|_{\operatorname{HS}(U, H)}<\infty\}$ is a Banach space with Hilbert-Schmidt norm.
-    And $L\in \operatorname{HS}(U, H)$ is called Hilbert-Schmidt operator.
-\end{definition}
-\begin{definition}[Integral operator with kernel G]
-    For a domain $D$ and a kernel $G\in L^2(D\times D)$, define the integral operator $L$ by
-    \begin{equation}
-        (Lu)(x) = \int_D G(x, y)u(y)dy, x\in D, u\in L^2(D)
-    \end{equation}
-    Furthermore, $L$ is a Hilbert-Schmidt operator.
-\end{definition}
-
-\subsection{Operator theory}
-\begin{theorem}[Sobolev embedding theorem]
-    1.Let $W^{r, p}\left(\mathbf{R}^{n}\right)$. Here k is a non-negative integer and $1 \leq p<\infty$. 
-    If $k>\ell, p<n$ and $1 \leq p<q<\infty$ are two real numbers such that
-    $\frac{1}{p}-\frac{r}{n}=\frac{1}{q}-\frac{\ell}{n}$, then
-    \begin{equation}
-        W^{r, p}\left(\mathbf{R}^{n}\right) \subseteq W^{\ell, q}\left(\mathbf{R}^{n}\right)
-    \end{equation}
-    Specially, if $\ell = 0$, then $\frac{1}{p}-\frac{r}{n}=\frac{1}{q}$, then $W^{r, p}\left(\mathbf{R}^{n}\right) \subseteq L^q\left(\mathbf{R}^{n}\right)$.
-
-    2.If $n<pr$ and $\frac{1}{p}-\frac{r}{n}=-\frac{s+\alpha}{n}$, then $W^{r, p}\left(\mathbf{R}^{n}\right) \subseteq C^{s,\alpha}\left(\mathbf{R}^{n}\right)$.
-
-\end{theorem}
-
-\begin{definition}[domain of operator]
-    For a linear operator $A:\mathcal{D}(A)\subset H\rightarrow H$, the domain of $A$ is defined as $\mathcal{D}(A)$
-\end{definition}
-\begin{theorem}[Dirichlet Boundary Condition]
-    Consider the Dirichlet problem for Possion equation: for $f\in L^2(0, 1)$, find $u\in H^2(0, 1)$ s.t.
-    \begin{equation}
-        \begin{aligned}
-            &u_{xx} = f, \quad x\in (0, 1)\\
-            &u(0) = u(1) = 0
-        \end{aligned}
-    \end{equation}
-    We also assume $u\in H^1_0(0, 1)$. By Sobolev embedding theorem, $u\in H^1_0(0, 1)\subset C([0, 1])$. 
-    Then, Laplacian with Dirichlet conditions can be defined as:
-    \begin{equation}
-        Au:=-u_{xx}, u\in \mathcal{D}(A)=H^2(0,1)\cap H_0^1(0,1)
-    \end{equation}
-\end{theorem}
-
-
-\begin{definition}[Periodic Boundary Condition]
-    ...
-\end{definition}
-
-\begin{definition}
-    If A is a linear operator from $\mathcal{D}(A) \subset H$ to Hilbert space $H$, with an orthonormal basis of eigenfunctions $\{\phi_j\}$ 
-    and corresponding increasing eigenvalues $\{\lambda_j\}$, 
-    then $A^{\alpha}$ is defined as:
-    \begin{equation}
-        A^{\alpha}u = \sum_{j=1}^\infty \lambda_j^\alpha \langle u, \phi_j\rangle \phi_j
-    \end{equation}
-    and the domain $\mathcal{D}(A^{\alpha})$ is the set of all $u\in H$ such that $A^{\alpha}u\in H$.
-\end{definition}
-
-
-
-
 \section{Semilinear Stochastic PDEs}
-\subsection{Semilinear SPDE}
+\subsection{Definition}
 Then we come to the time-dependent SPDE. We study the stochastic semilinear evolution equation:
 \begin{equation}
     du = [\Delta u + f(u)]dt + G(u)dW(t, x)
@@ -203,7 +30,7 @@ where $-A$ is a linear operator that generates a semigroup $S(t)=e^{-tA}$.
 
 So like we deal with integration of stochastic process like Itos or stratonovich, we need to generalize the Brownian Motion by introducing spatial variable to W(t). 
 Here we define Q-Wiener Process. 
-\subsection{Q wiener process}
+
 First, we assume $U$ is a Hilbert space. And $(\Omega, \mathbf{F}, \mathbf{F}_t, \mathbb{R})$ is a filtered probability space. 
 \begin{definition}[Q]\label{Q}
     $Q \in \mathcal{L}(U)$ is non-negative definite and symmetric. 
@@ -238,8 +65,6 @@ First, we assume $U$ is a Hilbert space. And $(\Omega, \mathbf{F}, \mathbf{F}_t,
 \end{theorem}
 
 So, in place of $L^2(D)$, we develop the theory on a separable Hilbert space U with norm $\|\cdot\|_U$ and inner product $\langle \cdot, \cdot\rangle _U$ and define the Q-Wiener process ${W (t) : t \geq 0}$ as a U-valued process. 
-
-\subsection{Cylindrical Wiener Process}
 
 We mention the important case of Q = I, which is not trace class on an infinite-dimensional space U (as $q_j = 1$ for all j) so that the series does not converge in $L^2(\Omega,U)$ . To extend the definition of a Q-Wiener process, we introduce the cylindrical Wiener process.
 
@@ -285,7 +110,7 @@ So, we can have the truncated form:
 \end{definition}
 
 
-\subsection{Semilinear SPDE}
+\subsection{Solution}
 Consider the semilinear SPDE:
 \begin{equation}
     du = [-Au+f(u)]dt + G(u)dW(t)
@@ -357,5 +182,3 @@ For initial data  $u_{0}=0$ , we obtain, by the Parseval identity (1.43),
 \|u(t)\|_{L^{2}\left(\Omega, L^{2}(0, \pi)\right)}^{2}=\mathbb{E}\left[\sum_{j=1}^{\infty}\left|\hat{u}_{j}(t)\right|^{2}\right]=\sum_{j=1}^{\infty} \frac{\sigma^{2} q_{j}}{2 \lambda_{j}}\left(1-\mathrm{e}^{-2 \lambda_{j} t}\right) .
 \end{equation}
 \end{example}
-
-\end{document} 
