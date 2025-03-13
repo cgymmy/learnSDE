@@ -1,14 +1,14 @@
 # Fdb version 4
-["bibtex paper"] 1739609566.34651 "paper.aux" "paper.bbl" "paper" 1739609569.99991 0
-  "./reference.bib" 1739608696 7167 0932630f363eed7df420a6e5998abe1c ""
+["bibtex paper"] 1740308653.52984 "paper.aux" "paper.bbl" "paper" 1740308657.6818 0
+  "./reference.bib" 1740302033 7617 3d82e6692321fd40cac059c36ee4dee7 ""
   "d:/texlive/2024/texmf-dist/bibtex/bst/base/unsrt.bst" 1733058262 18030 1376b4b231b50c66211e47e42eda2875 ""
-  "paper.aux" 1739609568 7981 2120548b8ebef2380a2bda10e4c223a0 "pdflatex"
+  "paper.aux" 1740308656 8140 c805a7cc7c454ee7574de94c1c8bf2ac "pdflatex"
   (generated)
   "paper.bbl"
   "paper.blg"
   (rewritten before read)
-["pdflatex"] 1739609566.91317 "d:/Research/github/LearnDiffusion/paper/paper.tex" "paper.pdf" "paper" 1739609570.00069 0
-  "d:/Research/github/LearnDiffusion/paper/paper.tex" 1739609350 3579 c212b79405772d46841cb01e5f6f35f1 ""
+["pdflatex"] 1740308654.21081 "d:/Research/github/learnSDE/paper/paper.tex" "paper.pdf" "paper" 1740308657.68265 0
+  "d:/Research/github/learnSDE/paper/paper.tex" 1740302063 3628 3735b2c292e62c4c27005bf3d3febf90 ""
   "d:/texlive/2024/texmf-dist/fonts/enc/dvips/cm-super/cm-super-ts1.enc" 1733058349 2900 1537cc8184ad1792082cd229ecc269f4 ""
   "d:/texlive/2024/texmf-dist/fonts/map/fontname/texfonts.map" 1733058606 3524 cb3e574dea2d1052e39280babc910dc8 ""
   "d:/texlive/2024/texmf-dist/fonts/tfm/jknappen/ec/tcrm1000.tfm" 1733058493 1536 e07581a4bb3136ece9eeb4c3ffab8233 ""
@@ -210,17 +210,17 @@
   "d:/texlive/2024/texmf-var/fonts/map/pdftex/updmap/pdftex.map" 1733059852 5421091 287ecf793ecd0deda92deb72de2a5ec0 ""
   "d:/texlive/2024/texmf-var/web2c/pdftex/pdflatex.fmt" 1733060056 6862173 0da567ec12f498cd2af12c8ed049759d ""
   "d:/texlive/2024/texmf.cnf" 1733059827 713 e69b156964470283e0530f5060668171 ""
-  "paper.aux" 1739609568 7981 2120548b8ebef2380a2bda10e4c223a0 "pdflatex"
-  "paper.bbl" 1739609566 1715 37a037903035a20929ec3bac1b6d9196 "bibtex paper"
-  "paper.out" 1739609568 6538 7f294d134ecaaadf1d8bf70d765b5cdd "pdflatex"
-  "paper.tex" 1739609350 3579 c212b79405772d46841cb01e5f6f35f1 ""
-  "paper.toc" 1739609568 3681 c501da6657878d3c036f7d5a7cc98759 "pdflatex"
+  "paper.aux" 1740308656 8140 c805a7cc7c454ee7574de94c1c8bf2ac "pdflatex"
+  "paper.bbl" 1740308654 1972 9183b5997a79fae32f1f3d74ca0a000f "bibtex paper"
+  "paper.out" 1740308656 6102 02c36d21078318df9b5351dc1ce187dc "pdflatex"
+  "paper.tex" 1740302063 3628 3735b2c292e62c4c27005bf3d3febf90 ""
+  "paper.toc" 1740308656 3679 6cc62f0deaaf3108ef87545045c11952 "pdflatex"
   "pics/VAE.png" 1735902354 9193 1ea784e8d7b7f795730addb4b39320e9 ""
   "pics/score_based.png" 1735904185 165277 56d96acbe25b6b22b6b48faeab99f0d7 ""
   "section/appendix.tex" 1739600187 13138 51efac19ca30a504b1f9b602671d8d32 ""
   "section/diffusion.tex" 1737357296 7671 fb148c6a94c61cdf035410d49c127bb8 ""
   "section/fpk.tex" 1739603755 13978 ba6027352a617d9f82427ef32e6d79ec ""
-  "section/generative.tex" 1739609562 26503 5f5d0e158f11de5593b00b3d772addc6 ""
+  "section/generative.tex" 1740308647 28612 11305ef0a2b4c8042c92e12a240a08eb ""
   "section/intro.tex" 1737698443 5903 24190c6e14a6d271b7770a571ccc5ecd ""
   "section/randomfield.tex" 1739201987 7313 5f213406d43879d5ef095961c1a6ac24 ""
   "section/reversible.tex" 1739608496 3057 c026bf434d587017cdfc46481c5ee1e9 ""

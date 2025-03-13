@@ -1,10 +1,10 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.26 (TeX Live 2024) (preloaded format=pdflatex 2024.12.1)  15 FEB 2025 16:52
+This is pdfTeX, Version 3.141592653-2.6-1.40.26 (TeX Live 2024) (preloaded format=pdflatex 2024.12.1)  23 FEB 2025 19:04
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
  %&-line parsing enabled.
-**d:/Research/github/LearnDiffusion/paper/paper.tex
-(d:/Research/github/LearnDiffusion/paper/paper.tex
+**d:/Research/github/learnSDE/paper/paper.tex
+(d:/Research/github/learnSDE/paper/paper.tex
 LaTeX2e <2023-11-01> patch level 1
 L3 programming layer <2024-02-20>
 (d:/texlive/2024/texmf-dist/tex/latex/base/article.cls
@@ -636,28 +636,33 @@ Overfull \hbox (11.01112pt too wide) in paragraph at lines 139--141
  []
 
 [6] [7]) (./section/diffusion.tex [8] [9]) (./section/reversible.tex [10]) (./section/generative.tex
-<./pics/VAE.png, id=442, 228.855pt x 88.07906pt>
-File: ./pics/VAE.png Graphic file (type png)
-<use ./pics/VAE.png>
-Package pdftex.def Info: ./pics/VAE.png  used on input line 5.
-(pdftex.def)             Requested size: 241.84843pt x 93.08379pt.
- [11 <./pics/VAE.png>] [12] [13] [14]
-<./pics/score_based.png, id=516, 486.31688pt x 228.10219pt>
+Overfull \hbox (22.10788pt too wide) in paragraph at lines 19--23
+\OT1/cmr/m/n/10 chain to match the ac-tual time re-ver-sal of the for-ward Markov chain. That is, $\OML/cmm/m/it/10 p[]\OT1/cmr/m/n/10 (\OML/cmm/m/it/10 x[]; x[]; []  ; x[]\OT1/cmr/m/n/10 )\OML/cmm/m/it/10 p\OT1/cmr/m/n/10 (\OML/cmm/m/it/10 x[]\OT1/cmr/m/n/10 )^^E[]\OML/cmm/m/it/10 p[]\OT1/cmr/m/n/10 (\OML/cmm/m/it/10 x[]\OMS/cmsy/m/n/10 j\OML/cmm/m/it/10 x[]\OT1/cmr/m/n/10 )$
+ []
+
+[11] [12] [13]
+<./pics/score_based.png, id=485, 486.31688pt x 228.10219pt>
 File: ./pics/score_based.png Graphic file (type png)
 <use ./pics/score_based.png>
-Package pdftex.def Info: ./pics/score_based.png  used on input line 291.
+Package pdftex.def Info: ./pics/score_based.png  used on input line 243.
 (pdftex.def)             Requested size: 386.95897pt x 181.50046pt.
- [15 <./pics/score_based.png>] [16] [17]) (./section/randomfield.tex [18]
+ [14 <./pics/score_based.png>] [15] [16]
+<./pics/VAE.png, id=534, 228.855pt x 88.07906pt>
+File: ./pics/VAE.png Graphic file (type png)
+<use ./pics/VAE.png>
+Package pdftex.def Info: ./pics/VAE.png  used on input line 439.
+(pdftex.def)             Requested size: 241.84843pt x 93.08379pt.
+ [17 <./pics/VAE.png>]) (./section/randomfield.tex [18] [19]
 Overfull \hbox (1.67561pt too wide) in paragraph at lines 121--123
 \OT1/cmr/m/n/10 Hence, for the co-vari-ance op-er-a-tor $\U/rsfs/m/n/10 C$\OT1/cmr/m/n/10 , we have the eigen-func-tions with cor-re-spond-ing eigen-val-ues $\OMS/cmsy/m/n/10 f\OML/cmm/m/it/10 v[]; ^^^[]\OMS/cmsy/m/n/10 g[]\OML/cmm/m/it/10 ; v[] \OMS/cmsy/m/n/10 ^^U
  []
 
-[19]) (./section/spde1.tex [20] [21]
+) (./section/spde1.tex [20] [21]
 Overfull \hbox (2.51994pt too wide) in paragraph at lines 133--135
 [][]\OT1/cmr/m/it/10 If $\OMS/cmsy/m/n/10 f\OML/cmm/m/it/10 ^^X[]\OMS/cmsy/m/n/10 g$ \OT1/cmr/m/it/10 are in-de-pen-dent, sup-pose that $\OMS/cmsy/m/n/10 f\OML/cmm/m/it/10 P[]\OT1/cmr/m/n/10 (\OML/cmm/m/it/10 ^^X[]\OT1/cmr/m/n/10 )\OMS/cmsy/m/n/10 g[]$ \OT1/cmr/m/it/10 are or-thonor-
  []
 
-[22]) (./section/spde2.tex [23{d:/texlive/2024/texmf-dist/fonts/enc/dvips/cm-super/cm-super-ts1.enc}] [24]) [25] (./paper.bbl
+[22]) (./section/spde2.tex [23] [24{d:/texlive/2024/texmf-dist/fonts/enc/dvips/cm-super/cm-super-ts1.enc}]) [25] (./paper.bbl
 Underfull \hbox (badness 10000) in paragraph at lines 31--34
 []\OT1/cmr/m/n/10 Peter Hold-er-ri-eth.  The fokker-planck equa-tion and dif-fu-sion mod-els,, 2023.
  []
@@ -670,21 +675,21 @@ LaTeX2e <2023-11-01> patch level 1
 L3 programming layer <2024-02-20>
  ***********
 Package rerunfilecheck Info: File `paper.out' has not changed.
-(rerunfilecheck)             Checksum: 7F294D134ECAAADF1D8BF70D765B5CDD;6538.
+(rerunfilecheck)             Checksum: 02C36D21078318DF9B5351DC1CE187DC;6102.
  ) 
 Here is how much of TeX's memory you used:
- 24330 strings out of 476023
- 439797 string characters out of 5791734
+ 24332 strings out of 476023
+ 439854 string characters out of 5791734
  1956190 words of memory out of 5000000
- 45604 multiletter control sequences out of 15000+600000
+ 45603 multiletter control sequences out of 15000+600000
  571715 words of font info for 88 fonts, out of 8000000 for 9000
  36 hyphenation exceptions out of 8191
- 84i,13n,87p,444b,654s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 84i,13n,87p,438b,654s stack positions out of 10000i,1000n,20000p,200000b,200000s
 <d:/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb><d:/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb><d:/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx9.pfb><d:/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmbxti10.pfb><d:/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb><d:/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cmextra/cmex7.pfb><d:/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb><d:/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi5.pfb><d:/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi7.pfb><d:/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cmextra/cmmib7.pfb><d:/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb><d:/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb><d:/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmr17.pfb><d:/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmr5.pfb><d:/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmr7.pfb><d:/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmr9.pfb><d:/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb><d:/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy5.pfb><d:/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy7.pfb><d:/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmti10.pfb><d:/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/symbols/msam10.pfb><d:/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm10.pfb><d:/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm7.pfb><d:/texlive/2024/texmf-dist/fonts/type1/public/rsfs/rsfs10.pfb><d:/texlive/2024/texmf-dist/fonts/type1/public/cm-super/sfrm1000.pfb>
-Output written on paper.pdf (30 pages, 614462 bytes).
+Output written on paper.pdf (30 pages, 615713 bytes).
 PDF statistics:
- 987 PDF objects out of 1000 (max. 8388607)
- 892 compressed objects within 9 object streams
- 419 named destinations out of 1000 (max. 500000)
- 375 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 984 PDF objects out of 1000 (max. 8388607)
+ 889 compressed objects within 9 object streams
+ 422 named destinations out of 1000 (max. 500000)
+ 359 words of extra memory for PDF output out of 10000 (max. 10000000)
 

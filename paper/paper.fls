@@ -1,8 +1,8 @@
-PWD d:/Research/github/LearnDiffusion/paper
+PWD d:/Research/github/learnSDE/paper
 INPUT d:/texlive/2024/texmf.cnf
 INPUT d:/texlive/2024/texmf-dist/web2c/texmf.cnf
 INPUT d:/texlive/2024/texmf-var/web2c/pdftex/pdflatex.fmt
-INPUT d:/Research/github/LearnDiffusion/paper/paper.tex
+INPUT d:/Research/github/learnSDE/paper/paper.tex
 OUTPUT paper.log
 INPUT d:/texlive/2024/texmf-dist/tex/latex/base/article.cls
 INPUT d:/texlive/2024/texmf-dist/tex/latex/base/article.cls
@@ -342,6 +342,11 @@ INPUT ./section/generative.tex
 INPUT ./section/generative.tex
 INPUT ./section/generative.tex
 INPUT section/generative.tex
+INPUT ./pics/score_based.png
+INPUT ./pics/score_based.png
+INPUT ./pics/score_based.png
+INPUT ./pics/score_based.png
+INPUT ./pics/score_based.png
 INPUT ./pics/VAE.png
 INPUT ./pics/VAE.png
 INPUT ./pics/VAE.png
@@ -353,11 +358,6 @@ INPUT d:/texlive/2024/texmf-dist/fonts/tfm/public/amsfonts/cmextra/cmmib5.tfm
 INPUT d:/texlive/2024/texmf-dist/fonts/tfm/public/cm/cmbsy10.tfm
 INPUT d:/texlive/2024/texmf-dist/fonts/tfm/public/amsfonts/cmextra/cmbsy7.tfm
 INPUT d:/texlive/2024/texmf-dist/fonts/tfm/public/amsfonts/cmextra/cmbsy5.tfm
-INPUT ./pics/score_based.png
-INPUT ./pics/score_based.png
-INPUT ./pics/score_based.png
-INPUT ./pics/score_based.png
-INPUT ./pics/score_based.png
 INPUT ./section/randomfield.tex
 INPUT ./section/randomfield.tex
 INPUT ./section/randomfield.tex

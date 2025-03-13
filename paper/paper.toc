@@ -16,26 +16,27 @@
 \contentsline {subsection}{\numberline {4.1}Definition}{10}{subsection.4.1}%
 \contentsline {subsection}{\numberline {4.2}Schrödinger Operator}{11}{subsection.4.2}%
 \contentsline {section}{\numberline {5}Generative Model}{11}{section.5}%
-\contentsline {subsection}{\numberline {5.1}Variational Auto-Encoder}{11}{subsection.5.1}%
-\contentsline {subsection}{\numberline {5.2}Diffusion Model}{12}{subsection.5.2}%
-\contentsline {paragraph}{DDPM}{12}{section*.3}%
-\contentsline {subsection}{\numberline {5.3}Score Matching}{15}{subsection.5.3}%
-\contentsline {subsection}{\numberline {5.4}Denoising Diffusion}{17}{subsection.5.4}%
-\contentsline {subsubsection}{\numberline {5.4.1}With Classifier Guidance}{17}{subsubsection.5.4.1}%
-\contentsline {subsubsection}{\numberline {5.4.2}Classifier Guidance Free}{17}{subsubsection.5.4.2}%
-\contentsline {subsection}{\numberline {5.5}Flow Matching}{17}{subsection.5.5}%
+\contentsline {subsection}{\numberline {5.1}Diffusion Model}{11}{subsection.5.1}%
+\contentsline {subsubsection}{\numberline {5.1.1}Diffusion}{11}{subsubsection.5.1.1}%
+\contentsline {paragraph}{DDPM}{11}{section*.2}%
+\contentsline {paragraph}{Score SDEs}{12}{section*.3}%
+\contentsline {subsubsection}{\numberline {5.1.2}With labels}{16}{subsubsection.5.1.2}%
+\contentsline {paragraph}{With Classifier Guidance}{16}{section*.5}%
+\contentsline {paragraph}{Classifier Guidance Free}{16}{section*.6}%
+\contentsline {subsection}{\numberline {5.2}Flow Matching}{16}{subsection.5.2}%
+\contentsline {subsection}{\numberline {5.3}Variational Auto-Encoder}{17}{subsection.5.3}%
 \contentsline {section}{\numberline {6}Random Field}{18}{section.6}%
 \contentsline {subsection}{\numberline {6.1}Definitions}{18}{subsection.6.1}%
 \contentsline {subsection}{\numberline {6.2}Algorithms}{19}{subsection.6.2}%
 \contentsline {subsection}{\numberline {6.3}KL expansion of R.F.}{20}{subsection.6.3}%
 \contentsline {section}{\numberline {7}Stationary SPDEs}{20}{section.7}%
 \contentsline {subsection}{\numberline {7.1}Definition}{20}{subsection.7.1}%
-\contentsline {subsection}{\numberline {7.2}Stochastic Galerkin Method}{21}{subsection.7.2}%
-\contentsline {subsection}{\numberline {7.3}Algorithm}{22}{subsection.7.3}%
+\contentsline {subsection}{\numberline {7.2}Stochastic Galerkin Method}{22}{subsection.7.2}%
+\contentsline {subsection}{\numberline {7.3}Algorithm}{23}{subsection.7.3}%
 \contentsline {section}{\numberline {8}Semilinear Stochastic PDEs}{23}{section.8}%
 \contentsline {subsection}{\numberline {8.1}Definition}{23}{subsection.8.1}%
 \contentsline {subsection}{\numberline {8.2}Ito integral solution}{24}{subsection.8.2}%
-\contentsline {subsection}{\numberline {8.3}Solution}{24}{subsection.8.3}%
+\contentsline {subsection}{\numberline {8.3}Solution}{25}{subsection.8.3}%
 \contentsline {section}{\numberline {A}Probability Theory}{27}{appendix.A}%
 \contentsline {section}{\numberline {B}Conservation Laws}{27}{appendix.B}%
 \contentsline {section}{\numberline {C}Linear Algebra}{28}{appendix.C}%

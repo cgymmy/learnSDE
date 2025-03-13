@@ -1,72 +1,7 @@
 \section{Generative Model}
-\subsection{Variational Auto-Encoder}
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=0.5\textwidth]{./pics/VAE.png} % 图片路径和大小
-    \caption{VAE block}
-\end{figure}
-where $q_{\phi}(\mathbf{z} \mid \mathbf{x})$ is the proxy for  $p(\mathbf{z} \mid \mathbf{x})$, which is also the distribution associated with the encoder.  
-And $p_{\boldsymbol{\theta}}(\mathbf{x} \mid \mathbf{z})$ is the proxy for  $p(\mathbf{x} \mid \mathbf{z})$ , which is also the distribution associated with the decoder. 
-Like the encoder, the decoder can be parameterized by a deep neural network. 
 
-If we treat $\phi$ and $\theta$ as optimization variables, then we need an objective function (or the loss function) so that we can optimize $\phi$ and $\theta$ through training samples.
-\begin{definition}[Evidence Lower Bound]
-    The Evidence Lower Bound (ELBO) is defined as:
-    \begin{equation}
-        \operatorname{ELBO}(x) = \mathbf{E}_{q_\phi(z|x)}\left[\log \frac{p(x, z)}{q_\phi(z|x)}\right]
-    \end{equation}
-\end{definition}
-\begin{remark}
-    The ELBO is a lower bound of the log-likelihood of the data. It is used to estimate $\log p(x)$.
-    \begin{equation}
-        \begin{aligned}
-            \log p(x) &= \log \int p(x, z) dz\\
-            & = \log \int \frac{p(x, z)}{q_\phi(z|x)} \cdot q_\phi(z|x) dz\\
-            & \geq \mathbf{E}_{q_\phi(z|x)}\left[\log \frac{p(x, z)}{q_\phi(z|x)}\right] = \operatorname{ELBO}(x)
-        \end{aligned}
-    \end{equation}
-\end{remark}
-\begin{theorem}[Decomposition of Log-likelihood]
-    We have 
-    \begin{equation}
-        \log p(x) =\operatorname{ELBO}(x) + \operatorname{KL}(q_\phi(z|x)||p(z|x))
-    \end{equation}
-    then we can minimize the gap between $\log p(x)$ and ELBO, and the equality hold if and only if $q_\phi(z|x)=p(z|x)$.
-
-    Since $p(z|x)$ is a delta function, 
-\end{theorem}
-\begin{proof}
-    \begin{equation}
-        \begin{aligned}
-            \log p(x) & = \log p(x)\int q_\phi(z|x)dz\\
-            &=\mathbf{E}_{q_\phi(z|x)}\left[\log p(x)\right]\\
-            & = \mathbf{E}_{q_\phi(z|x)}\left[\log \left(\frac{p(x, z)}{p(z|x)}\frac{q_\phi(z|x)}{q_\phi(z|x)}\right)\right]\\
-            & =\operatorname{ELBO}(x) + \operatorname{KL}(q_\phi(z|x)||p(z|x))
-        \end{aligned}
-    \end{equation}
-\end{proof}
-
-\begin{theorem}
-    Also, we can rewrite the ELBO as:
-    \begin{equation}
-        \begin{aligned}
-            \operatorname{ELBO}(x) &= \mathbf{E}_{q_\phi(z|x)}\left[\log p(x|z)+\log p(z)-\log q_\phi(z|x)\right]\\
-            &= \mathbf{E}_{q_\phi(z|x)}\left[\log p(x|z)\right] - \operatorname{KL}(q_\phi(z|x)||p(z))\\
-            &= \mathbf{E}_{q_\phi(z|x)}\left[\log p_\theta(x|z)\right] - \operatorname{KL}(q_\phi(z|x)||p(z))
-        \end{aligned}
-    \end{equation}
-    where the first term determines how good the decoder is, maxmizing the likelihood of observing the image, 
-    and the letter describes how good the encoder is, minimizing the distance between two distributions.
-\end{theorem}
-
-\begin{definition}[The objective of VAE]
-    The optimiztion objective of VAE is to maxmize the ELBO:
-    \begin{equation}
-        (\phi, \theta) = \operatorname{argmax}_{\phi, \theta} \sum_{x\in X} \operatorname{ELBO(x)}
-    \end{equation}
-    where $X$ is the training set.
-\end{definition}
 \subsection{Diffusion Model}
+\subsubsection{Diffusion}
 \paragraph{DDPM}
 DDPM is like splitting the encoder and decoder of VAE into controllable parts. 
 For each training data point $x_0\sim p_{data}$, then a discrete Markov chain $\{x_1, \cdots, x_N\}$ is constructed by transition function:
@@ -77,13 +12,30 @@ Then we can get
 \begin{equation}
     p_{\alpha_i}(x_i|x_0) = \mathcal{N}(x_i|\sqrt{\alpha_i}x_0, (1-\alpha_i)I), \alpha_i = \Pi_{j=1}^i(1-\beta_j)
 \end{equation}
-Hence we need to train the ELBO:
+So, when $\alpha_i\to 0$, $p_{\alpha_i}(x_i|x_0)$ is close to $N(0, I)$. For generating  new data samples, DDPMs start by first generating an unstructured noise vector from the prior distribution (which is  typically trivial to obtain), then gradually remove noise therein by running a learnable Markov chain in the reverse  time direction.
+The reverse is to learn transition kernel $p_\theta(x_{i-1}|x_i)$ having form:
 \begin{equation}
-    \operatorname{ELBO}(x) = \sum_{i=1}^N(1-\alpha_i)\mathbf{E}_{p_{data}(x)}\left[\mathbf{E}_{p_{\alpha_i}(\hat{x}|x)}\left[\|s_\theta(\hat{x}, i) - \nabla_{\hat{x}}\log p_{\alpha_i}(\hat{x}|x)\|\right]\right]
+    p_\theta(x_{i-1}|x_i) = \mathcal{N}(x_{i-1}|\mu_\theta(x_i, i), \Sigma_\theta(x_i, i))
 \end{equation}
-Then do the reverse Markov chain.
+where $\theta$ denotes model parameters. Key to the success of this sampling process is training the reverse Markov chain to match the actual time reversal  of the forward Markov chain.
+That is, $p_\theta(x_0, x_1, \cdots, x_N)p(x_N)\Pi_{i=1}^Np_\theta(x_{i-1}|x_i)$ should be close to $q(x_0, x_1, \cdots, x_N)=p(x_0)\Pi_{i=1}^Np_{\alpha_i}(x_i|x_{i-1})$.
+This is achieved by minimizing the KL divergence between these two:
+\begin{equation}
+    \begin{aligned}
+        &KL(q(x_0, x_1, \cdots, x_N)||p_\theta(x_0, x_1, \cdots, x_N))\\
+        =&-\mathbf{E}_{q}\left[\log p_\theta(x_0, x_1, \cdots, x_N)\right] + const\\
+        =&-\mathbf{E}_{q}\left[\log p(x_N) + \sum_{i=1}^N \log \frac{p_\theta(x_{i-1}|x_i)}{q(x_i|x_{i-1})}\right]
+    \end{aligned}
+\end{equation}
+
+% Hence we need to train the ELBO:
+% \begin{equation}
+%     \operatorname{ELBO}(x) = \sum_{i=1}^N(1-\alpha_i)\mathbf{E}_{p_{data}(x)}\left[\mathbf{E}_{p_{\alpha_i}(\hat{x}|x)}\left[\|s_\theta(\hat{x}, i) - \nabla_{\hat{x}}\log p_{\alpha_i}(\hat{x}|x)\|\right]\right]
+% \end{equation}
+% Then do the reverse Markov chain.
 
 This is clearly a discrete version. Then we consider the continuous version.
+\paragraph{Score SDEs}
 We consider linear SDE having the form:
 \begin{equation}
     dX_t = (a(t)X_t + b(t))dt + g(t)dW_t
@@ -293,10 +245,9 @@ Step3. Sample $X_T$ from $N(0, 1)$, then run reverse SDE from T to 0:
 \end{figure}
 
 
-\subsection{Score Matching}
 The most difficult question on how to obtian $\nabla_x \log p(x)$ because it solves FPK equation.
 
-\textbf{subsubsection}{Explicit Score Matching}
+\textbf{Explicit Score Matching}
 Suppose we have a set of samples $x_1, x_2, \cdots, x_n$ from the data distribution $p_{data}(x)$. 
 A classical way is to consider the kernel density estimation $q(x)$ of $p(x)$:
 \begin{equation}
@@ -374,9 +325,9 @@ So
 \end{equation}
 where $\xi_\theta = -\sqrt{V(t)}s_\theta$ is called denoising network.
 
-\subsection{Denoising Diffusion}
+\subsubsection{With labels}
 
-\subsubsection{With Classifier Guidance}
+\paragraph{With Classifier Guidance}
 Though we can produce pictures by sampling from normal distribution, we still cannot control what we will generate. What we want to do is something like:
 "Give me the pictures of number 6", then the model can sample from the normal distribution and do the denoising to generate pics of 6. 
 
@@ -402,7 +353,7 @@ We have finished training  $\nabla_{x} \log \left(p\left(X_{t}=x\right)\right)$ 
 \end{equation}
 Note  $\omega_{\theta}(y \mid x, t)$  to learn  $s \nabla_{x} \log \left(p\left(y \mid X_{t}=x\right)\right)$ 
 
-\subsubsection{Classifier Guidance Free}
+\paragraph{Classifier Guidance Free}
 \begin{equation}
     \begin{aligned}
         &\gamma \nabla_{x} \log \left(p\left(y \mid X_{t}=x\right)\right)\\
@@ -478,3 +429,76 @@ which is a special case of FPK equation, called \textbf{Continuity Equation}. So
 
 So the objective of Flow Matching Model can be described as: Let $p_t(x)$ be the density with initial $p_0(x)$, which is designed to be a simple distribution, like normal distribution. 
 So let $p_1(x)$ be the approximation equal in distribution to$ p_{data}$. Then we need to design a flow to match the flow s.t. $p_1$ can properly approximate $p_{data}$.
+
+\subsection{Variational Auto-Encoder}
+Variational Autoencoders aim to learn both an encoder and a decoder to map input data to values in  a continuous latent space.
+In these models, the embedding can be interpreted as a latent variable in a probabilistic  generative model, and a probabilistic decoder can be formulated by a parameterized likelihood function. In addition,  the data x is assumed to be generated by some unobserved latent variable z.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{./pics/VAE.png} % 图片路径和大小
+    \caption{VAE block}
+\end{figure}
+where $q_{\phi}(\mathbf{z} \mid \mathbf{x})$ is the proxy for  $p(\mathbf{z} \mid \mathbf{x})$, which is also the distribution associated with the encoder.  
+And $p_{\boldsymbol{\theta}}(\mathbf{x} \mid \mathbf{z})$ is the proxy for  $p(\mathbf{x} \mid \mathbf{z})$ , which is also the distribution associated with the decoder. 
+Like the encoder, the decoder can be parameterized by a deep neural network. 
+
+If we treat $\phi$ and $\theta$ as optimization variables, then we need an objective function (or the loss function) so that we can optimize $\phi$ and $\theta$ through training samples.
+\begin{definition}[Evidence Lower Bound]
+    The Evidence Lower Bound (ELBO) is defined as:
+    \begin{equation}
+        \operatorname{ELBO}(x) = \mathbf{E}_{q_\phi(z|x)}\left[\log \frac{p(x, z)}{q_\phi(z|x)}\right]
+    \end{equation}
+\end{definition}
+\begin{remark}
+    The ELBO is a lower bound of the log-likelihood of the data. It is used to estimate $\log p(x)$.
+    \begin{equation}
+        \begin{aligned}
+            \log p(x) &= \log \int p(x, z) dz\\
+            & = \log \int \frac{p(x, z)}{q_\phi(z|x)} \cdot q_\phi(z|x) dz\\
+            & \geq \mathbf{E}_{q_\phi(z|x)}\left[\log \frac{p(x, z)}{q_\phi(z|x)}\right] = \operatorname{ELBO}(x)
+        \end{aligned}
+    \end{equation}
+\end{remark}
+\begin{theorem}[Decomposition of Log-likelihood]
+    We have 
+    \begin{equation}
+        \log p(x) =\operatorname{ELBO}(x) + \operatorname{KL}(q_\phi(z|x)||p(z|x))
+    \end{equation}
+    then we can minimize the gap between $\log p(x)$ and ELBO, and the equality hold if and only if $q_\phi(z|x)=p(z|x)$.
+
+    Since $p(z|x)$ is a delta function, 
+\end{theorem}
+\begin{proof}
+    \begin{equation}
+        \begin{aligned}
+            \log p(x) & = \log p(x)\int q_\phi(z|x)dz\\
+            &=\mathbf{E}_{q_\phi(z|x)}\left[\log p(x)\right]\\
+            & = \mathbf{E}_{q_\phi(z|x)}\left[\log \left(\frac{p(x, z)}{p(z|x)}\frac{q_\phi(z|x)}{q_\phi(z|x)}\right)\right]\\
+            & =\operatorname{ELBO}(x) + \operatorname{KL}(q_\phi(z|x)||p(z|x))
+        \end{aligned}
+    \end{equation}
+\end{proof}
+
+\begin{theorem}
+    Also, we can rewrite the ELBO as:
+    \begin{equation}
+        \begin{aligned}
+            \operatorname{ELBO}(x) &= \mathbf{E}_{q_\phi(z|x)}\left[\log p(x|z)+\log p(z)-\log q_\phi(z|x)\right]\\
+            &= \mathbf{E}_{q_\phi(z|x)}\left[\log p(x|z)\right] - \operatorname{KL}(q_\phi(z|x)||p(z))\\
+            &= \mathbf{E}_{q_\phi(z|x)}\left[\log p_\theta(x|z)\right] - \operatorname{KL}(q_\phi(z|x)||p(z))
+        \end{aligned}
+    \end{equation}
+    where the first term determines how good the decoder is, maxmizing the likelihood of observing the image, 
+    and the letter describes how good the encoder is, minimizing the distance between two distributions.
+\end{theorem}
+
+\begin{definition}[The objective of VAE]
+    The optimiztion objective of VAE is to maxmize the ELBO:
+    \begin{equation}
+        (\phi, \theta) = \operatorname{argmax}_{\phi, \theta} \sum_{x\in X} \operatorname{ELBO(x)}
+    \end{equation}
+    where $X$ is the training set.
+\end{definition}
+The DDPM can be conceptualized as a hierarchical Markovian VAE with a fixed encoder. Specifically, DDPM's  forward process functions as the encoder.
+The DDPM’s reverse process, on the other hand, corresponds to the decoder, which is shared across multiple  decoding steps. The latent variables within the decoder are all the same size as the sample data.
