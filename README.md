@@ -27,8 +27,8 @@ See [Theory](./paper/paper.pdf)
 |Deep learning based numerical approximation algorithms for stochastic partial differential equations and high-dimensional nonlinear filtering problems|[[paper]](https://arxiv.org/abs/2012.01194)|
 |A predictor-corrector deep learning algorithm for high dimensional stochastic partial differential equations|[[paper]](https://arxiv.org/abs/2208.09883)|
 |Deep learning-based numerical methods for high-dimensional parabolic partial differential equations and backward stochastic differential equations|[[paper]](https://arxiv.org/abs/1706.04702)|
-|Neural variational Data Assimilation with Uncertainty Quantification using SPDE priors|[paper](https://arxiv.org/abs/2402.01855v3)|
-|Neural SPDE solver for uncertainty quantification in high-dimensional space-time dynamics|[paper](https://arxiv.org/pdf/2311.01783)|
+|Neural variational Data Assimilation with Uncertainty Quantification using SPDE priors|[[paper]](https://arxiv.org/abs/2402.01855v3)|
+|Neural SPDE solver for uncertainty quantification in high-dimensional space-time dynamics|[[paper]](https://arxiv.org/pdf/2311.01783)|
 
 
 |Model|Paper Link|Problem|Model|Loss Function|Details|Baseline|Dataset|
