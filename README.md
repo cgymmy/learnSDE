@@ -24,7 +24,9 @@ See [Theory](./paper/paper.pdf)
 |Deep Latent Regularity Network for Modeling Stochastic Partial Differential Equations|[[paper]](https://ojs.aaai.org/index.php/AAAI/article/view/25938)
 |Deep learning methods for stochastic Galerkin approximations of elliptic random PDEs.|[[paper]](https://arxiv.org/pdf/2409.08063)
 |SOLVING STOCHASTIC PARTIAL DIFFERENTIAL EQUATIONS USING NEURAL NETWORKS IN THE WIENER CHAOS EXPANSION|[[paper]](https://arxiv.org/pdf/2411.03384)[[code]](https://github.com/psc25/ChaosSPDE)|
-|Deep learning based numerical approximation algorithms for stochastic partial differential equations and high-dimensional nonlinear filtering problems|[[paper]](https://arxiv.org/abs/2012.01194)[[code]]()|
+|Deep learning based numerical approximation algorithms for stochastic partial differential equations and high-dimensional nonlinear filtering problems|[[paper]](https://arxiv.org/abs/2012.01194)|
+|A predictor-corrector deep learning algorithm for high dimensional stochastic partial differential equations|[[paper]](https://arxiv.org/abs/2208.09883)|
+|Deep learning-based numerical methods for high-dimensional parabolic partial differential equations and backward stochastic differential equations|[[paper]](https://arxiv.org/abs/1706.04702)|
 
 
 |Model|Paper Link|Problem|Model|Loss Function|Details|Baseline|Dataset|
