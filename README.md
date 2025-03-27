@@ -79,31 +79,31 @@ See [Theory](./paper/paper.pdf)
 ---
 
 ## Infinite Dimensional Diffusion
-- **Diffusion Generative Models in Infinite Dimensions**  
-  [paper](http://arxiv.org/abs/2212.00886)
-
-- **Generative Modelling with Inverse Heat Dissipation**  
-  [paper](https://openreview.net/pdf?id=4PJUBT9f2Ol)
-
-- **Infinite-Dimensional Diffusion Models**  
-  [paper](https://www.jmlr.org/papers/volume25/23-1271/23-1271.pdf) 
-
-- **Multilevel Diffusion: Infinite Dimensional Score-Based Diffusion Models for Image Generation**  
-  [paper](http://arxiv.org/abs/2303.04772)
-
-- **Probability-Flow ODE in Infinite-Dimensional Function Spaces**  
-  [paper](http://arxiv.org/abs/2503.10219)
-
-- **Score-based Diffusion Models in Function Space**  
-  [paper](10.48550/arXiv.2302.07400)
-
-- **Score-based Generative Modeling through Stochastic Evolution Equations in Hilbert Spaces**  
-  [paper](https://proceedings.neurips.cc/paper_files/paper/2023/file/76c6f9f2475b275b92d03a83ea270af4-Paper-Conference.pdf)
-
-- **Stochastic Equations in Infinite Dimensions**  
+- **Stochastic Equations in Infinite Dimensions (Book)** 2014  
   [paper](https://www.cambridge.org/core/books/stochastic-equations-in-infinite-dimensions/6218FF6506BE364F82E3CF534FAC2FC5)
 
-- **Stochastic Optimal Control for Diffusion Bridges in Function Spaces**  
+- **Infinite-Dimensional Diffusion Models** 2023  
+  [paper](https://www.jmlr.org/papers/volume25/23-1271/23-1271.pdf) 
+
+- **Diffusion Generative Models in Infinite Dimensions**  2023  
+  [paper](http://arxiv.org/abs/2212.00886)
+
+- **Generative Modelling with Inverse Heat Dissipation** 2023  
+  [paper](https://openreview.net/pdf?id=4PJUBT9f2Ol)
+
+- **Multilevel Diffusion: Infinite Dimensional Score-Based Diffusion Models for Image Generation** 2024  
+  [paper](http://arxiv.org/abs/2303.04772)
+
+- **Probability-Flow ODE in Infinite-Dimensional Function Spaces** 2025  
+  [paper](http://arxiv.org/abs/2503.10219)
+
+- **Score-based Diffusion Models in Function Space** 2025  
+  [paper](10.48550/arXiv.2302.07400)
+
+- **Score-based Generative Modeling through Stochastic Evolution Equations in Hilbert Spaces** 2023  
+  [paper](https://proceedings.neurips.cc/paper_files/paper/2023/file/76c6f9f2475b275b92d03a83ea270af4-Paper-Conference.pdf)
+
+- **Stochastic Optimal Control for Diffusion Bridges in Function Spaces** 2025  
   [paper](10.48550/arXiv.2405.20630)
 
 
