@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.26 (TeX Live 2024) (preloaded format=pdflatex 2024.12.1)  27 MAR 2025 16:39
+This is pdfTeX, Version 3.141592653-2.6-1.40.26 (TeX Live 2024) (preloaded format=pdflatex 2024.12.1)  28 MAR 2025 21:45
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -543,164 +543,167 @@ Package microtype Info: Loading generic protrusion settings for font family
 
 
 {d:/texlive/2024/texmf-var/fonts/map/pdftex/updmap/pdftex.map}{d:/texlive/2024/texmf-dist/fonts/enc/dvips/base/8r.enc}{d:/texlive/2024/texmf-dist/fonts/enc/dvips/cm-super/cm-super-t1.enc}]
-
-Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `math shift' on input line 143.
-
-
-Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `superscript' on input line 143.
-
-
-Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `math shift' on input line 143.
-
-[2]
-
-Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `math shift' on input line 282.
-
-
-Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `superscript' on input line 282.
-
-
-Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `\times' on input line 282.
-
-
-Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `math shift' on input line 282.
-
-[3] [4]
-LaTeX Font Info:    Trying to load font information for TS1+ptm on input line 367.
+LaTeX Font Info:    Trying to load font information for TS1+ptm on input line 184.
  (d:/texlive/2024/texmf-dist/tex/latex/psnfss/ts1ptm.fd
 File: ts1ptm.fd 2001/06/04 font definitions for TS1/ptm.
 )
-<pics/1D_Empirical_vs_Theoretical_Covariance_2048_100.0_2_1.png, id=184, 505.89pt x 279.0425pt>
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `math shift' on input line 196.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `superscript' on input line 196.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `math shift' on input line 196.
+
+[2] [3]
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `math shift' on input line 346.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `superscript' on input line 346.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `\times' on input line 346.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `math shift' on input line 346.
+
+[4] [5]
+<pics/1D_Empirical_vs_Theoretical_Covariance_2048_100.0_2_1.png, id=202, 505.89pt x 279.0425pt>
 File: pics/1D_Empirical_vs_Theoretical_Covariance_2048_100.0_2_1.png Graphic file (type png)
 <use pics/1D_Empirical_vs_Theoretical_Covariance_2048_100.0_2_1.png>
-Package pdftex.def Info: pics/1D_Empirical_vs_Theoretical_Covariance_2048_100.0_2_1.png  used on input line 379.
+Package pdftex.def Info: pics/1D_Empirical_vs_Theoretical_Covariance_2048_100.0_2_1.png  used on input line 443.
 (pdftex.def)             Requested size: 198.7425pt x 109.6266pt.
-<./pics/1D_RF_4096_100.0_0.5_1.png, id=187, 433.62pt x 289.08pt>
+<./pics/1D_RF_4096_100.0_0.5_1.png, id=205, 433.62pt x 289.08pt>
 File: ./pics/1D_RF_4096_100.0_0.5_1.png Graphic file (type png)
 <use ./pics/1D_RF_4096_100.0_0.5_1.png>
-Package pdftex.def Info: ./pics/1D_RF_4096_100.0_0.5_1.png  used on input line 390.
+Package pdftex.def Info: ./pics/1D_RF_4096_100.0_0.5_1.png  used on input line 454.
 (pdftex.def)             Requested size: 119.2467pt x 79.49503pt.
-<./pics/1D_RF_4096_100.0_1_1.png, id=188, 433.62pt x 289.08pt>
+<./pics/1D_RF_4096_100.0_1_1.png, id=206, 433.62pt x 289.08pt>
 File: ./pics/1D_RF_4096_100.0_1_1.png Graphic file (type png)
 <use ./pics/1D_RF_4096_100.0_1_1.png>
-Package pdftex.def Info: ./pics/1D_RF_4096_100.0_1_1.png  used on input line 395.
+Package pdftex.def Info: ./pics/1D_RF_4096_100.0_1_1.png  used on input line 459.
 (pdftex.def)             Requested size: 119.2467pt x 79.49503pt.
-<./pics/1D_RF_4096_100.0_1.5_1.png, id=189, 433.62pt x 289.08pt>
+<./pics/1D_RF_4096_100.0_1.5_1.png, id=207, 433.62pt x 289.08pt>
 File: ./pics/1D_RF_4096_100.0_1.5_1.png Graphic file (type png)
 <use ./pics/1D_RF_4096_100.0_1.5_1.png>
-Package pdftex.def Info: ./pics/1D_RF_4096_100.0_1.5_1.png  used on input line 401.
+Package pdftex.def Info: ./pics/1D_RF_4096_100.0_1.5_1.png  used on input line 465.
 (pdftex.def)             Requested size: 119.2467pt x 79.49503pt.
-<./pics/1D_RF_4096_100.0_2_1.png, id=190, 433.62pt x 289.08pt>
+<./pics/1D_RF_4096_100.0_2_1.png, id=208, 433.62pt x 289.08pt>
 File: ./pics/1D_RF_4096_100.0_2_1.png Graphic file (type png)
 <use ./pics/1D_RF_4096_100.0_2_1.png>
-Package pdftex.def Info: ./pics/1D_RF_4096_100.0_2_1.png  used on input line 408.
+Package pdftex.def Info: ./pics/1D_RF_4096_100.0_2_1.png  used on input line 472.
 (pdftex.def)             Requested size: 119.2467pt x 79.49503pt.
-<./pics/1D_RF_4096_100.0_6_1.png, id=191, 433.62pt x 289.08pt>
+<./pics/1D_RF_4096_100.0_6_1.png, id=209, 433.62pt x 289.08pt>
 File: ./pics/1D_RF_4096_100.0_6_1.png Graphic file (type png)
 <use ./pics/1D_RF_4096_100.0_6_1.png>
-Package pdftex.def Info: ./pics/1D_RF_4096_100.0_6_1.png  used on input line 413.
+Package pdftex.def Info: ./pics/1D_RF_4096_100.0_6_1.png  used on input line 477.
 (pdftex.def)             Requested size: 119.2467pt x 79.49503pt.
-<./pics/1D_RF_4096_100.0_10_1.png, id=192, 371.3875pt x 248.93pt>
+<./pics/1D_RF_4096_100.0_10_1.png, id=210, 371.3875pt x 248.93pt>
 File: ./pics/1D_RF_4096_100.0_10_1.png Graphic file (type png)
 <use ./pics/1D_RF_4096_100.0_10_1.png>
-Package pdftex.def Info: ./pics/1D_RF_4096_100.0_10_1.png  used on input line 419.
+Package pdftex.def Info: ./pics/1D_RF_4096_100.0_10_1.png  used on input line 483.
 (pdftex.def)             Requested size: 119.2467pt x 79.92511pt.
- [5 <./pics/1D_Empirical_vs_Theoretical_Covariance_2048_100.0_2_1.png>]
-<./pics/1D_NeuralRF_4096_100.0_0.5_1.png, id=205, 493.845pt x 362.35374pt>
+
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [6 <./pics/1D_Empirical_vs_Theoretical_Covariance_2048_100.0_2_1.png>]
+<./pics/1D_NeuralRF_4096_100.0_0.5_1.png, id=221, 493.845pt x 362.35374pt>
 File: ./pics/1D_NeuralRF_4096_100.0_0.5_1.png Graphic file (type png)
 <use ./pics/1D_NeuralRF_4096_100.0_0.5_1.png>
-Package pdftex.def Info: ./pics/1D_NeuralRF_4096_100.0_0.5_1.png  used on input line 433.
+Package pdftex.def Info: ./pics/1D_NeuralRF_4096_100.0_0.5_1.png  used on input line 497.
 (pdftex.def)             Requested size: 119.2467pt x 87.49193pt.
-<./pics/1D_NeuralRF_4096_100.0_2_1.png, id=206, 499.8675pt x 358.33875pt>
+<./pics/1D_NeuralRF_4096_100.0_2_1.png, id=222, 499.8675pt x 358.33875pt>
 File: ./pics/1D_NeuralRF_4096_100.0_2_1.png Graphic file (type png)
 <use ./pics/1D_NeuralRF_4096_100.0_2_1.png>
-Package pdftex.def Info: ./pics/1D_NeuralRF_4096_100.0_2_1.png  used on input line 438.
+Package pdftex.def Info: ./pics/1D_NeuralRF_4096_100.0_2_1.png  used on input line 502.
 (pdftex.def)             Requested size: 119.2467pt x 85.48361pt.
-<./pics/1D_NeuralRF_4096_100.0_10_1.png, id=207, 493.845pt x 358.33875pt>
+<./pics/1D_NeuralRF_4096_100.0_10_1.png, id=223, 493.845pt x 358.33875pt>
 File: ./pics/1D_NeuralRF_4096_100.0_10_1.png Graphic file (type png)
 <use ./pics/1D_NeuralRF_4096_100.0_10_1.png>
-Package pdftex.def Info: ./pics/1D_NeuralRF_4096_100.0_10_1.png  used on input line 444.
+Package pdftex.def Info: ./pics/1D_NeuralRF_4096_100.0_10_1.png  used on input line 508.
 (pdftex.def)             Requested size: 119.2467pt x 86.52249pt.
-<pics/1D_DataDrivenRF_4096_100.0_2_1.png, id=208, 578.16pt x 433.62pt>
+<pics/1D_DataDrivenRF_4096_100.0_2_1.png, id=224, 578.16pt x 433.62pt>
 File: pics/1D_DataDrivenRF_4096_100.0_2_1.png Graphic file (type png)
 <use pics/1D_DataDrivenRF_4096_100.0_2_1.png>
-Package pdftex.def Info: pics/1D_DataDrivenRF_4096_100.0_2_1.png  used on input line 473.
+Package pdftex.def Info: pics/1D_DataDrivenRF_4096_100.0_2_1.png  used on input line 537.
 (pdftex.def)             Requested size: 198.7425pt x 149.0565pt.
 
 Underfull \vbox (badness 7576) has occurred while \output is active []
 
- [6 <./pics/1D_RF_4096_100.0_0.5_1.png> <./pics/1D_RF_4096_100.0_1_1.png> <./pics/1D_RF_4096_100.0_1.5_1.png> <./pics/1D_RF_4096_100.0_2_1.png> <./pics/1D_RF_4096_100.0_6_1.png> <./pics/1D_RF_4096_100.0_10_1.png> <./pics/1D_NeuralRF_4096_100.0_0.5_1.png> <./pics/1D_NeuralRF_4096_100.0_2_1.png> <./pics/1D_NeuralRF_4096_100.0_10_1.png>]
-<./pics/2D_RF_256_10.0_0.5_1.png, id=226, 578.16pt x 433.62pt>
+ [7 <./pics/1D_RF_4096_100.0_0.5_1.png> <./pics/1D_RF_4096_100.0_1_1.png> <./pics/1D_RF_4096_100.0_1.5_1.png> <./pics/1D_RF_4096_100.0_2_1.png> <./pics/1D_RF_4096_100.0_6_1.png> <./pics/1D_RF_4096_100.0_10_1.png> <./pics/1D_NeuralRF_4096_100.0_0.5_1.png> <./pics/1D_NeuralRF_4096_100.0_2_1.png> <./pics/1D_NeuralRF_4096_100.0_10_1.png>]
+<./pics/2D_RF_256_10.0_0.5_1.png, id=243, 578.16pt x 433.62pt>
 File: ./pics/2D_RF_256_10.0_0.5_1.png Graphic file (type png)
 <use ./pics/2D_RF_256_10.0_0.5_1.png>
-Package pdftex.def Info: ./pics/2D_RF_256_10.0_0.5_1.png  used on input line 486.
+Package pdftex.def Info: ./pics/2D_RF_256_10.0_0.5_1.png  used on input line 550.
 (pdftex.def)             Requested size: 119.2467pt x 89.43523pt.
-<./pics/2D_RF_256_10.0_1_1.png, id=227, 578.16pt x 433.62pt>
+<./pics/2D_RF_256_10.0_1_1.png, id=244, 578.16pt x 433.62pt>
 File: ./pics/2D_RF_256_10.0_1_1.png Graphic file (type png)
 <use ./pics/2D_RF_256_10.0_1_1.png>
-Package pdftex.def Info: ./pics/2D_RF_256_10.0_1_1.png  used on input line 491.
+Package pdftex.def Info: ./pics/2D_RF_256_10.0_1_1.png  used on input line 555.
 (pdftex.def)             Requested size: 119.2467pt x 89.43523pt.
-<./pics/2D_RF_256_10.0_2_1.png, id=228, 578.16pt x 433.62pt>
+<./pics/2D_RF_256_10.0_2_1.png, id=245, 578.16pt x 433.62pt>
 File: ./pics/2D_RF_256_10.0_2_1.png Graphic file (type png)
 <use ./pics/2D_RF_256_10.0_2_1.png>
-Package pdftex.def Info: ./pics/2D_RF_256_10.0_2_1.png  used on input line 497.
+Package pdftex.def Info: ./pics/2D_RF_256_10.0_2_1.png  used on input line 561.
 (pdftex.def)             Requested size: 119.2467pt x 89.43523pt.
-<./pics/2D_RF_256_10.0_3_1.png, id=229, 578.16pt x 433.62pt>
+<./pics/2D_RF_256_10.0_3_1.png, id=246, 578.16pt x 433.62pt>
 File: ./pics/2D_RF_256_10.0_3_1.png Graphic file (type png)
 <use ./pics/2D_RF_256_10.0_3_1.png>
-Package pdftex.def Info: ./pics/2D_RF_256_10.0_3_1.png  used on input line 504.
+Package pdftex.def Info: ./pics/2D_RF_256_10.0_3_1.png  used on input line 568.
 (pdftex.def)             Requested size: 119.2467pt x 89.43523pt.
-<./pics/2D_RF_256_10.0_6_1.png, id=230, 578.16pt x 433.62pt>
+<./pics/2D_RF_256_10.0_6_1.png, id=247, 578.16pt x 433.62pt>
 File: ./pics/2D_RF_256_10.0_6_1.png Graphic file (type png)
 <use ./pics/2D_RF_256_10.0_6_1.png>
-Package pdftex.def Info: ./pics/2D_RF_256_10.0_6_1.png  used on input line 509.
+Package pdftex.def Info: ./pics/2D_RF_256_10.0_6_1.png  used on input line 573.
 (pdftex.def)             Requested size: 119.2467pt x 89.43523pt.
-<./pics/2D_RF_256_10.0_10_1.png, id=231, 578.16pt x 433.62pt>
+<./pics/2D_RF_256_10.0_10_1.png, id=248, 578.16pt x 433.62pt>
 File: ./pics/2D_RF_256_10.0_10_1.png Graphic file (type png)
 <use ./pics/2D_RF_256_10.0_10_1.png>
-Package pdftex.def Info: ./pics/2D_RF_256_10.0_10_1.png  used on input line 515.
+Package pdftex.def Info: ./pics/2D_RF_256_10.0_10_1.png  used on input line 579.
 (pdftex.def)             Requested size: 119.2467pt x 89.43523pt.
-<./pics/2D_NeuralRF_256_10.0_0.5_1.png, id=232, 433.62pt x 289.08pt>
+<./pics/2D_NeuralRF_256_10.0_0.5_1.png, id=249, 433.62pt x 289.08pt>
 File: ./pics/2D_NeuralRF_256_10.0_0.5_1.png Graphic file (type png)
 <use ./pics/2D_NeuralRF_256_10.0_0.5_1.png>
-Package pdftex.def Info: ./pics/2D_NeuralRF_256_10.0_0.5_1.png  used on input line 528.
+Package pdftex.def Info: ./pics/2D_NeuralRF_256_10.0_0.5_1.png  used on input line 592.
 (pdftex.def)             Requested size: 119.2467pt x 79.49503pt.
-<./pics/2D_NeuralRF_256_10.0_1_1.png, id=233, 433.62pt x 289.08pt>
+<./pics/2D_NeuralRF_256_10.0_1_1.png, id=250, 433.62pt x 289.08pt>
 File: ./pics/2D_NeuralRF_256_10.0_1_1.png Graphic file (type png)
 <use ./pics/2D_NeuralRF_256_10.0_1_1.png>
-Package pdftex.def Info: ./pics/2D_NeuralRF_256_10.0_1_1.png  used on input line 533.
+Package pdftex.def Info: ./pics/2D_NeuralRF_256_10.0_1_1.png  used on input line 597.
 (pdftex.def)             Requested size: 119.2467pt x 79.49503pt.
-<./pics/2D_NeuralRF_256_10.0_2_1.png, id=234, 433.62pt x 289.08pt>
+<./pics/2D_NeuralRF_256_10.0_2_1.png, id=251, 433.62pt x 289.08pt>
 File: ./pics/2D_NeuralRF_256_10.0_2_1.png Graphic file (type png)
 <use ./pics/2D_NeuralRF_256_10.0_2_1.png>
-Package pdftex.def Info: ./pics/2D_NeuralRF_256_10.0_2_1.png  used on input line 539.
+Package pdftex.def Info: ./pics/2D_NeuralRF_256_10.0_2_1.png  used on input line 603.
 (pdftex.def)             Requested size: 119.2467pt x 79.49503pt.
-<./pics/2D_NeuralRF_256_10.0_3_1.png, id=235, 433.62pt x 289.08pt>
+<./pics/2D_NeuralRF_256_10.0_3_1.png, id=252, 433.62pt x 289.08pt>
 File: ./pics/2D_NeuralRF_256_10.0_3_1.png Graphic file (type png)
 <use ./pics/2D_NeuralRF_256_10.0_3_1.png>
-Package pdftex.def Info: ./pics/2D_NeuralRF_256_10.0_3_1.png  used on input line 546.
+Package pdftex.def Info: ./pics/2D_NeuralRF_256_10.0_3_1.png  used on input line 610.
 (pdftex.def)             Requested size: 119.2467pt x 79.49503pt.
-<./pics/2D_NeuralRF_256_10.0_6_1.png, id=236, 433.62pt x 289.08pt>
+<./pics/2D_NeuralRF_256_10.0_6_1.png, id=253, 433.62pt x 289.08pt>
 File: ./pics/2D_NeuralRF_256_10.0_6_1.png Graphic file (type png)
 <use ./pics/2D_NeuralRF_256_10.0_6_1.png>
-Package pdftex.def Info: ./pics/2D_NeuralRF_256_10.0_6_1.png  used on input line 551.
+Package pdftex.def Info: ./pics/2D_NeuralRF_256_10.0_6_1.png  used on input line 615.
 (pdftex.def)             Requested size: 119.2467pt x 79.49503pt.
-<./pics/2D_NeuralRF_256_10.0_10_1.png, id=237, 433.62pt x 289.08pt>
+<./pics/2D_NeuralRF_256_10.0_10_1.png, id=254, 433.62pt x 289.08pt>
 File: ./pics/2D_NeuralRF_256_10.0_10_1.png Graphic file (type png)
 <use ./pics/2D_NeuralRF_256_10.0_10_1.png>
-Package pdftex.def Info: ./pics/2D_NeuralRF_256_10.0_10_1.png  used on input line 557.
+Package pdftex.def Info: ./pics/2D_NeuralRF_256_10.0_10_1.png  used on input line 621.
 (pdftex.def)             Requested size: 119.2467pt x 79.49503pt.
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
- [7 <./pics/1D_DataDrivenRF_4096_100.0_2_1.png> <./pics/2D_RF_256_10.0_0.5_1.png> <./pics/2D_RF_256_10.0_1_1.png> <./pics/2D_RF_256_10.0_2_1.png> <./pics/2D_RF_256_10.0_3_1.png> <./pics/2D_RF_256_10.0_6_1.png> <./pics/2D_RF_256_10.0_10_1.png>] [8 <./pics/2D_NeuralRF_256_10.0_0.5_1.png> <./pics/2D_NeuralRF_256_10.0_1_1.png> <./pics/2D_NeuralRF_256_10.0_2_1.png> <./pics/2D_NeuralRF_256_10.0_3_1.png> <./pics/2D_NeuralRF_256_10.0_6_1.png> <./pics/2D_NeuralRF_256_10.0_10_1.png>] (./randomfield.bbl) [9] [10] [11] (./randomfield.aux)
+ [8 <./pics/1D_DataDrivenRF_4096_100.0_2_1.png> <./pics/2D_RF_256_10.0_0.5_1.png> <./pics/2D_RF_256_10.0_1_1.png> <./pics/2D_RF_256_10.0_2_1.png> <./pics/2D_RF_256_10.0_3_1.png> <./pics/2D_RF_256_10.0_6_1.png> <./pics/2D_RF_256_10.0_10_1.png>] [9 <./pics/2D_NeuralRF_256_10.0_0.5_1.png> <./pics/2D_NeuralRF_256_10.0_1_1.png> <./pics/2D_NeuralRF_256_10.0_2_1.png> <./pics/2D_NeuralRF_256_10.0_3_1.png> <./pics/2D_NeuralRF_256_10.0_6_1.png> <./pics/2D_NeuralRF_256_10.0_10_1.png>] (./randomfield.bbl) [10] [11] [12] [13] (./randomfield.aux)
  ***********
 LaTeX2e <2023-11-01> patch level 1
 L3 programming layer <2024-02-20>
@@ -709,18 +712,18 @@ Package rerunfilecheck Info: File `randomfield.out' has not changed.
 (rerunfilecheck)             Checksum: 086E4C59A69CAFF04D183D734BC6E6E6;2696.
  ) 
 Here is how much of TeX's memory you used:
- 15073 strings out of 476023
- 243275 string characters out of 5791734
+ 15086 strings out of 476023
+ 243437 string characters out of 5791734
  1946190 words of memory out of 5000000
- 36668 multiletter control sequences out of 15000+600000
- 597252 words of font info for 202 fonts, out of 8000000 for 9000
+ 36669 multiletter control sequences out of 15000+600000
+ 597122 words of font info for 200 fonts, out of 8000000 for 9000
  36 hyphenation exceptions out of 8191
- 75i,9n,79p,1080b,591s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 75i,9n,79p,1080b,597s stack positions out of 10000i,1000n,20000p,200000b,200000s
 <d:/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb><d:/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb><d:/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cmextra/cmex7.pfb><d:/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb><d:/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi12.pfb><d:/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi5.pfb><d:/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi7.pfb><d:/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi8.pfb><d:/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb><d:/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb><d:/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmr5.pfb><d:/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmr7.pfb><d:/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb><d:/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy7.pfb><d:/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm10.pfb><d:/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm7.pfb><d:/texlive/2024/texmf-dist/fonts/type1/public/cm-super/sftt1000.pfb><d:/texlive/2024/texmf-dist/fonts/type1/urw/times/utmb8a.pfb><d:/texlive/2024/texmf-dist/fonts/type1/urw/times/utmr8a.pfb><d:/texlive/2024/texmf-dist/fonts/type1/urw/times/utmri8a.pfb>
-Output written on randomfield.pdf (11 pages, 1217150 bytes).
+Output written on randomfield.pdf (13 pages, 1224060 bytes).
 PDF statistics:
- 418 PDF objects out of 1000 (max. 8388607)
- 315 compressed objects within 4 object streams
- 120 named destinations out of 1000 (max. 500000)
+ 444 PDF objects out of 1000 (max. 8388607)
+ 339 compressed objects within 4 object streams
+ 135 named destinations out of 1000 (max. 500000)
  37628 words of extra memory for PDF output out of 42996 (max. 10000000)
 

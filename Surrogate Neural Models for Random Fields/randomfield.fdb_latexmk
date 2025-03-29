@@ -1,14 +1,14 @@
 # Fdb version 4
-["bibtex randomfield"] 1743064780.68052 "randomfield.aux" "randomfield.bbl" "randomfield" 1743064784.69435 0
+["bibtex randomfield"] 1743169481.6392 "randomfield.aux" "randomfield.bbl" "randomfield" 1743169506.04677 0
   "./references.bib" 1743063524 3395 1ca616ab4948f4f37987993ccd2b5cbc ""
   "d:/texlive/2024/texmf-dist/bibtex/bst/base/plain.bst" 1733058262 20613 bd3fbfa9f64872b81ac57a0dd2ed855f ""
-  "randomfield.aux" 1743064783 5283 869ac1fa93f9b37a2e9b96c3da312f2e "pdflatex"
+  "randomfield.aux" 1743169504 5335 909859a7e271bf307a3e38eed7540b60 "pdflatex"
   (generated)
   "randomfield.bbl"
   "randomfield.blg"
   (rewritten before read)
-["pdflatex"] 1743064781.24123 "d:/Research/github/learnSDE/Surrogate Neural Models for Random Fields/randomfield.tex" "randomfield.pdf" "randomfield" 1743064784.69514 0
-  "d:/Research/github/learnSDE/Surrogate Neural Models for Random Fields/randomfield.tex" 1743064776 30745 4bfcf20d36e4aea3a961dd599bfcd62f ""
+["pdflatex"] 1743169502.38854 "d:/Research/github/learnSDE/Surrogate Neural Models for Random Fields/randomfield.tex" "randomfield.pdf" "randomfield" 1743169506.04756 0
+  "d:/Research/github/learnSDE/Surrogate Neural Models for Random Fields/randomfield.tex" 1743169501 34444 748a9ef5e710ff5188aa543509c73777 ""
   "d:/texlive/2024/texmf-dist/fonts/enc/dvips/base/8r.enc" 1733058484 4850 80dc9bab7f31fb78a000ccfed0e27cab ""
   "d:/texlive/2024/texmf-dist/fonts/enc/dvips/cm-super/cm-super-t1.enc" 1733058349 2971 def0b6c1f0b107b3b936def894055589 ""
   "d:/texlive/2024/texmf-dist/fonts/map/fontname/texfonts.map" 1733058606 3524 cb3e574dea2d1052e39280babc910dc8 ""
@@ -176,10 +176,10 @@
   "pics/2D_RF_256_10.0_2_1.png" 1742807409 69456 9c0715b74391ac3070580a217703c916 ""
   "pics/2D_RF_256_10.0_3_1.png" 1742807411 56476 48dc43a4af54ecfe6890731751f2e8b7 ""
   "pics/2D_RF_256_10.0_6_1.png" 1742807413 47542 5ec2bc00bdb62110623a44dec9a00c57 ""
-  "randomfield.aux" 1743064783 5283 869ac1fa93f9b37a2e9b96c3da312f2e "pdflatex"
-  "randomfield.bbl" 1743064781 1832 23d87d838c35f951d951024d45c358c4 "bibtex randomfield"
-  "randomfield.out" 1743064783 2696 086e4c59a69caff04d183d734bc6e6e6 "pdflatex"
-  "randomfield.tex" 1743064776 30745 4bfcf20d36e4aea3a961dd599bfcd62f ""
+  "randomfield.aux" 1743169504 5335 909859a7e271bf307a3e38eed7540b60 "pdflatex"
+  "randomfield.bbl" 1743169482 1832 23d87d838c35f951d951024d45c358c4 "bibtex randomfield"
+  "randomfield.out" 1743169504 2696 086e4c59a69caff04d183d734bc6e6e6 "pdflatex"
+  "randomfield.tex" 1743169501 34444 748a9ef5e710ff5188aa543509c73777 ""
   (generated)
   "randomfield.aux"
   "randomfield.log"

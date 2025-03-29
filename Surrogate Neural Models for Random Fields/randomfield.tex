@@ -127,21 +127,85 @@ Then we can define the inner product:
   \begin{equation}
   \langle\mathcal{C}_u\phi, \psi\rangle_{L^2(D)} = \int_D\int_D Cov(u(x), u(y)) \phi(x) \psi(y) dx dy
   \end{equation}
-  So that 
+  So that for $\forall x\in D$,
   \begin{equation}
   (\mathcal{C}_u\phi)(x) = \int_D Cov(u(x), u(y)) \phi(y) dy
   \end{equation}
-  That is any $L^2(D)$-valued random variable $u(x)$ can defines a R.F. with $\mu(x)$ and $C(x, y)$ equal to the kernel of $\mathcal{C}$.
+  That is any $L^2(D)$-valued random variable $u(x)$ can defines a R.F. with $\mu(x)$ and $C(x, y)$ equal to the integral kernel of $\mathcal{C}$.
 \end{example}
 
+\begin{theorem}\label{thmtraceclass}
+  For random field $u(x,\omega)$ with the covariance operator $\mathcal{C}$, suppose $\mathcal{C}$ is trace class with eigenpairs $(\lambda_i, \phi_i)$, 
+  then the second moment of $u(x, \omega)$ is given by:
+  \begin{equation}
+    \mathbf{E}[\|u(x, \omega)\|^2_H] = \sum_{i=1}^{\infty} \lambda_i
+  \end{equation}
+\end{theorem}
+
 \begin{definition}[H-valued Gaussian random variable]
-  Let $H$ be a Hilbert space. An H-valued random variable $X$ is Gaussian if 
-  $\langle X, \phi\rangle$ is a real-valued Gaussian random variable for all $\phi \in H$.
+  Let $H$ be a Hilbert space. An H-valued random variable $u(x, \omega)$ is Gaussian if 
+  $\langle u(x, \omega), \phi\rangle_H$ is a real-valued Gaussian random variable for all $\phi \in H$.
+  Here the real-valued Gaussian Random Variable is defined as:
+  \begin{equation}
+    \langle u, \phi\rangle_H \sim N(\langle \mu, \phi\rangle_H, \langle \mathcal{C}_u\phi, \phi\rangle_H)
+  \end{equation}
+  This actually defines the Gaussian Measure on $H$: $u\sim N(\mu, \mathcal{C}_u):= m$, where $m$ is called Gaussian Measure. 
+  The covariance operator of $u$ is the symmetric, positive-definite operator $\mathcal{C}_u : H \rightarrow H$.
 \end{definition}
+
+Since we consider infinite dimensional case, unlike finite dimensions, not all translations preserve the measure. 
+We need to cansider those directions in $H$ along which translating a Gaussian measure does not change its essential nature (i.e., keeps it equivalent). 
+\begin{definition}[Cameron-Martin Space]
+The Cameron-Martin space $U$ is defined as:
+\begin{equation}
+  U:=\{h\in H| m_h\ll m\},m_h(A)=T_h^\#m(A):= m(A-h),\forall A \in \mathcal{B}(H)
+\end{equation} 
+where $T_h$ is the translation operator: $T_h(u)=u + h$, $T_h^\#m$ is the push-forward measure of $m$ by $T_h$.
+\end{definition}
+
+\begin{theorem}[Cameron-Martin Theorem]
+  For $m=N(0, \mathcal{C})$, we have:
+  \begin{equation}
+    m_h\sim m \text{ if and only if } h\in \mathcal{C}^\frac{1}{2}H:=U
+  \end{equation}
+  Since $\mathcal{C}^{-1}$ is unbounded, $U$ is a proper subspace of $U = \mathcal{C}^{1/2}H$.
+  The inner product is defined as:
+\begin{equation}
+  \langle \phi, \psi\rangle_U = \langle \mathcal{C}^{-1/2}\phi, \mathcal{C}^{-1/2}\psi\rangle_H
+\end{equation}
+\end{theorem}
+
+Unlike the finite dimensional case, there is no natural Brownian Motion process in infinite dimensions. 
+So for any Hilbert space $H$, we need to define the Brownian Motion process on $H$ by using the Cameron-Martin space $U$.
+So we first define the $\mathcal{C}$-Weiner process $W_t$ on $H$ as:
+\begin{definition}[$\mathcal{C}$-Weiner Process]
+  A H-valued process $W_t$ is called $\mathcal{C}$-Weiner process if:
+  \begin{itemize}
+    \item $W_0 = 0$
+    \item $W_t$ has continuous trajectories
+    \item $W_t$ has independent increments
+    \item $W_t$ has Gaussian increments: $m(W_t - W_s) = N(0, (t-s)\mathcal{C})$
+  \end{itemize}
+\end{definition}
+Then we can define the $\mathcal{C}$-Weiner process $W_t$ on $U$ as:
+\begin{equation}
+  W^U_t = \mathcal{C}^{1/2}W^H_t
+\end{equation}
 
 
 \section{For Stationary RF on $\mathbb{R}^d$}
-About SPDE approaches for random field simulation:
+First we define stationary random field on $\mathbb{R}^d$ as:
+\begin{definition}[Stationary Random Field]
+  A second-order random field ${u(x): x\in D}$ is called stationary if the mean is constant and covariance function 
+  depends only on the difference $x-y$, i.e. $\mu(x) = \mu,\ C(x, y) = C(x-y)$.
+\end{definition}
+Then we can define the covariance operator $\mathcal{C}$ as:
+\begin{equation}
+  \mathcal{C}\phi = \int_{\mathbb{R}^d} C(x-y)\phi(y)dy
+\end{equation}
+We find that it is actually the convolution operator of $C(x)$ with $\phi(x)$.
+
+Stationary random fields have some beautiful properties.
 \begin{theorem}[Wiener-Khinchin Theorem]
     There exists a stationary random field ${u(x): x\in D}$ with mean $\mu$ and covariance function $c(x)$ that is mean square continuous if and only if 
     the function $c(x): \mathbb{R}^d\rightarrow \mathbb{R}$ is such that 
@@ -653,6 +717,16 @@ It follows that the average variance of the random field over the domain $D$ is 
 In most cases, the integral eigenvalue problem in Equ (\ref{KL-expansion}) is difficult: analytically solved and high-dimensional.
 
 \section{Some proofs}
+\begin{proof}[Proof of Thm \ref{thmtraceclass}]
+\begin{equation}
+  \begin{aligned}
+    \mathbb{E}\left[\|u(x, \omega)\|^2_H\right] &= \mathbb{E} \left[\sum_{i=1}^\infty \langle u, \phi_i\rangle_H^2\right]\\
+    &= \sum_{i=1}^\infty \mathbb{E} \left[\langle u, \phi_i\rangle_H^2\right]\\
+    &= \sum_{i=1}^\infty \langle \mathcal{C}_u  \phi_i, \phi_i\rangle_H= \sum_{i=1}^\infty \lambda_i
+  \end{aligned}
+\end{equation}
+\end{proof}
+
 \begin{proof}[Proof of Thm \ref{spectral_density_random_field}]
     \begin{equation}
     \begin{aligned}

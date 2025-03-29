@@ -71,41 +71,64 @@ See [Theory](./paper/paper.pdf)
 
 ---
 
-## Diffusion PDE
-
-- **Generative PDE Control**  
-  [paper](https://openreview.net/pdf?id=vaKnCahjdj)
-
----
 
 ## Infinite Dimensional Diffusion
 - **Stochastic Equations in Infinite Dimensions (Book)** 2014  
   [paper](https://www.cambridge.org/core/books/stochastic-equations-in-infinite-dimensions/6218FF6506BE364F82E3CF534FAC2FC5)
 
-- **Infinite-Dimensional Diffusion Models** 2023  
+- **From Points to Functions: Infinite-Dimensional Representations in Diffusion Models** 2022  
+  [paper](https://arxiv.org/pdf/2210.13774v1)
+  [code](https://github.com/sarthmit/traj_drl)
+
+- **Infinite-Dimensional Diffusion Models** 2023 JMLR2024 
   [paper](https://www.jmlr.org/papers/volume25/23-1271/23-1271.pdf) 
 
-- **Diffusion Generative Models in Infinite Dimensions**  2023  
+
+- **Diffusion Generative Models in Infinite Dimensions**  2023 AISTATS2023  
   [paper](http://arxiv.org/abs/2212.00886)
 
-- **Generative Modelling with Inverse Heat Dissipation** 2023  
+- **Generative Modelling with Inverse Heat Dissipation** 2023 ICLR2023  
   [paper](https://openreview.net/pdf?id=4PJUBT9f2Ol)
 
-- **Multilevel Diffusion: Infinite Dimensional Score-Based Diffusion Models for Image Generation** 2024  
+- **Score-based Diffusion Models in Function Space** 2023-2025  
+  [paper](10.48550/arXiv.2302.07400)
+
+- **Multilevel Diffusion: Infinite Dimensional Score-Based Diffusion Models for Image Generation** 2023  
   [paper](http://arxiv.org/abs/2303.04772)
+  [code](https://github.com/paullyonel/multileveldiff)
+
+- **Score-based Generative Modeling through Stochastic Evolution Equations in Hilbert Spaces** NIPS2023  
+  [paper](https://proceedings.neurips.cc/paper_files/paper/2023/file/76c6f9f2475b275b92d03a83ea270af4-Paper-Conference.pdf)
+
+- **\infty Diff: Infinite resolution diffusion with subsampled mollified states** 2023 ICLR2024  
+  [paper](https://arxiv.org/pdf/2303.18242)
+  [code](https://github.com/samb-t/infty-diff)
+
+- **Continuous-Time Functional Diffusion Processes** NIPS2023  
+  [paper](https://arxiv.org/pdf/2303.00800)
+
+- **Stochastic Optimal Control for Diffusion Bridges in Function Spaces** NIPS2024  
+  [paper](https://arxiv.org/pdf/2405.20630)
+  [code](https://github.com/bw-park/DBFS)
+
+- **Conditioning non-linear and infinite-dimensional diffusion processes**  NIPS2024  
+  [paper](https://proceedings.neurips.cc/paper_files/paper/2024/file/14ad9256c430e6c8977e470d8e268320-Paper-Conference.pdf)
 
 - **Probability-Flow ODE in Infinite-Dimensional Function Spaces** 2025  
   [paper](http://arxiv.org/abs/2503.10219)
 
-- **Score-based Diffusion Models in Function Space** 2025  
-  [paper](10.48550/arXiv.2302.07400)
-
-- **Score-based Generative Modeling through Stochastic Evolution Equations in Hilbert Spaces** 2023  
-  [paper](https://proceedings.neurips.cc/paper_files/paper/2023/file/76c6f9f2475b275b92d03a83ea270af4-Paper-Conference.pdf)
-
-- **Stochastic Optimal Control for Diffusion Bridges in Function Spaces** 2025  
-  [paper](10.48550/arXiv.2405.20630)
 
 
+## Diffusion PDE
 
+- **Generative PDE Control**  
+  [paper](https://openreview.net/pdf?id=vaKnCahjdj)
+
+
+- **DiffusionPDE: Generative PDE-Solving Under Partial Observation** NIPS2024  
+  [paper](https://arxiv.org/pdf/2406.17763)
+  [code](https://github.com/jhhuangchloe/DiffusionPDE)
+
+- **Diffusion-Based Inverse Solver on Function Spaces With Applications to PDEs** NIPS2024  
+  [paper](https://ml4physicalsciences.github.io/2024/files/NeurIPS_ML4PS_2024_253.pdf)
 
