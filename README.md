@@ -80,39 +80,54 @@ See [Theory](./paper/paper.pdf)
   [paper](https://arxiv.org/pdf/2210.13774v1)
   [code](https://github.com/sarthmit/traj_drl)
 
-- **Infinite-Dimensional Diffusion Models** 2023 JMLR2024 
-  [paper](https://www.jmlr.org/papers/volume25/23-1271/23-1271.pdf) 
+- **Generative Models as Distributions of Functions** AISTATS2022    
+  [paper](https://arxiv.org/pdf/2102.04776)
+  [code](https://github.com/EmilienDupont/neural-function-distributions)
 
-
-- **Diffusion Generative Models in Infinite Dimensions**  2023 AISTATS2023  
-  [paper](http://arxiv.org/abs/2212.00886)
 
 - **Generative Modelling with Inverse Heat Dissipation** 2023 ICLR2023  
   [paper](https://openreview.net/pdf?id=4PJUBT9f2Ol)
+  [code](https://github.com/AaltoML/generative-inverse-heat-dissipation)
+  
+- **Infinite-Dimensional Diffusion Models** 2023 JMLR2024  
+  [paper](https://www.jmlr.org/papers/volume25/23-1271/23-1271.pdf) 
 
 - **Score-based Diffusion Models in Function Space** 2023-2025  
-  [paper](10.48550/arXiv.2302.07400)
+  [paper](https://arxiv.org/pdf/2302.07400)
+  [code](https://github.com/lim0606/ddo)
+
+- **Diffusion Generative Models in Infinite Dimensions**  2023 AISTATS2023  
+  [paper](http://arxiv.org/abs/2212.00886)
+  [code](https://github.com/GavinKerrigan/functional_diffusion)
 
 - **Multilevel Diffusion: Infinite Dimensional Score-Based Diffusion Models for Image Generation** 2023  
   [paper](http://arxiv.org/abs/2303.04772)
   [code](https://github.com/paullyonel/multileveldiff)
 
-- **Score-based Generative Modeling through Stochastic Evolution Equations in Hilbert Spaces** NIPS2023  
-  [paper](https://proceedings.neurips.cc/paper_files/paper/2023/file/76c6f9f2475b275b92d03a83ea270af4-Paper-Conference.pdf)
+
+
+- **Continuous-Time Functional Diffusion Processes** NIPS2023  
+  [paper](https://arxiv.org/pdf/2303.00800)
 
 - **\infty Diff: Infinite resolution diffusion with subsampled mollified states** 2023 ICLR2024  
   [paper](https://arxiv.org/pdf/2303.18242)
   [code](https://github.com/samb-t/infty-diff)
 
-- **Continuous-Time Functional Diffusion Processes** NIPS2023  
-  [paper](https://arxiv.org/pdf/2303.00800)
+- **Score-based Generative Modeling through Stochastic Evolution Equations in Hilbert Spaces** NIPS2023  
+  [paper](https://proceedings.neurips.cc/paper_files/paper/2023/file/76c6f9f2475b275b92d03a83ea270af4-Paper-Conference.pdf)
+
+
+
+- **Conditioning non-linear and infinite-dimensional diffusion processes**  NIPS2024  
+  [paper](https://proceedings.neurips.cc/paper_files/paper/2024/file/14ad9256c430e6c8977e470d8e268320-Paper-Conference.pdf)
 
 - **Stochastic Optimal Control for Diffusion Bridges in Function Spaces** NIPS2024  
   [paper](https://arxiv.org/pdf/2405.20630)
   [code](https://github.com/bw-park/DBFS)
 
-- **Conditioning non-linear and infinite-dimensional diffusion processes**  NIPS2024  
-  [paper](https://proceedings.neurips.cc/paper_files/paper/2024/file/14ad9256c430e6c8977e470d8e268320-Paper-Conference.pdf)
+- **Simulating Infinite-dimensional Nonlinear Diffusion Bridges** 2024  
+  [paper](https://arxiv.org/pdf/2405.18353)
+  [code](https://github.com/bookdiver/scoreoperator)
 
 - **Probability-Flow ODE in Infinite-Dimensional Function Spaces** 2025  
   [paper](http://arxiv.org/abs/2503.10219)
@@ -132,3 +147,9 @@ See [Theory](./paper/paper.pdf)
 - **Diffusion-Based Inverse Solver on Function Spaces With Applications to PDEs** NIPS2024  
   [paper](https://ml4physicalsciences.github.io/2024/files/NeurIPS_ML4PS_2024_253.pdf)
 
+## Neural Operator
+
+- **Generative Adversarial Neural Operators** TMLR2022  
+  [paper](https://arxiv.org/abs/2205.03017)
+  [code](https://github.com/neuraloperator/GANO)
+  

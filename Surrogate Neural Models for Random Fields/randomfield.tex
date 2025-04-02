@@ -43,6 +43,7 @@
 \newtheorem{definition}{Definition}
 \newtheorem{remark}{Remark}
 \newtheorem{example}{Example}
+\newtheorem{proposition}{Proposition}
 
 \title{Modeling Neural Random Field through Operator-based Diffusion}
 
@@ -77,7 +78,6 @@
 
 
 \section{Introduction}
-Some references: \cite{whittle1954stationary, carrizo2022general, lindgren2020diffusion, sigrist2015stochastic, bolin2020rational, Porcu2023}
 \begin{definition}
     Random field $\mathcal{M}(x, \omega)$, where $x\in D$ and $\omega \in \Omega$, is defined as:
 \begin{equation}
@@ -121,24 +121,31 @@ Then we can define the inner product:
   \end{equation}
 \end{example}
 
-\begin{example}[$H = L^2(D)$]
-  When $X = Y$ noted as $u(x, \omega)\in H=L^2(D)$, the covariance operator:
+\begin{example}[X=Y]
+  When $X = Y$ noted as $u(x, \omega)\in H$, the covariance operator:
   The covariance operator $\mathcal{C}$ can be defined as:
   \begin{equation}
-  \langle\mathcal{C}_u\phi, \psi\rangle_{L^2(D)} = \int_D\int_D Cov(u(x), u(y)) \phi(x) \psi(y) dx dy
-  \end{equation}
+    \begin{aligned}
+      &Cov\left(\langle u, \phi\rangle_{H}, \langle u, \psi\rangle_{H}\right)\\
+      =&\mathbb{E}_m\left[\langle u, \phi\rangle_{H}\langle u, \psi\rangle_{H}\right]\\
+      =& \int_{H}\langle u, \phi\rangle_{H}\langle u, \psi\rangle_{H} m(du)\\
+      =&\int_D\left(\int_D Cov(u(x), u(y)) \phi(x) dx \right) \psi(y) dy\\
+      =& \langle\mathcal{C}_u\phi, \psi\rangle_{H} 
+    \end{aligned}
+   \end{equation}
   So that for $\forall x\in D$,
   \begin{equation}
   (\mathcal{C}_u\phi)(x) = \int_D Cov(u(x), u(y)) \phi(y) dy
   \end{equation}
   That is any $L^2(D)$-valued random variable $u(x)$ can defines a R.F. with $\mu(x)$ and $C(x, y)$ equal to the integral kernel of $\mathcal{C}$.
+  The measure $m$ is called probability measure.
 \end{example}
 
 \begin{theorem}\label{thmtraceclass}
   For random field $u(x,\omega)$ with the covariance operator $\mathcal{C}$, suppose $\mathcal{C}$ is trace class with eigenpairs $(\lambda_i, \phi_i)$, 
   then the second moment of $u(x, \omega)$ is given by:
   \begin{equation}
-    \mathbf{E}[\|u(x, \omega)\|^2_H] = \sum_{i=1}^{\infty} \lambda_i
+    \mathbf{E}[\|u(x, \omega)\|^2_H] = \sum_{i=1}^{\infty} \lambda_i\leq \infty
   \end{equation}
 \end{theorem}
 
@@ -149,19 +156,65 @@ Then we can define the inner product:
   \begin{equation}
     \langle u, \phi\rangle_H \sim N(\langle \mu, \phi\rangle_H, \langle \mathcal{C}_u\phi, \phi\rangle_H)
   \end{equation}
-  This actually defines the Gaussian Measure on $H$: $u\sim N(\mu, \mathcal{C}_u):= m$, where $m$ is called Gaussian Measure. 
+  This actually defines the Gaussian Measure $m$ on $H$: $u\sim N(\mu, \mathcal{C}_u):= m$. 
   The covariance operator of $u$ is the symmetric, positive-definite operator $\mathcal{C}_u : H \rightarrow H$.
 \end{definition}
 
+\begin{proposition}
+  If $u(x, \omega)$ is a Gaussian random field, then $\mathcal{C}_u$ is trace class. 
+  Reversely, if $\mathcal{C}_u$ is a positive, symmetric, trace class operator in H, then there exists a Gasussian measure $m=N(0, \mathcal{C}_u)$ on H.
+\end{proposition}
+
 Since we consider infinite dimensional case, unlike finite dimensions, not all translations preserve the measure. 
 We need to cansider those directions in $H$ along which translating a Gaussian measure does not change its essential nature (i.e., keeps it equivalent). 
+First we have some definitions:
+\begin{definition}
+  Let $m_1, m_2$ be two measures on $H$.
+  \begin{itemize}
+    \item $m_1 \ll m_2$ means measure $m_1$ is absoutely continuous respect to $m_2$: if $m_1(A) = 0$ for all $A$ s.t. $m_2(A) = 0$. 
+     This means that the support of $m_1$ is a subset of the support of $m_2$.
+    \item If $m_1 \ll m_2, m_2 \ll m_1$, $m_1, m_2$ are said to be equivalent $m_1 \sim m_2$.
+    \item If there exists a measurable set $A$ s.t. $m_1(A) = 0$ and $m_2(A^c) =1$, then $m_1, m_2$ are singular $m_1 \perp m_2$. 
+  \end{itemize}
+\end{definition}
+
+\begin{theorem}[Radon-Nikodym Theorem]
+  Let $S = (H,\mathcal{B}(H))$ be a measurable space. $m_1, m_2$ are two $\sigma$-finite measures on $S$. \
+  if $m_1 \ll m_2$, then there exists a measurable function $f:H\rightarrow [0, \infty)$ s.t. $m_1(A) = \int_A f dm_2, \forall A \in \mathcal{B}(H)$.
+  The function $f$ is called the Radon-Nikodym derivative of $m_1$ with respect to $m_2$ and is denoted by $f = \frac{dm_1}{dm_2}$.
+\end{theorem}
+
+\begin{example}
+  In finite dimensional case, the Radon-Nikodym derivative is the probability density function. 
+  Like $m_2$ is the Lebesgue measure, $m_1(dx) = p(x)dx$, then the Radon-Nikodym derivative is the probability density function $p(x)$. 
+\end{example}
+
+\begin{remark}
+  The KL-divergence is actually related to the Radon-Nikodym derivative:
+  \begin{equation}
+    \operatorname{KL}(m_1||m_2) = \int_H \log\left(\frac{dm_1}{dm_2}(x)\right) dm_1(x) 
+    = \int_H \log\left(f(x)\right) f(x)dm_2(x)
+  \end{equation}
+  So for $H=\mathbb{R}^d, dm_1 = p_1(x)dx, dm_2 = p_2(x)dx$, the KL-divergence can be written as:
+  \begin{equation}
+    \operatorname{KL}(m_1||m_2) = \int_{\mathbb{R}^d} \log\left(\frac{p_1(x)}{p_2(x)}\right) p_1(x) dx
+  \end{equation}
+  The Radon-Nikodym derivative captures local density ratios, and the KL divergence is their global average.
+\end{remark}
+
+Unlike the finite dimensional case, there is no natural Brownian Motion process in infinite dimensions. 
+So for any Hilbert space $H$, we need to define the Brownian Motion process on $H$ by using the Cameron-Martin space $U$.
+So if we want to define the Diffusion Process on infinite dimensional space, 
+we need to consider the direction in $H$ along which translating a measure preserves the absolutely continuity.
+
 \begin{definition}[Cameron-Martin Space]
 The Cameron-Martin space $U$ is defined as:
 \begin{equation}
   U:=\{h\in H| m_h\ll m\},m_h(A)=T_h^\#m(A):= m(A-h),\forall A \in \mathcal{B}(H)
 \end{equation} 
-where $T_h$ is the translation operator: $T_h(u)=u + h$, $T_h^\#m$ is the push-forward measure of $m$ by $T_h$.
+where $T_h$ is the translation operator: $T_h(u)=u + h$, $T_h^\#m$ is the push-forward measure of $m$ by $T_h$, 
 \end{definition}
+
 
 \begin{theorem}[Cameron-Martin Theorem]
   For $m=N(0, \mathcal{C})$, we have:
@@ -175,23 +228,78 @@ where $T_h$ is the translation operator: $T_h(u)=u + h$, $T_h^\#m$ is the push-f
 \end{equation}
 \end{theorem}
 
-Unlike the finite dimensional case, there is no natural Brownian Motion process in infinite dimensions. 
-So for any Hilbert space $H$, we need to define the Brownian Motion process on $H$ by using the Cameron-Martin space $U$.
-So we first define the $\mathcal{C}$-Weiner process $W_t$ on $H$ as:
-\begin{definition}[$\mathcal{C}$-Weiner Process]
-  A H-valued process $W_t$ is called $\mathcal{C}$-Weiner process if:
+This can be generalized to general Gaussian measure cases:
+\begin{theorem}[Feldman-Hajek Theorem\cite{Prato_Zabczyk_2014}]
+  The following statements hold:\\
+  1. $m_1 = N(\mu_1, \mathcal{C}_1), m_2 = N(\mu_2, \mathcal{C}_2)$ are either singular or equivalent.\\
+  2. They are equivalent if and only if 
   \begin{itemize}
-    \item $W_0 = 0$
-    \item $W_t$ has continuous trajectories
-    \item $W_t$ has independent increments
-    \item $W_t$ has Gaussian increments: $m(W_t - W_s) = N(0, (t-s)\mathcal{C})$
+      \item $\mathcal{C}_1^{1/2}(H) = \mathcal{C}_2^{1/2}(H)=H_0$, $\mu_1 - \mu_2 \in H_0$
+      \item $(\mathcal{C}_1^{-1/2}\mathcal{C}_2^{1/2})(\mathcal{C}_1^{-1/2}\mathcal{C}_2^{1/2})^*-I$ is a Hilbert-Schmidt operator.
   \end{itemize}
-\end{definition}
-Then we can define the $\mathcal{C}$-Weiner process $W_t$ on $U$ as:
+  Specifically, if $\mathcal{C}_1=\mathcal{C}_2=\mathcal{C}$, we have the Radon Nikodym derivative:
+  \begin{equation} 
+    \frac{dm_1}{dm_2}(u) = \exp{\left(\langle \mu_1 - \mu_2, \mathcal{C}^{-1}(u - \mu_2) \rangle_H - \frac{1}{2}\|\mathcal{C}^{-1/2}(\mu_1 - \mu_2)\|^2_H\right)}
+  \end{equation}
+\end{theorem}
+Meanwhile, for Gaussian measure $m=N(\mu, \mathcal{C})$, we have the characteristic functional:
 \begin{equation}
-  W^U_t = \mathcal{C}^{1/2}W^H_t
+  \hat{m}(\lambda) = \int_H e^{i\langle \lambda, u\rangle_H} m(du) = e^{i\langle \lambda, \mu\rangle_H-\frac{1}{2}\langle \lambda, \mathcal{C}\lambda\rangle_H}, \qquad \lambda\in H
 \end{equation}
 
+First we assume define the Cylindrical Wiener Process $\hat{W}_t$ on $H$, but it does not take values in $H$ cause $I$ is not a trace class.
+Here we suppose $\hat{W}_t$ is $H_1$-valued:
+\begin{equation}
+  \hat{W}_t = \sum_{i=1}^{\infty} \beta_i(t) \phi_i
+\end{equation}
+where $\beta_i(t)$ are independent standart Brownian motions and $\phi_i$ are the eigenbasis of $H$.
+Normally, we can define the $\mathcal{C}$-Wiener Process on $H$ as:
+\begin{definition}[$\mathcal{C}$-Wiener Process]
+  A H-valued process $W_t$ is called $\mathcal{C}$-Wiener process if:
+  1. $W_0 = 0$
+  2. $W_t$ has continuous trajectories: $\mathbb{R}^+\rightarrow H$
+  3. $W_t$ has independent Gaussian increments: $m(W_t - W_s) = N(0, (t-s)\mathcal{C})$
+\end{definition}
+Therefore by applying the covariance operator $\mathcal{C}$ to cylindrical Wiener Process $\hat{W}_t$, we can define the $H$-valued $\mathcal{C}$-Wiener process $W_t$ as:
+\begin{equation}
+  W_t = \sum_{i=1}^{\infty} \sqrt{\lambda_i} \beta_i(t) \phi_i = \mathcal{C}^{1/2}\hat{W}_t
+\end{equation}
+where $\lambda_i$ are the eigenvalues of $\mathcal{C}$. 
+So $H$ is actually the Cameron-Matin space of $H_1$.
+
+To sum up, in infinite dimensional diffusion model, suppose we have $u\sim m_0, \eta\sim m_1$, where $m_0$ is the initial measure and $m_1$ is the target measure, all defined on $H$.
+In the diffusion process, we add noise process $\eta$ to $u$, getting $v = u + \eta$. Then $v\sim \nu=m_0 * m_1$. Here we need to do some assumptions on measure $m_0$ and $m_1$: 
+$m_0$ needs to be supported on the Cameron-Martin space $U$ of $m_1$, that is $m_0 \ll m_1$, $m_0$ should be more regular than $m_1$. 
+Only in this way, we can define the Radon-Nikodym derivative of $\nu$ with respect to $m_1$, and the perturbed measure $\nu$ is equivalent to $m_1$.
+
+\section{Related Work}
+Some references: \cite{whittle1954stationary, carrizo2022general, lindgren2020diffusion, sigrist2015stochastic, bolin2020rational, Porcu2023}
+
+\cite{dupont2022generativemodelsdistributionsfunctions}
+\cite{mittal2022pointsfunctionsinfinitedimensionalrepresentations}
+
+Kerrigan et al. \cite{kerrigan2023diffusiongenerativemodelsinfinite} first studied the diffusion model in function space and KL approximation. 
+In \cite{JMLR:v25:23-1271}, Pidstrigach et all. formulate the diffusion model algorithm directly on infinitedimensional spaces, and proves that this formulation is well-posed and satisfies crucial theoretical guarantees.
+This work constructs the score function using conditional expectation and theoretically proves the existence of solutions to the proposed forward and reverse SDEs for arbitrary initial conditions. 
+It also discusses the relationship between the choice of noise process $W_t$, loss norm$\|\cdot\|_K$, and data distribution $\mu_{data}$, providing an explanation for why the diffusion model settings are appropriate for image data.
+In \cite{hagemann2024multileveldiffusioninfinitedimensional}, Hagemann et al. deal with the infinite dimensional case by considering the limit of the finite-dimensional discrete stochastic differential equations and the reverse SDE theory.
+They define the isomorphism by KL expansion.
+In DDO\cite{lim2025scorebaseddiffusionmodelsfunction}, Lim et all. offered an alternative viewpoint with the score defined as a logarithmic derivative of a perturbed measure and sampling done by a Langevin process and its annealed version.
+They generate the notion of score and denoising score matching to infinite dimensions.
+Rissanen et al.\cite{rissanen2023generativemodellinginverseheat} proposed an inverse heat dissipation model for inverse problems(IHDM).
+Images generated by the IHDM model are characterized by a coarse-to-fine structure, smooth interpolations, disentangled color and shape, and strong locality, 
+all resulting from explicitly reversing the heat equation as a generative process. 
+Lim, et al.\cite{NEURIPS2023_76c6f9f2} told the story from the perspective of stochastic evolution equation in Hilbert space, generalizing IHDM to infinite dimensions. 
+In \cite{bond2024infty}, Willcocks et al. defined a diffusion process in infinite dimensional image space based on neural oeprator.
+This work allows training and sampling at arbitrary resolution.
+In \cite{franzese2023continuoustimefunctionaldiffusionprocesses}, Franzese consider the H-valued SDE, which is actually a SPDE.
+They discuss the limits of discretiztion and provide a theoretical framework for infinite dim diffusion between function space.
+
+
+\cite{park2025stochasticoptimalcontroldiffusion}
+\cite{baker2024conditioningnonlinearinfinitedimensionaldiffusion}
+\cite{yang2024simulatinginfinitedimensionalnonlineardiffusion}
+\cite{na2025probabilityflowodeinfinitedimensionalfunction}
 
 \section{For Stationary RF on $\mathbb{R}^d$}
 First we define stationary random field on $\mathbb{R}^d$ as:
@@ -295,7 +403,7 @@ The following theorem shows that solutions of SPDEs with White Noise source term
 where $C_u^W$ is the covariance function of the solution to the SPDE with White Noise source term.
 \end{theorem}
 \begin{proof}
-	The proof is straightforward by using Weiner-Khinchin theorem.
+	The proof is straightforward by using Wiener-Khinchin theorem.
 \end{proof}
 For any precision operator which is a polynomial in the Laplacian, $Q = p(-\Delta)$, such as the Matern operator with $\nu \in \mathbb{N}$, 
 this results in a polynomial $F(Q) = p(\|k\|^2)$.
@@ -326,7 +434,7 @@ We will name any solution to Equ (\ref{SPDE}) a Matern field in the following.
 % that is mean square continuous, we can always have a spectral density $S(k)$. Then the problem comes to:
 % if exists an operator $\mathcal{L}$ s.t. 
 
-Weiner-Khinchin theorem + Spectral Theorem.
+Wiener-Khinchin theorem + Spectral Theorem.
 \subsection{Generalized Matern Field}
 Consider the following SPDE:
 \begin{equation}\label{GWM}
@@ -646,7 +754,7 @@ Consider:
 \end{itemize}
 
 \newpage
-\bibliographystyle{plain}
+\bibliographystyle{unsrt}
 \bibliography{references}
 
 \newpage

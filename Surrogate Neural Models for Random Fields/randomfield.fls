@@ -231,6 +231,7 @@ INPUT d:/texlive/2024/texmf-dist/tex/latex/psnfss/ts1ptm.fd
 INPUT d:/texlive/2024/texmf-dist/tex/latex/psnfss/ts1ptm.fd
 INPUT d:/texlive/2024/texmf-dist/tex/latex/psnfss/ts1ptm.fd
 INPUT d:/texlive/2024/texmf-dist/fonts/tfm/adobe/times/ptmr8c.tfm
+INPUT d:/texlive/2024/texmf-dist/fonts/vf/adobe/times/ptmr8c.vf
 INPUT d:/texlive/2024/texmf-dist/fonts/tfm/public/cm/cmr12.tfm
 INPUT d:/texlive/2024/texmf-dist/fonts/tfm/public/cm/cmr8.tfm
 INPUT d:/texlive/2024/texmf-dist/fonts/tfm/public/cm/cmr6.tfm
@@ -255,7 +256,6 @@ INPUT d:/texlive/2024/texmf-dist/fonts/tfm/public/amsfonts/symbols/msbm7.tfm
 INPUT d:/texlive/2024/texmf-dist/fonts/tfm/public/rsfs/rsfs10.tfm
 INPUT d:/texlive/2024/texmf-dist/fonts/tfm/public/rsfs/rsfs10.tfm
 INPUT d:/texlive/2024/texmf-dist/fonts/tfm/public/rsfs/rsfs5.tfm
-INPUT d:/texlive/2024/texmf-dist/fonts/vf/adobe/times/ptmr8c.vf
 INPUT ./pics/1D_Empirical_vs_Theoretical_Covariance_2048_100.0_2_1.png
 INPUT ./pics/1D_Empirical_vs_Theoretical_Covariance_2048_100.0_2_1.png
 INPUT ./pics/1D_Empirical_vs_Theoretical_Covariance_2048_100.0_2_1.png
