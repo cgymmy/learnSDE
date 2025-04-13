@@ -1,0 +1,65 @@
+\babel@toc {english}{}\relax 
+\contentsline {chapter}{\numberline {1}SDE}{1}{chapter.1}%
+\contentsline {section}{\numberline {1.1}Introduction to SDEs}{1}{section.1.1}%
+\contentsline {subsection}{\numberline {1.1.1}SODEs}{1}{subsection.1.1.1}%
+\contentsline {subsection}{\numberline {1.1.2}The It'so and Stratonovich Stochastic Integrals}{1}{subsection.1.1.2}%
+\contentsline {subsection}{\numberline {1.1.3}Ito's Formula}{1}{subsection.1.1.3}%
+\contentsline {subsection}{\numberline {1.1.4}Mean and Covariance}{1}{subsection.1.1.4}%
+\contentsline {section}{\numberline {1.2}Fokker-Planck-Kolmogorov Equation}{3}{section.1.2}%
+\contentsline {subsection}{\numberline {1.2.1}FPK Equation}{3}{subsection.1.2.1}%
+\contentsline {subsection}{\numberline {1.2.2}Forward and backward Komogorov Equation}{6}{subsection.1.2.2}%
+\contentsline {subsection}{\numberline {1.2.3}Ornstein-Uhlenbeck Process}{6}{subsection.1.2.3}%
+\contentsline {subsection}{\numberline {1.2.4}Langevin SDE}{7}{subsection.1.2.4}%
+\contentsline {section}{\numberline {1.3}What is Diffusion After All?}{9}{section.1.3}%
+\contentsline {subsection}{\numberline {1.3.1}From SDEs}{9}{subsection.1.3.1}%
+\contentsline {subsection}{\numberline {1.3.2}From Flow Map}{9}{subsection.1.3.2}%
+\contentsline {subsection}{\numberline {1.3.3}Solution}{10}{subsection.1.3.3}%
+\contentsline {section}{\numberline {1.4}Reversible Diffusions}{12}{section.1.4}%
+\contentsline {subsection}{\numberline {1.4.1}Definition}{12}{subsection.1.4.1}%
+\contentsline {subsection}{\numberline {1.4.2}Schrödinger Operator}{13}{subsection.1.4.2}%
+\contentsline {chapter}{\numberline {2}Generative Model}{15}{chapter.2}%
+\contentsline {section}{\numberline {2.1}Generative Model}{15}{section.2.1}%
+\contentsline {subsection}{\numberline {2.1.1}Diffusion Model}{15}{subsection.2.1.1}%
+\contentsline {subsubsection}{\numberline {2.1.1.1}Diffusion}{15}{subsubsection.2.1.1.1}%
+\contentsline {paragraph}{DDPM}{15}{section*.5}%
+\contentsline {paragraph}{Score SDEs}{15}{section*.6}%
+\contentsline {subsubsection}{\numberline {2.1.1.2}With labels}{21}{subsubsection.2.1.1.2}%
+\contentsline {paragraph}{With Classifier Guidance}{21}{section*.7}%
+\contentsline {paragraph}{Classifier Guidance Free}{21}{section*.8}%
+\contentsline {subsection}{\numberline {2.1.2}Flow Matching}{21}{subsection.2.1.2}%
+\contentsline {subsection}{\numberline {2.1.3}Variational Auto-Encoder}{23}{subsection.2.1.3}%
+\contentsline {chapter}{\numberline {3}Random Field}{25}{chapter.3}%
+\contentsline {section}{\numberline {3.1}Random Field}{25}{section.3.1}%
+\contentsline {subsection}{\numberline {3.1.1}Definitions}{25}{subsection.3.1.1}%
+\contentsline {subsection}{\numberline {3.1.2}Algorithms}{26}{subsection.3.1.2}%
+\contentsline {subsection}{\numberline {3.1.3}KL expansion of R.F.}{27}{subsection.3.1.3}%
+\contentsline {section}{\numberline {3.2}For Stationary RF on $\mathbb {R}^d$}{27}{section.3.2}%
+\contentsline {subsection}{\numberline {3.2.1}Matern Field}{29}{subsection.3.2.1}%
+\contentsline {subsection}{\numberline {3.2.2}Generalized Matern Field}{30}{subsection.3.2.2}%
+\contentsline {section}{\numberline {3.3}Spatial-Temporal General Random Field on $\mathbb {R}^d\times (0, T)$}{30}{section.3.3}%
+\contentsline {subsection}{\numberline {3.3.1}Stein Model}{30}{subsection.3.3.1}%
+\contentsline {subsection}{\numberline {3.3.2}Evolution Equations Model}{31}{subsection.3.3.2}%
+\contentsline {subsection}{\numberline {3.3.3}Advection-Diffusion SPDE}{31}{subsection.3.3.3}%
+\contentsline {subsection}{\numberline {3.3.4}Generic class of non-stationary models}{32}{subsection.3.3.4}%
+\contentsline {chapter}{\numberline {4}SDE in Function Space}{33}{chapter.4}%
+\contentsline {section}{\numberline {4.1}Introduction}{33}{section.4.1}%
+\contentsline {subsection}{\numberline {4.1.1}Gaussian Measure}{34}{subsection.4.1.1}%
+\contentsline {subsection}{\numberline {4.1.2}Camaron Martin Space}{36}{subsection.4.1.2}%
+\contentsline {section}{\numberline {4.2}Stationary SPDEs}{38}{section.4.2}%
+\contentsline {subsection}{\numberline {4.2.1}Definition}{38}{subsection.4.2.1}%
+\contentsline {subsection}{\numberline {4.2.2}Stochastic Galerkin Method}{39}{subsection.4.2.2}%
+\contentsline {subsection}{\numberline {4.2.3}Algorithm}{41}{subsection.4.2.3}%
+\contentsline {section}{\numberline {4.3}Semilinear Stochastic PDEs}{41}{section.4.3}%
+\contentsline {subsection}{\numberline {4.3.1}Definition}{41}{subsection.4.3.1}%
+\contentsline {subsection}{\numberline {4.3.2}Ito integral solution}{43}{subsection.4.3.2}%
+\contentsline {subsection}{\numberline {4.3.3}Solution}{44}{subsection.4.3.3}%
+\contentsline {section}{\numberline {4.4}SPDE as infinite-dimensional SDEs}{45}{section.4.4}%
+\contentsline {subsection}{\numberline {4.4.1}Kolmogorov's backward equation}{45}{subsection.4.4.1}%
+\contentsline {subsection}{\numberline {4.4.2}Absolutely Continuous Measure}{48}{subsection.4.4.2}%
+\contentsline {subsection}{\numberline {4.4.3}Girsanov's theorem}{48}{subsection.4.4.3}%
+\contentsline {chapter}{Bibliography}{49}{equation.4.4.90}%
+\contentsline {chapter}{\numberline {A}Appendix}{A.1}{appendix.A}%
+\contentsline {section}{\numberline {A.1}Fourier Transform}{A.1}{section.A.1}%
+\contentsline {section}{\numberline {A.2}Polynomial Chaos Expansion}{A.1}{section.A.2}%
+\contentsline {section}{\numberline {A.3}Karhunen-Loeve Expansion}{A.1}{section.A.3}%
+\contentsline {section}{\numberline {A.4}Some proofs}{A.2}{section.A.4}%

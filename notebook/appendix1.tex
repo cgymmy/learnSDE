@@ -1,0 +1,138 @@
+\chapter{Appendix}
+
+\section{Fourier Transform}\label{FourierTransform}
+\begin{definition}
+	Define the Fourier transform of $u(x)$ as:
+	\begin{equation}\left\{
+		\begin{aligned}
+			& \mathcal{F}u(k) = \int_{\mathbb{R}^d} u(x) e^{-ikx} dx,\\
+			& \mathcal{F}^{-1}u(x) = \frac{1}{(2\pi)^{d}}\int_{\mathbb{R}^d} u(k) e^{ikx} dk.
+		\end{aligned}\right.
+	\end{equation}
+\end{definition}
+\section{Polynomial Chaos Expansion}\label{PCE}
+A spectral expansion in $L_{\mu}(D)$ is called chasos expansion. By defining the inner product in $L_{\mu}(D)$ as:
+\begin{equation}
+	\langle f, g \rangle_{\mu} = \int_D f(x) g(x) d\mu(x),
+\end{equation}
+the space of $L_\mu(D)$ is a Hilbert space.
+\begin{theorem}
+	Let $\{\phi_i(x)\}_{i=1}^{\infty}$ be an orthonormal basis of $L_\mu(D)$, i.e.
+	\begin{equation}
+		\begin{aligned}
+			&1. \int_D \phi_i(x) \phi_j(x) d\mu(x) = \delta_{ij},\\
+			&2. {\phi_i(x)} \text{ is dense in } L_\mu(D).
+		\end{aligned}
+	\end{equation}
+	Then the chasos expansion of $\mathcal{M}(x, \omega)\in L_\mu(D)$ is given by:
+	\begin{equation}
+		\mathcal{M}(x, \omega) = \sum_{i=1}^{\infty} c_i \phi_i(x),
+	\end{equation}
+	where $c_i(x)=\langle \mathcal{M}, \phi_i\rangle_{\mu}$ are the coefficients of the expansion.
+\end{theorem}
+	
+
+\section{Karhunen-Loeve Expansion}\label{KLE}
+Let $\mu(x)$ be the mean function and $C(x, y)$ be the covariance function of $\mathcal{M}(x, \omega)$. 
+Assume that $D$ is bounded, $C(x, y)$ is continuous and $\mathcal{M}(x, \cdot)$ has finite variables for all $x\in D$.
+
+
+\begin{theorem}\label{KL-expansion}
+    The Karhunen-Loeve expansion of $\mathcal{M}(x, \omega)$ is given by:
+    \begin{equation}
+        \mathcal{M}(x, \omega) = \mu(x) + \sum_{i=1}^{\infty} \lambda_i \phi_i(x) \xi_i(\omega),
+    \end{equation}
+	where $\lambda_i$ and $\phi_i(x)$ are the eigenvalues and eigenfunctions of the covariance operator $\mathcal{C}$:
+\begin{equation}
+	(\mathcal{C}\phi_i)(x) =\int_D Cov(\mathcal{M}(x, \omega), \mathcal{M}(y, \omega)) \phi_i(y) dy= \int_D C(x, y) \phi_i(y) dy = \lambda_i \phi_i(x).
+\end{equation}
+where $C(x,y), x,y\in D$ is the covariance function of $\mathcal{M}(x, \omega)$. The KL-random variables $\xi_i(\omega)$ are the result of the projection of $\mathcal{M}(x, \omega)$ onto the eigenfunctions $\phi_i(x)$:
+\begin{equation}
+	\xi_i(\omega) = \frac{1}{\sqrt{\lambda_i}}\int_D (\mathcal{M}(x, \omega)-\mu(x)) \phi_i(x) dx.
+\end{equation}
+\end{theorem}
+Note that both $\{\phi_i(x)\}_{i=1}^{\infty}$ and $\{\xi_i(\omega)\}_{i=1}^{\infty}$ are orthonormal bases, 
+one capturing the “spatial” variation  of $\mathcal{M}(x, \omega)$ over $D$ (in terms of $x$), 
+the other capturing the stochastic variation of $\mathcal{M}(x, \omega)$ (in terms of $\omega$).
+
+\begin{theorem}[Mercer's theorem]
+	The covariance function $C(x, y)$ of $\mathcal{M}(x, \omega)$ can be expressed as:
+\begin{equation}
+	C(x, y) = \sum_{i=1}^{\infty} \lambda_i \phi_i(x) \phi_i(y).
+\end{equation}
+It follows that the average variance of the random field over the domain $D$ is equal to $\sum_{i=1}^{\infty} \lambda_i$.
+\end{theorem}
+
+In most cases, the integral eigenvalue problem in Equ (\ref{KL-expansion}) is difficult: analytically solved and high-dimensional.
+
+\section{Some proofs}
+\begin{proof}[Proof of Thm \ref{thmtraceclass}]
+\begin{equation}
+  \begin{aligned}
+    \mathbb{E}\left[\|u(x, \omega)\|^2_H\right] &= \mathbb{E} \left[\sum_{i=1}^\infty \langle u, \phi_i\rangle_H^2\right]\\
+    &= \sum_{i=1}^\infty \mathbb{E} \left[\langle u, \phi_i\rangle_H^2\right]\\
+    &= \sum_{i=1}^\infty \langle \mathcal{C}_u  \phi_i, \phi_i\rangle_H= \sum_{i=1}^\infty \lambda_i
+  \end{aligned}
+\end{equation}
+\end{proof}
+
+\begin{proof}[Proof of Thm \ref{spectral_density_random_field}]
+    \begin{equation}
+    \begin{aligned}
+      S_u(k)&=\left(\mathcal{F}c\right)(k)= \int_{\mathbb{R}^d} e^{-ik h}c(h) dh\\
+      &= \int_{\mathbb{R}^d} e^{-ik(x+h - x)}\mathbb{E}\left[u(x+h)u(x)\right] dh\\
+      &= \mathbb{E}\left[\int_{\mathbb{R}^d} e^{-ik(x+h)}u(x+h)e^{ikx}u(x) dh\right]\\
+      &= \frac{1}{(2\pi)^{d}}\mathbb{E}\left[\left|(\mathcal{F}u)(k)\right|^2\right]
+    \end{aligned}
+  \end{equation}
+\end{proof}
+
+\begin{proof}[Proof of Thm \ref{spectral_solution_matern}]
+	Do Fourier transform on Equ (\ref{SPDE}):
+\begin{equation}
+	\left\{\mathcal{F}(\kappa^2 - \Delta)^{\alpha/2} u\right\}(k) = (\kappa^2 + \|k\|^2)^{\alpha/2}(\mathcal{F}u)(k)
+\end{equation}
+then we have 
+% , and the marginal variance is
+% \begin{equation}
+% 	\sigma^2 = \frac{\Gamma(\nu)}{\Gamma(\nu+d/2) \kappa^{2\nu} (4\pi)^{d/2}}.
+% \end{equation}
+\begin{equation}\label{spectralsolution}
+	(\mathcal{F}u)(k) = \hat{u}(k) = \frac{\hat{W}(k)}{(\kappa^2 + \|k\|^2)^{\alpha/2}} 
+\end{equation}
+Therefore, u can be written as:
+\begin{equation}
+	u(x) = \mathcal{F}^{-1}\left[\frac{\hat{W}(k)}{(\kappa^2 + \|k\|^2)^{\alpha/2}}\right]
+\end{equation}
+Then the stationary covariance function of u is given by:
+\begin{equation}
+	c(x) = Cov(u(x), u(0))
+\end{equation}
+By the definition of spectral density Equ (\ref{spectraldensity}) and Equ (\ref{spectralsolution}) we have:
+\begin{equation}\label{Suk}
+		S_u(k) = \frac{1}{(2\pi)^{d}}\frac{\mathbb{E}\left[\left|\hat{W}(k)\right|^2\right]}{(\kappa^2 + \|k\|^2)^{\alpha}} 
+		= \frac{1}{(\kappa^2 + \|k\|^2)^{\alpha}} 
+\end{equation}
+Then we have the variance of u:
+\begin{equation}
+	c(0) = \frac{1}{(2\pi)^{d}}\int_{\mathbb{R}^d} S_u(k) dk = \frac{\Gamma(\nu)}{(4\pi)^{d/2}\kappa^{2\nu}\Gamma(\alpha) }:=\sigma^2
+\end{equation}
+	By Wiener-Khinchin theorem, we have:
+\begin{equation}
+	\begin{aligned}
+		c(x) &= (\mathcal{F}^{-1}S_u)(x)=\mathcal{F}^{-1}\left[\frac{1}{(\kappa^2 + \|k\|^2)^{\alpha}}\right]\\
+		&= \frac{\|x\|^\nu K_{\nu}(\kappa\|x\|)}{(4\pi)^{d/2}2^{\nu-1}\kappa^{\nu}\Gamma(\alpha)}\\
+		& = \frac{\sigma^2}{2^{\nu -1}\Gamma(\nu)}(\kappa \|x\|)^\nu K_\nu (\kappa \|x\|)
+	\end{aligned}
+\end{equation}
+\end{proof}
+\begin{remark}
+	To make $c(0) = 1$, we can multiple a constant factor $\sigma_1$ to $S_u(k)$:
+	\begin{equation}
+		\sigma_1^2 = \frac{\Gamma(\alpha) \kappa^{2\nu}(4\pi)^{d/2}}{\Gamma(\nu)}
+	\end{equation}
+	Then the corresponding function of u is:
+	\begin{equation}
+		u(x) = \mathcal{F}^{-1}\left[\frac{\sigma_1\hat{W}(k)}{(\kappa^2 + \|k\|^2)^{\alpha/2}}\right]
+	\end{equation}
+\end{remark}

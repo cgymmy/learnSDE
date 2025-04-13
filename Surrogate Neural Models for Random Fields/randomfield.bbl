@@ -52,6 +52,10 @@ Sarthak Mittal, Guillaume Lajoie, Stefan Bauer, and Arash Mehrjou.
 Gavin Kerrigan, Justin Ley, and Padhraic Smyth.
 \newblock Diffusion generative models in infinite dimensions, 2023.
 
+\bibitem{lim2025scorebaseddiffusionmodelsfunction}
+Jae~Hyun Lim, Nikola~B. Kovachki, Ricardo Baptista, Christopher Beckham, Kamyar Azizzadenesheli, Jean Kossaifi, Vikram Voleti, Jiaming Song, Karsten Kreis, Jan Kautz, Christopher Pal, Arash Vahdat, and Anima Anandkumar.
+\newblock Score-based diffusion models in function space, 2025.
+
 \bibitem{JMLR:v25:23-1271}
 Jakiw Pidstrigach, Youssef Marzouk, Sebastian Reich, and Sven Wang.
 \newblock Infinite-dimensional diffusion models.
@@ -60,10 +64,6 @@ Jakiw Pidstrigach, Youssef Marzouk, Sebastian Reich, and Sven Wang.
 \bibitem{hagemann2024multileveldiffusioninfinitedimensional}
 Paul Hagemann, Sophie Mildenberger, Lars Ruthotto, Gabriele Steidl, and Nicole~Tianjiao Yang.
 \newblock Multilevel diffusion: Infinite dimensional score-based diffusion models for image generation, 2024.
-
-\bibitem{lim2025scorebaseddiffusionmodelsfunction}
-Jae~Hyun Lim, Nikola~B. Kovachki, Ricardo Baptista, Christopher Beckham, Kamyar Azizzadenesheli, Jean Kossaifi, Vikram Voleti, Jiaming Song, Karsten Kreis, Jan Kautz, Christopher Pal, Arash Vahdat, and Anima Anandkumar.
-\newblock Score-based diffusion models in function space, 2025.
 
 \bibitem{rissanen2023generativemodellinginverseheat}
 Severi Rissanen, Markus Heinonen, and Arno Solin.
@@ -82,6 +82,10 @@ Sam Bond-Taylor and Chris~G. Willcocks.
 \bibitem{franzese2023continuoustimefunctionaldiffusionprocesses}
 Giulio Franzese, Giulio Corallo, Simone Rossi, Markus Heinonen, Maurizio Filippone, and Pietro Michiardi.
 \newblock Continuous-time functional diffusion processes, 2023.
+
+\bibitem{kerrigan2023functionalflowmatching}
+Gavin Kerrigan, Giosue Migliorini, and Padhraic Smyth.
+\newblock Functional flow matching, 2023.
 
 \bibitem{park2025stochasticoptimalcontroldiffusion}
 Byoungwoo Park, Jungwon Choi, Sungbin Lim, and Juho Lee.

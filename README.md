@@ -117,6 +117,11 @@ See [Theory](./paper/paper.pdf)
   [paper](https://proceedings.neurips.cc/paper_files/paper/2023/file/76c6f9f2475b275b92d03a83ea270af4-Paper-Conference.pdf)
 
 
+## Infinite-dimensional Flow-based model
+
+- **Functional Flow Matching** 2023  
+  [paper](https://arxiv.org/pdf/2305.17209)
+  [code](https://github.com/GavinKerrigan/functional_flow_matching)
 
 - **Conditioning non-linear and infinite-dimensional diffusion processes**  NIPS2024  
   [paper](https://proceedings.neurips.cc/paper_files/paper/2024/file/14ad9256c430e6c8977e470d8e268320-Paper-Conference.pdf)
@@ -132,8 +137,6 @@ See [Theory](./paper/paper.pdf)
 - **Probability-Flow ODE in Infinite-Dimensional Function Spaces** 2025  
   [paper](http://arxiv.org/abs/2503.10219)
 
-
-
 ## Diffusion PDE
 
 - **Generative PDE Control**  
@@ -145,7 +148,8 @@ See [Theory](./paper/paper.pdf)
   [code](https://github.com/jhhuangchloe/DiffusionPDE)
 
 - **Diffusion-Based Inverse Solver on Function Spaces With Applications to PDEs** NIPS2024  
-  [paper](https://ml4physicalsciences.github.io/2024/files/NeurIPS_ML4PS_2024_253.pdf)
+  [paper](https://ml4physicalsciences.git
+  hub.io/2024/files/NeurIPS_ML4PS_2024_253.pdf)
 
 ## Neural Operator
 

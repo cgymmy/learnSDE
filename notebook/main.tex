@@ -1,0 +1,53 @@
+\documentclass[11pt,twoside]{book}
+\usepackage{project}
+\addto\captionsenglish{\renewcommand{\figurename}{Fig.}}
+\renewcommand*{\lstlistlistingname}{List of Programs}
+\def\projectauthor{Guanyu Chen}
+\def\projecttitle{Notebook}
+\def\projectmonth{\today}
+\def\projectdepartment{Zhejiang University}
+% SECTION STYLE
+\setcounter{tocdepth}{2}                            
+\setcounter{secnumdepth}{3}
+\begin{document}
+    \prefrontmatter
+    \frontmatter
+    \pagenumbering{roman} 
+    \cleardoublepage
+    \input{abstract}
+        \markboth{Abstract}{}
+    \cleardoublepage
+    \pdfbookmark{\contentsname}{toc}
+    \renewcommand{\sectionmark}[1]{\markright{#1}}
+    \addtolength{\parskip}{-\baselineskip}  
+    \tableofcontents
+    \begingroup
+        \let\clearpage\relax
+        \vspace*{20pt}
+        \listoftables
+        \vspace*{20pt}
+        \listoffigures
+        \vspace*{20pt}
+    \endgroup
+    \addtolength{\parskip}{\baselineskip}
+    \renewcommand{\sectionmark}[1]{\markright{\thesection\ #1}}
+    \mainmatter
+    \input{chapter1}
+    \cleardoublepage
+    \input{chapter2}
+    \cleardoublepage
+    \input{chapter3}
+    \cleardoublepage
+    \input{chapter4}
+    \cleardoublepage
+    \renewcommand{\sectionmark}[1]{\markright{#1}}
+    \addcontentsline{toc}{chapter}{Bibliography}
+    \bibliographystyle{splncs04.bst}
+    \bibliography{refs}
+    \cleardoublepage
+    \appendix
+    \pretocmd{\chapter}{\pagenumbering{arabic}
+	                          \renewcommand*{\thepage}{\thechapter.\arabic{page}}
+                           }{}{} 
+    \include{appendix1}
+\end{document}

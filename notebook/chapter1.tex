@@ -1,0 +1,603 @@
+\chapter{SDE}
+\section{Introduction to SDEs}
+\subsection{SODEs}
+\begin{problem}
+    Assume we have a Stochastic Differential Equation like:
+    \begin{equation}\label{sde}
+        dX_t = f(X_t, t)dt + G(X_t, t)dW_t
+    \end{equation}
+    where $X_t\in \mathbf{R}^d,f\in \mathcal{L}(\mathbf{R}^{d+1}, \mathbf{R}^d)$, and $W_t$ is m-dim Brownian Motion with diffusion matrix $Q$, 
+    $G(X_t, t)\in \mathcal{L}(\mathbf{R}^{m+1}, \mathbf{R}^d)$, with initial condition $X_0\sim p(X_0)$.
+\end{problem}
+\subsection{The It'so and Stratonovich Stochastic Integrals}
+\subsection{Ito's Formula}
+\begin{theorem}[Ito's Formula]
+    Let $X_t$ be an Ito process defined by \ref{sde}, and let $\phi(X_t)$ be a twice continuously differentiable function of $x$ and $t$. Then the process $f(X_t, t)$ is also an Ito process, and its dynamics are given by:
+    \begin{equation}
+        d\varphi(X_t) = \nabla \varphi(X_t)\cdot dX_t + \frac{1}{2}\operatorname{Tr}\left(GQG^T\nabla^2 \varphi(X_t)dt\right)
+    \end{equation}
+\end{theorem}
+
+
+\subsection{Mean and Covariance}
+We can derive the mean and covariance of SDE.
+By applying Ito's formula to $\phi(x, t)$, then
+\begin{equation}
+    \frac{d E[\phi]}{d t}=E\left[\frac{\partial \phi}{\partial t}\right]+\sum_{i} E\left[\frac{\partial \phi}{\partial x_{i}} f_{i}(X_t, t)\right]+\frac{1}{2} \sum_{i j} E\left[\frac{\partial^{2} \phi}{\partial x_{i} \partial x_{j}}\left[G Q G^{\top}\right]_{i j}\right]
+\end{equation}
+By taking $\phi(X, t)=x_i$ and $\phi(X, t)=x_ix_j-m(t)_im(t)_j$, we have the mean function $m(t)=E[X_t]$ 
+and covariance function $c(t)=E\left[\left(X_t-m(t)\right)\left(X_t-m(t)\right)^T\right]$ respectively, s.t.
+\begin{equation}\label{SDEMC}
+    \left\{
+        \begin{aligned}
+            &\frac{d m}{d t}=E\left[f(X_t, t)\right]\\
+            &\frac{d c}{d t}=E\left[f(X, t)(X-m(t)^T)\right]+E\left[(X-m(t)f^T(X, t))\right]+E\left[G(X_t, t)QG^T(X_t, t)\right]
+        \end{aligned}
+    \right.
+\end{equation}
+So we can estimate the mean and covariance of solution to SDE. However, these equations cannot be used as such, 
+because only in the Gaussian case do the expectation and covariance actually characterize the distribution. 
+
+The linear SDE has explicit solution. Assume the linear SDe has the form 
+\begin{equation}
+    dX_t =\left(K(t)X_t + B(t)\right)dt + G(t)dW_t
+\end{equation}
+where $K(t)\in \mathbf{R}^{d\times d}, B(t)\in \mathbf{R}^{d}, G(t)\in \mathbf{R}^{d\times m}$ are given functions. 
+$X_t \in \mathbf{R}^d$ is the state vector, $W_t \in \mathbf{R}^m$ is the Brownian Motion with diffusion matrix $Q$.
+
+\begin{theorem}
+    The explicit solution to the linear SDE is given by:
+    \begin{equation}\label{explicitsolLSDE}
+        X_t = \Psi(t, t_0)X_0 + \int_{t_0}^t \Psi(t, s)B(s)ds + \int_{t_0}^t \Psi(t, s)G(s)dW_s
+    \end{equation}
+    where $\Psi(t, t_0)$ is the transition matrix of the linear SDE, which satisfies the following matrix ODE:
+    \begin{equation}
+        \frac{d\Psi}{dt} = K(t)\Psi(t, t_0), \Psi(t_0, t_0) = I
+    \end{equation}
+    Hence, $X_t$ is a Gaussian process(A linear transformation of Brownian Motion which is a Gaussian process).
+\end{theorem}
+\begin{proof}
+    Multiply both sides of the SDE by Integrating factor $\Psi(t_0, t)$ and apply Ito's formula to $\Psi(t_0, t)X_t$.
+
+    See Sarkka P49.
+\end{proof}
+As discussed above, we can compute the mean and covariance function of solution to linear SDE. 
+\begin{theorem}
+    The mean and covariance function of solution to linear SDE are given by:
+    \begin{equation}
+        \left\{
+            \begin{aligned}
+                &\frac{d m}{d t} = K(t)m(t) + B(t)\\
+                &\frac{d c}{d t} = K(t)c(t) + c(t)K^T(t)+ G(t)QG^T(t)
+            \end{aligned}
+        \right.
+    \end{equation}
+    with initial condition $m_0 =m(t_0)=E[X_0], c_0 =c(t_0)=Cov(X_0)$. Then the solution is given by solving the above ODEs:
+    \begin{equation}\label{LSDEMC}
+        \left\{
+            \begin{aligned}
+                &m(t) = \Psi(t, t_0)m_0 + \int_{t_0}^t \Psi(t, s)B(s)ds\\
+                &c(t) = \Psi(t, t_0)c_0\Psi^T(t, t_0) + \int_{t_0}^t \Psi(t, s)G(s)QG^T(s)\Psi^T(t, s)ds
+            \end{aligned}
+        \right.
+    \end{equation}
+
+\end{theorem}
+\begin{proof}
+    Apply $F(X, t)=K(t)X + B(t), G(X, t)=G(t)$ to \ref{SDEMC}.
+\end{proof}
+
+Hence the solution to linear SDE is a Gaussian process with mean and covariance function given by the above ODEs.
+\begin{theorem}
+The solution to LSDE is Gaussian:
+\begin{equation}
+    p(X, t) = \mathcal{N}(X(t)|m(t), c(t))
+\end{equation}
+Specially when $X_0 = x_0$ is fixed, then 
+\begin{equation}\label{transitiondensity}
+    p(X,t|X_0=x_0) = \mathcal{N}(X(t)|m(t|x_0), c(t|x_0))
+\end{equation}
+That is, $m_0 = x_0, c_0 = 0$. Then we have:
+\begin{equation}
+    \left\{
+        \begin{aligned}
+            &m(t|x_0) = \Psi(t, t_0)x_0 + \int_{t_0}^t \Psi(t, s)B(s)ds\\
+            &c(t|x_0) = \int_{t_0}^t \Psi(t, s)G(s)QG^T(s)\Psi^T(t, s)ds
+        \end{aligned}
+    \right.
+\end{equation}
+\end{theorem}
+\begin{proof}
+    The proof is straight foward either by applying $m_0 = x_0, c_0 = 0$ to \ref{LSDEMC} or by eq \ref{explicitsolLSDE}.
+\end{proof}
+So, to sum up, linear SDE has great properties! The distribution is completedly decided by the inital condition.
+Also, if we generate $X_0$ to $X_{t_k}$, which means that we begin SDE at $t_i$ with $X_{t_i}$, we have the equivalent discretization of SDE:
+\begin{theorem}
+    Original SDE is weakly, in distribution, equivalent to the following discrete-time SDE:
+    \begin{equation}\label{DTSDE}
+        X_{t_{i+1}} = A_iX_{t_i} + B_i + G_i
+    \end{equation} 
+    where
+    \begin{equation}\left\{
+        \begin{aligned}
+            A_i &= \Psi(t_{i+1}, t_i)\\
+            B_i &= \int_{t_i}^{t_{i+1}} \Psi(t_{i+1}, s)B(s)ds\\
+            G_i &= \int_{t_i}^{t_{i+1}} \Psi(t_{i+1}, s)G(s)QG^T(s)\Psi^T(t_{i+1}, s)ds
+        \end{aligned}\right.
+    \end{equation}
+\end{theorem}
+\begin{proof}
+    The proof is straight forward.
+\end{proof}
+\begin{theorem}
+    The covariance of $X_t$ and $X_s(s<t)$ is given by:
+    \begin{equation}
+        Cov(X_t, X_s) = \Psi(t, s)c(s)
+    \end{equation}
+\end{theorem}
+
+\begin{proof}
+    See Sarkka P88-89.
+\end{proof}
+
+\section{Fokker-Planck-Kolmogorov Equation}
+\subsection{FPK Equation}
+\begin{definition}[Generator]
+    The infinitesimal generator of a stochastic process $X(t)$ for function $\phi(x)$, i.e. $\phi(X_t)$ can be defined as
+    \begin{equation}
+        \mathcal{A} \phi(X_t)=\lim _{s \rightarrow 0^{+}} \frac{E[\phi(X(t+s)]-\phi(X(t))}{s}
+    \end{equation}
+    Where  $\phi$  is a suitable regular function.
+\end{definition}
+This leads to Dynkin's Formula very naturally.
+\begin{theorem}[Dynkin's Formula]
+    \begin{equation}
+        E[f(X_t)]=f(X_0)+E\left[\int_0^t\mathcal{A}(f(X_s))ds\right]
+    \end{equation}
+\end{theorem}
+
+\begin{theorem}
+    If  $X(t)$  s.t. \ref{sde}, then the generator is given:
+\begin{equation}
+    \mathcal{A}(\cdot)=\sum_{i} \frac{\partial(\cdot)}{\partial x_{i}} f_{i}(X_t, t)+\frac{1}{2} \sum_{i, j}\left(\frac{\partial^{2}(\cdot)}{\partial x_{i} \partial x_{j}}\right)\left[G(X_t, t)Q G^{\top}(X_t, t)\right]_{i j}
+\end{equation}
+\end{theorem}
+\begin{proof}
+    See P119 of SDE by Oksendal.
+\end{proof}
+
+\begin{example}
+    If $dX_t=dW_t$, then $\mathcal{A}=\frac{1}{2}\Delta$, where $\Delta$ is the Laplace operator.
+\end{example}
+
+\begin{definition}[Generalized Generator]
+    For $\phi(x, t)$, i.e. $\phi(X_t, t)$, the generator can be defined as:
+    \begin{equation}
+        A_{t} \phi(x, t)=\lim _{s \rightarrow 0^{+}} \frac{E[\phi(X(t+s), t+s)]-\phi(X(t), t)}{s}
+    \end{equation}
+\end{definition}
+
+\begin{theorem}
+    Similarly if $X(t)$ s.t. \ref{sde}, then the generalized generator is given:
+    \begin{equation}
+        \mathcal{A}_t(\cdot)=\frac{\partial(\cdot)}{\partial t}+\sum_{i} \frac{\partial(\cdot)}{\partial x_{i}} f_{i}(X_t, t)+\frac{1}{2} \sum_{i, j}\left(\frac{\partial^{2}(\cdot)}{\partial x_{i} \partial x_{j}}\right)\left[G(X_t, t) Q G^{\top}(X_t, t)\right]_{i j}
+    \end{equation}
+\end{theorem}
+We want to consider the density distribution of $X_t, P(x, t)$
+\begin{theorem}[Fokken-Planck-Kolmogorov equation]
+    The density function $P(x, t)$ of $X_t$ s.t. \ref{sde} solves the PDE:
+    \begin{equation}
+        \frac{\partial P(x, t)}{\partial t}=-\sum_{i} \frac{\partial}{\partial x_{i}}\left[f_{i}(x, t) p(x, t)\right]+\frac{1}{2} \sum_{i, j} \frac{\partial^{2}}{\partial x_{i} \partial x_{j}}\left[\left(G Q G^{\top}\right)_{i j} P(x, t)\right]
+    \end{equation}
+    The PDE is called FPK equation / forwand Kolmogorov equation.
+\end{theorem}
+\begin{proof}
+    Consider the function $\phi(x)$, let $x=X_t$ and apply Ito's Formula:
+    \begin{equation}
+        \begin{aligned}
+            d \phi & =\sum_{i} \frac{\partial \phi}{\partial x_{i}} d x_{i}+\frac{1}{2} \sum_{i, j}\left(\frac{\partial^{2} \phi}{\partial x_{i} \partial x_{j}}\right) d x_{i} d x_{j} \\
+            & =\sum_{i} \frac{\partial \phi}{\partial x_{i}}\left(f_{i}\left(X_t, t\right) d t+\left(G\left(X_{t}, t\right) d W_{t}\right)\right)+\frac{1}{2} \sum_{i, j}\left(\frac{\partial^{2} \phi}{\partial x_{i} \partial x_{j}}\right)\left[G(X_t, t) Q G^{\top}(X_t, t)\right]_{i j} d t .
+            \end{aligned}
+    \end{equation}
+    Take expectation of both sides:
+    \begin{equation}\label{expectation}
+        \frac{d E[\phi]}{d t}=\sum_{i} E\left[\frac{\partial \phi}{\partial x_{i}} f_{i}(X_t, t)\right]+\frac{1}{2} \sum_{i j} E\left[\frac{\partial^{2} \phi}{\partial x_{i} \partial x_{j}}\left[G Q G^{\top}\right]_{i j}\right]
+    \end{equation}
+    So 
+    \begin{equation}\left\{
+        \begin{aligned}
+            &\frac{d E[\phi]}{d t} =\frac{d}{d t}\left[\int \phi(x) P(X_t=x, t) d x\right]=\int \phi(x) \frac{\partial P(x, t)}{\partial t} dx\\
+            &\sum_{i} E\left[\frac{\partial \phi}{\partial x_{i}} f_{i}\right]=\sum_{i} \int\frac{\partial \phi}{\partial x_{i}} f_{i}(X_t=x, t) P d x
+            =-\sum_{i} \int \phi \cdot \frac{\partial}{\partial x_{i}}\left[f_{i}(x, t) p(x, t)\right] d x . \\
+            &\frac{1}{2} \sum_{i j} E\left[\frac{\partial^{2} \phi}{\partial x_{i} \partial x_{j}}\left[G Q G^{\top}\right]_{i j}\right]=\frac{1}{2} \sum_{i j} \int \frac{\partial^{2} \phi}{\partial x_{i} \partial x_{j}}\left[G Q G^{\top}\right]_{i j} P d x
+            =\frac{1}{2} \sum_{i j} \int \phi(x) \frac{\partial^{2}}{\partial x_{i} \partial x_{j}}\left(\left[G Q G^{\top}\right]_{i j} P\right) d x. \\
+        \end{aligned}\right.
+    \end{equation}
+    then
+    $$\int \phi  \frac{\partial P}{\partial t} d X=-\sum_{i} \int \phi  \frac{\partial}{\partial x_{i}}\left(f_{i} P\right) d X+\frac{1}{2} \sum_{i j} \int \phi \frac{\partial^{2}}{\partial x_{i} x_{j}}\left(\left[G Q G^{\top}\right]_{i j} P\right) d x$$
+    Hence $$\int \phi \cdot\left[\frac{\partial P}{\partial t}+\sum_{i} \frac{\partial}{\partial x_{i}}\left(f_{i} P\right)-\frac{1}{2} \sum_{i j} \frac{\partial^{2}}{\partial x_{i} \partial x_{j}}\left(\left[G Q G^{\top}\right]_{i j} P\right)\right] d X=0$$
+    Therefore P s.t.    
+    \begin{equation}
+        \frac{\partial P}{\partial t}+\sum_{i} \frac{\partial}{\partial x_{i}}\left(f_{i}(x, t) P(x, t)\right)-\frac{1}{2} \sum_{i=1} \frac{\partial^{2}}{\partial x_{i} \partial x_{j}}\left(\left[G Q G^{\top}\right]_{i j} P\left(x,t\right)\right)=0
+    \end{equation}
+    Which gives the FPK Equation.
+\end{proof}
+
+\begin{remark}
+    When SDE is time independent:  
+    \begin{equation}
+        d X_t=f(X_t) d t+G(X_t) d W_{t}  
+    \end{equation}
+    then the solution of FPK often converges to a stationary solution s.t.  $\frac{\partial P}{\partial t}=0$.
+\end{remark}
+Here is an another way to show FPK equation: Since we have inner product $\langle\phi, \psi\rangle=\int \phi(x)\psi(x)dx$. Then $E[\phi(x)]=\langle\phi, P\rangle$.
+
+As the equation \ref{expectation} can be written as 
+\begin{equation}
+    \frac{d}{dt}\langle\phi, P\rangle=\langle\mathcal{A}\phi, P\rangle
+\end{equation}
+Where $\mathcal{A}$ has been mentioned above. If we note the adjoint operator of $\mathcal{A}$ as $\mathcal{A}^*$, then we have
+\begin{equation}
+    \langle\phi, \frac{dP}{dt}-\mathcal{A}^*(P)\rangle=0,\forall \phi(x)
+\end{equation}
+Hence we have 
+\begin{theorem}[FPK Equation]
+    \begin{equation}
+    \frac{dP}{dt}=\mathcal{A}^*(P),\operatorname{where} \mathcal{A}^*(\cdot)=-\sum_{i} \frac{\partial}{\partial x_{i}}\left(f_{i}(x, t) (\cdot)\right)+\frac{1}{2} \sum_{i=1} \frac{\partial^{2}}{\partial x_{i} \partial x_{j}}\left(\left[G Q G^{\top}\right]_{i j}(\cdot)\right)
+\end{equation}
+It can be rewritten as:
+\begin{equation}
+    \begin{aligned}
+        \frac{\partial P}{\partial t} &= -\nabla\cdot\left[f(x, t) P(x, t)\right]+\frac{1}{2} \nabla^2\cdot\left[\left(G Q G^{\top}\right) P(x, t)\right] \\
+        &=-\nabla\cdot\left[f(x, t) P(x, t)-\frac{1}{2} \nabla\cdot\left[\left(G Q G^{\top}\right) P(x, t)\right]\right]
+    \end{aligned}
+\end{equation}
+
+We define the probability flux to be:
+\begin{equation}
+    J(x, t) = f(x, t) p(x, t)-\frac{1}{2} \nabla\cdot\left[M(x) p(x, t)\right], M(x)=G(x, t)Q(x, t)G(x, t)^T
+\end{equation}
+Integrating the Fokker-Planck equation over $\mathbb{R}^d$ and using the divergence theorem on the right hand side of  the equation, we have:
+\begin{equation}
+    \frac{d}{dt}\int_{R^d}p(x, t)dx=\int_{R^d}\nabla\cdot J(x, t)dx=0
+\end{equation}
+The stationary Fokker-Planck equation, whose solutions give us the invariant distributions of the diffusion process $X_t$, can be written in the form
+\begin{equation}
+    \nabla \cdot J(x, t)=0
+\end{equation}
+Consequently, the equilibrium probability flux is a divergence-free vector field.
+
+\end{theorem}
+
+\subsection{Forward and backward Komogorov Equation}
+\begin{theorem}
+    Fix $t>s$, let $u(x, s):= E\left[g(X_t)|X_s=x\right]=\int g(y)P(y, t|x, s)dy$, then $u(x, s)$ satisfies the following equation:
+    \begin{equation}
+        \frac{\partial u}{\partial s}+f(x, s)\cdot \nabla u+\frac{1}{2}\nabla \cdot (M\nabla u)=0, \qquad u(x, s)=g(x)
+    \end{equation}
+\end{theorem}
+
+\begin{theorem}[Transition Density(Forward Komogorov Equation)]
+     The transition density $P_{t|s}(x_t|x_s),t\geq s$, which means the propability of transition from $X(s)=x_s$ to $X(t)=x_t$, satisfies the FPK equation with initial condition $P_{s|s}(x|x_s)=\delta(x-x_s)$
+     i.e. for $P_{t|s}(x|y)$, it solves
+     \begin{equation}
+        \frac{\partial P_{t|s}(x|y)}{\partial t}=\mathcal{A}^*(P_{t|s}(x|y)), \operatorname{with} P_{s|s}(x|y)=\delta(x-y)
+     \end{equation}
+\end{theorem}
+
+
+
+
+\subsection{Ornstein-Uhlenbeck Process}
+\begin{definition}[Ornstein-Uhlenbeck Process]
+    The Ornstein-Uhlenbeck Process is defined as:
+    \begin{equation}
+        dX_t = -\alpha X_t dt+\sqrt{2D} dW_t
+    \end{equation}
+    where $\alpha>0, D>0$, normally $D = \frac{1}{\beta}$.
+\end{definition}
+By FPK equation, we have:
+\begin{equation}\left\{
+    \begin{aligned}
+        &\frac{\partial p}{\partial t} = \alpha \frac{\partial}{\partial x}(xp)+D\frac{\partial^2 p}{\partial x^2}\\
+        &p_{0}(x|x_0) = \delta(x-x_0)
+    \end{aligned}\right.\label{OU}
+\end{equation}
+When (\ref{OU}) is  used to model the velocity or position of a particle, the noisy term on the right hand side of the equation is related to thermal fluctuations.
+The solution of (\ref{OU}) can be computed:
+\begin{equation}
+    X_t \sim N(x_0e^{-\alpha t}, \frac{D}{\alpha}(1-e^{-2\alpha t}))
+\end{equation}
+The generator of OU process is:
+\begin{equation}
+    \mathcal{L}=-\alpha x\cdot \nabla +D\Delta
+\end{equation}
+
+We need to study the properties of the generator $\mathcal{L}$. When the unique invariant density of OU is $\rho$, do transformation:
+\begin{equation}
+    \mathcal{L}^*(h\rho)=\rho \mathcal{L}h
+\end{equation}
+The IVP for FPK equation:
+\begin{equation}
+    \frac{\partial p}{\partial t}=\mathcal{L}^*p,\qquad p(x,0)=p_0(x)
+\end{equation}
+becomes:
+\begin{equation}
+    \frac{\partial h}{\partial t}=\mathcal{L}h,\qquad h(x,0)=\rho^{-1}p_0(x)
+\end{equation}
+
+\begin{theorem}
+    Consider the eigenpairs problem for the generator operator $\mathcal{L}$ of OU process:
+    \begin{equation}\left\{
+        \begin{aligned}
+            &\lambda_n = \alpha n\\
+            &\phi_n(x) = \frac{1}{n!}H_n(\sqrt{\alpha \beta}x)
+        \end{aligned}\right.\qquad n=0, \cdots, \infty \label{eigenpairs}
+    \end{equation}
+    where $H_n(x)$ is the $n$-th Hermite polynomial:
+    \begin{equation}
+        H_n(x) = (-1)^n e^{x^2/2}\frac{d^n}{dx^n}(e^{-x^2/2})
+    \end{equation}
+\end{theorem}
+
+
+\subsection{Langevin SDE}
+The Langevin SDE has the following form:
+\begin{equation}
+    X_{t + s} = X_t + \nabla \log p_t(x_t)s + \sqrt{2s}\xi
+\end{equation}
+where $X_t\in \mathcal{R}^d, p_t(x_t)=p(X_t=x_t)$, $\xi\sim N(0, I)$, $I$ is identical matrix of $m \times m$. Our goal is to sample from specific $p(x, t)$.
+
+\begin{theorem}
+    The density of Langevin Diffusion Model converges to $p(x)$ over time. In other words, if $X_t\sim p(x)$, then $X_{t+s}\sim p(x)$ for $\forall s>0$. 
+\end{theorem}
+\begin{proof}
+    Let  $\mu_{t}(f)=E\left[f\left(X_{t}\right)\right]$. Consider  $\mu_{t+\tau}(f)=E\left[f\left(X_{t+\tau}\right)\right]$, as $\tau \rightarrow 0$. Then  
+\begin{equation}
+    \begin{aligned}
+        \mu_{t+\tau}=&E\left[f\left(X_{t}+\nabla \log p_t\left(x_{t}\right) \cdot \tau+\sqrt{2 \tau} \xi\right)\right]\\
+        =&E\left[f\left(x_{t}\right)+\nabla^{\top} f\left(x_{t}\right)\left(\tau \nabla \log p_t\left(x_{t}\right)+\sqrt{2 \tau} \xi\right)\right. \\
+        &+\frac{1}{2}\left.\left(\nabla^{\top}\log p_t(x_t)\tau + \sqrt{2\tau}\xi\right)\nabla^2f(x_t)\nabla\log p_t(x_t)\tau + \sqrt{2\tau}\xi\right]\\
+        =&E\left[f\left(x_{t}\right)\right]+E\left[\tau \nabla^{\top}f\left(x_{t}\right) \nabla \log p_t\left(x_{t}\right)\right]\\
+        &+\frac{\tau^{2}}{2} E\left[\nabla^{\top} \log p\left(x_{t}\right) \cdot \nabla^{2} f\left(x_{t}\right) \cdot \nabla \log p\left(x_{t}\right)\right] +E\left[\tau \xi^{\top} \nabla^{2} f\left(x_{t}\right) \xi\right]
+    \end{aligned}
+\end{equation}
+ 
+The second term:
+\begin{equation}
+    \begin{aligned}
+        &\tau E\left[\nabla^{\top} f \nabla \log p_{t}\right] \\
+        =&\tau \int \nabla f \cdot \nabla \log p_{t} p_{t} d x=\tau \int \nabla f \cdot \nabla p_{t} d x \\
+        =&-\tau \int \operatorname{tr}\left(\nabla^{2} f\right) \cdot p_{t} d x=-\tau E\left[\operatorname{tr}\left(\nabla^{2} f\right)\right]\\
+        =&-\tau E\left[\xi^{\top} \nabla^{2} f \xi\right] \\
+    \end{aligned}
+\end{equation}
+Then 
+\begin{equation}
+    \mu_{t+\tau} =E\left[\frac{1}{2} \nabla^{\top} \log p_{t} \nabla^{2} f \nabla \log p_{t}\right] \cdot \tau^{2}=O\left(\tau^{2}\right)
+\end{equation}
+Hence we have $\frac{d}{dt}(\mu_t)=0$, i.e. $E[\mu_t]=E[\mu_{t+s}]$ for $\forall s>0$.
+\end{proof}
+
+\begin{remark}
+    We define the density of normal distribution $N(x ; \mu, \Sigma)$, and its log-density, gradient of density and score as follows:
+    \begin{equation}\left\{
+        \begin{aligned}
+            &N(x ; \mu, \Sigma)=\frac{1}{\sqrt{(2 \pi)^{d}|\Sigma|}} e^{-\frac{1}{2}(x-\mu)^{\top} \Sigma^{-1}(x-\mu)}\\
+            &\log N(x ; \mu, \Sigma)=-\frac{1}{2}(x-\mu)^{\top} \Sigma^{-1}(x-\mu)-\log \left(\sqrt{(2 \pi)^{d}|\Sigma|}\right) . \\
+            &\nabla_{x} N(x ; \mu, \Sigma)=N(x ; \mu, \Sigma)\Sigma^{-1}(x-\mu) \\
+            &\nabla_{x} \log N(x ; \mu, \Sigma)=-\Sigma^{-1}(x-\mu) .
+        \end{aligned}\right.
+    \end{equation}
+\end{remark}
+
+Actually, Langevin SDE is not necessary be as above i.e. the diffusion term is not necessary to be $\sqrt{2}$. The reason is to guarantee the stationary distribution of $p_t(x)$.
+i.e. the term $\frac{\partial p(x,t)}{\partial t}=0$ in FPK equation. If the diffusion term is $g(t)$, then by FPK equation, we have 
+$$\nabla_x\cdot(fp-\frac{1}{2}g^2(t)\nabla p)=0$$
+then $f(x,t) = \frac{1}{2}g^2(t)\frac{\nabla_x p(x, t)}{p(x,t)}=\frac{1}{2}g^2(t)\nabla_x\log p(x, t)$.
+
+\section{What is Diffusion After All?}
+\subsection{From SDEs}
+At the beginning, the diffusion phenomenon is observed through the motion of particles(Brownian motion). 
+Normally, the SDE can be written as:
+\begin{equation}
+    dX_t = f(X_t, t)dt + G(X_t, t)dW_t
+\end{equation}
+Here, we skip the drift term $f(X_t, t)$ and only consider the diffusion term $G(X_t, t)dW_t$, i.e.
+\begin{equation}
+    dX_t = G(X_t, t)dW_t
+\end{equation}
+Then by FPK equation, we can derive 
+\begin{theorem}
+    The probability density function $p(x, t)$ satisfies:
+\begin{equation}
+    \frac{\partial p(x, t)}{\partial t} = \frac{1}{2} \sum_{i, j} \frac{\partial^{2}}{\partial x_{i} \partial x_{j}}\left[\left(G Q G^{\top}\right)_{i j} p(x, t)\right]=\frac{1}{2}\nabla \cdot \left(\nabla\cdot (GQG^Tp(x, t))\right)
+\end{equation}
+Specially, when $G(X_t, t)=G(t)$ and $Q=I$, we have:
+\begin{equation}
+    \frac{\partial p}{\partial t} = \nabla \cdot \left(\frac{GG^T}{2}\nabla p\right)
+\end{equation}
+\end{theorem}
+So, when $X_0\sim p_0$, we can then compute the diffusion density $p(x, t)$ by solving the FPK equation.
+\subsection{From Flow Map}
+Since we have the definition of \textbf{Flow Map} $\phi_s^t(\mathbf{x})$, which is controlled by vector field $V(\phi_s^t(\mathbf{x}), t)$, 
+then just think the $\phi_0^t(\mathbf{x})$ as the trajectory of the particle beginning at $x$ over time, noted as $\phi_t(x)$.
+Then the vector field is actually the velocity field of the particle, so we have:
+\begin{equation}\left\{
+    \begin{aligned}
+        \frac{\partial \phi_t(\mathbf{x})}{\partial t} &= V(\phi_t(\mathbf{x}), t)\\
+        \phi_0(\mathbf{x}) &= \mathbf{x}
+    \end{aligned}\right.
+\end{equation}
+The motion of particles described by $\phi_t$ determines how the density $p_t(x)$ evolves over time. 
+\begin{theorem}
+    When the initial density $p_0(x)$ is known, the density field can be expressed as:
+\begin{equation}
+    p(\phi_t(x), t) = \frac{p_0(x)}{\left|\det J_{\phi_t}(x)\right|}
+\end{equation}
+\end{theorem}
+
+It should be noted that $\phi_t(x)$ is actually the same as $X_t$ in SDE, then similarly, the density is:
+\begin{equation}
+    \phi_t(x) \sim p_t(x)
+\end{equation}
+So, the flow map is an ODE, which is a special case of SDE without diffusion term. Then we have:
+\begin{theorem}[Continuity Equation]
+    The probability density function $p(x, t)$ of $X_t$ satisfies:
+    \begin{equation}
+        \frac{\partial p(x, t)}{\partial t} = -\nabla\cdot\left(V(x, t)p(x, t)\right)
+    \end{equation}
+    which is called \textbf{Continuity Equation}.
+\end{theorem}
+\begin{remark}
+    The continuity equation can also be derived from the Conservation of Mass. 
+\end{remark}
+
+\begin{theorem}
+    When the incompressible condition is satisfied, that is $\nabla\cdot V=0$, then the flow $\phi_t(x)$ is \textbf{measure preserving}, that is:
+    \begin{equation}
+        \left|\det J_{\phi_t}(x)\right|=1, \text{i.e.}p(\phi_t(x), t) = p_0(x)
+    \end{equation}
+\end{theorem}
+
+\begin{definition}[Flux]
+    We find that $V(x, t)p(x, t)$ is actually the flux $\mathcal{F}(x, t)$ of the particle.
+\end{definition}
+Then the continuity equation can be rewritten as:
+\begin{equation}
+    \frac{\partial p(x, t)}{\partial t} = -\nabla\cdot\left(\mathcal{F}(x, t)\right)
+\end{equation}
+Then we find that if the flux s.t. $F = -\frac{1}{2}\nabla\cdot\left(GQG^Tp(x, t)\right)$, then $p(x, t)$ describes the diffusion process. This is the famous Fick's Law.
+\begin{theorem}[Fick's Law]
+    Fick's Law describes the relationship between the flux $\mathcal{F}(x, t)$ of the particle and the concentration/density $p(x, t)$.:
+    \begin{equation}
+        \mathcal{F}(x, t) = -\frac{1}{2}\nabla\cdot\left(GQG^Tp(x, t)\right)
+    \end{equation}
+    Specifically, when $G(X_t, t)=G(t)$ and $Q=I$, we have:
+    \begin{equation}
+        \mathcal{F}(x, t) = -\frac{GG^T}{2}\nabla p(x, t)
+    \end{equation}
+    Then 
+    \begin{equation}
+        \frac{\partial p(x, t)}{\partial t} = \nabla \cdot\left(\frac{GG^T}{2}\nabla p(x, t)\right)
+    \end{equation}
+\end{theorem}
+\subsection{Solution}
+Note $-\frac{GG^T}{2}$ is actually the diffusion coefficient $\mathcal{D}$. Then we have the diffusion equation:
+\begin{equation}
+    \frac{\partial p(x, t)}{\partial t} = \nabla \cdot\left(\mathcal{D}\nabla p(x, t)\right)
+\end{equation}
+with initial condition $p(x, 0) = p_0(x)$. We can use the Fourier Transform to solve this equation. 
+\begin{theorem}
+    The solution to the diffusion equation is:
+    \begin{equation}
+        \begin{aligned}
+            p(x, t) &= \mathscr{F}^{-1}\left[\tilde{p}_0(\lambda)\exp\left(-\lambda^T\mathcal{D}\lambda t\right)\right]=\left(p_0\star \mathcal{G}_{2t\mathcal{D}}\right)(x)\\
+            & = \frac{1}{\sqrt{(4\pi t)^d\det(\mathcal{D})}}\int_{\mathcal{R}^d}\left(p_0(\xi)\exp\left(-\frac{1}{4t}\left(x-\xi\right)^T\mathcal{D}^{-1}\left(x-\xi\right)\right)\right)d\xi
+        \end{aligned}
+    \end{equation}
+    where $\tilde{p}_0(\lambda) = \mathscr{F}(p_0(x))$ is the Fourier Transform of $p_0(x)$. $\mathcal{G}_{2t\mathcal{D}}$ is the Gaussian Kernel with variance $2t\mathcal{D}$.
+\end{theorem}
+\begin{proof}
+    First, assume the Fourier Transform of $p(x, t)$ is $\tilde{p}(x, t)$:
+    \begin{equation}\left\{
+        \begin{aligned}
+            \tilde{p}(x, t) &= \mathscr{F}\left[p(x, t)\right]=\int_{\mathcal{R}^d} p(x, t)e^{-i\lambda\cdot x}dx\\
+            p(x, t) &= \mathscr{F}^{-1}\left[\tilde{p}(x, t)\right]=\frac{1}{(2\pi)^d}\int_{\mathcal{R}^d} \tilde{p}(x, t)e^{i\lambda\cdot x}dx
+        \end{aligned}\right.
+    \end{equation} 
+    Then, we have:
+    \begin{equation}\left\{
+        \begin{aligned}
+            \mathscr{F}\left[\nabla\cdot \mathbf{v}\right] &= i\lambda\cdot \mathscr{F}\left[\mathbf{v}\right]\\
+            \mathscr{F}\left[\mathcal{D}\nabla p\right] &= i\mathcal{D}\lambda\mathscr{F}\left[p\right]
+        \end{aligned}\right.
+    \end{equation}
+    Then, 
+    \begin{equation}
+        \begin{aligned}
+            &\mathscr{F}\left[\frac{\partial p}{\partial t}\right] = \frac{d}{dt}\mathscr{F}\left[p\right] = \mathscr{F}\left[\nabla\cdot\left(\mathcal{D}\nabla p\right)\right] \\
+            =& i\lambda\cdot \mathscr{F}\left[\mathcal{D}\nabla p\right]=-\lambda^T\mathcal{D}\lambda \mathscr{F}\left[p\right]
+        \end{aligned}
+    \end{equation}
+    where $\lambda = \left(\lambda_1, \lambda_2, \cdots, \lambda_d\right)^T$. 
+
+    Therefore, $\mathscr{F}\left[p\right] = \tilde{p_0}\exp\left(-\lambda^T\mathcal{D}\lambda t\right)$. 
+    Since $\mathscr{F}\left[N(x|0, 2t\mathcal{D})\right]=\exp\left(-\lambda^T\mathcal{D}\lambda t\right)$, which gives the theorem.
+\end{proof}
+
+\begin{remark}
+    Specially, 1. When the initial density $p_0(x)$ is $\delta(x - x_0)$, the solution is:
+\begin{equation}
+    p(x, t) = \frac{1}{\sqrt{(4\pi t)^d\det{\mathcal{D}}}}\exp\left(-\frac{(x-x_0)^T\mathcal{D}^{-1}(x-x_0)}{4t}\right)\sim N(x_0, 2t\mathcal{D})
+\end{equation}
+2. When the initial density $p_0(x)$ is a Gaussian distribution $N(\mu, \Sigma)$, the solution is:
+\begin{equation}
+    p(x, t) = \frac{1}{\sqrt{(2\pi)^d\det(\Sigma + 2t\mathcal{D})}}\exp\left(-\frac{1}{2}\left(x-\mu\right)^T\left(\Sigma + 2t\mathcal{D}\right)^{-1}\left(x-\mu\right)\right)\sim N(\mu, \Sigma + 2t\mathcal{D})
+\end{equation}
+(The Fourier transform of $\left(\mu, \Sigma \right)$ is $\exp \left(-i\lambda^T\mu + \frac{1}{2}\lambda^T\Sigma\lambda\right)$.)
+\end{remark}
+
+Till here, we can see the insight of diffusion. It is actually a process of smoothing the initial density by the Gaussian Kernel.
+
+
+\section{Reversible Diffusions}
+\subsection{Definition}
+\begin{definition}[Time-reversible]
+    A stationary stochastic process $X_t$ is called time-reversible 
+    if for every $T\in (0, +\infty)$, the process $X_{T-t}$ has the same distribution as $X_t$.
+\end{definition}
+
+\begin{theorem}
+    A stationary Markov process $X_t$ in $\mathbb{R}^d$ with generator $\mathcal{L}$ and invariant measure $\mu$ is time-reversible 
+    if and only if $\mathcal{L}$ is self-adjoint in $L^2(\mathbb{R}^d; \mu)$.
+\end{theorem}
+
+Since for general SDE (\ref{sde}), the generator operator $\mathcal{L}$ and its self adjoint operator $\mathcal{L}^*$ are given by:
+\begin{equation}\left\{
+\begin{aligned}
+    \mathcal{L}(\cdot)&=\sum_{i} \frac{\partial(\cdot)}{\partial x_{i}} f_{i}(x, t)+\frac{1}{2} \sum_{i, j}\left(\frac{\partial^{2}(\cdot)}{\partial x_{i} \partial x_{j}}\right)\left[GQ G^{\top}\right]_{i j}\\
+    &= f\cdot \nabla(\cdot) + \frac{1}{2} \left(M:\nabla\cdot \nabla\right)(\cdot)\\
+    \mathcal{L}^*(\cdot)&=-\sum_{i} \frac{\partial}{\partial x_{i}}\left(f_{i}(x, t) (\cdot)\right)+\frac{1}{2} \sum_{i=1} \frac{\partial^{2}}{\partial x_{i} \partial x_{j}}\left(\left[G Q G^{\top}\right]_{i j}(\cdot)\right)\\
+    & = \nabla\cdot (-f(\cdot)+\frac{1}{2}\nabla\cdot(M(\cdot)))
+\end{aligned}\right.
+\end{equation}
+We assume that the diffusion process has a unique invariant distribution which is the solution of the stationary Fokker-Planck equation:
+\begin{equation}
+    \mathcal{L}^*\rho_s=0
+\end{equation}
+Notice that we can write the invariant distribution $\rho_s$ in the form:
+\begin{equation}
+    \rho_s = e^{-\Phi}
+\end{equation}
+where $\Phi$ is a potential function.
+\begin{theorem}
+    For stationary process $X_t$ with invariant distribution $\rho_s$.
+    To guarantee the operator $\mathcal{L}$ is symmetric if and only if $J(\rho_s)=0$. This is the detailed balance condition.
+    So, expand the stationary probability flux:
+    \begin{equation}
+        f = \frac{1}{2}\rho_s^{-1}\nabla\cdot\left(M\rho_s\right)
+    \end{equation}
+\end{theorem}
+
+Consider now an arbitrary ergodic diffusion process $X_t$, the solution of (\ref{sde}) with invariant distribution $\rho_s$.
+We can decompose this process into a reversible and a nonreversible part in the sense that the generator  can be decomposed into a symmetric and antisymmetric part.
+
+\begin{theorem}
+    The generator of an arbitrary diffusion process in $\mathbb{R}^d$ can we written as:
+    \begin{equation}
+        \mathcal{L} = \rho_s^{-1}J_s\cdot \nabla + \frac{1}{2}\rho_s^{-1}\nabla\cdot\left(M\rho_s\nabla\right):=\mathcal{S}+\mathcal{A}
+    \end{equation}
+    where $\mathcal{S}$ is the symmetric part of $\mathcal{L}$ and $\mathcal{A}$ is the antisymmetric part of $\mathcal{L}$.
+\end{theorem}
+
+\begin{example}
+    When $M = 2I$, then 
+    \begin{equation}
+        f = \rho^{-1}\nabla\rho = \nabla \log \rho
+    \end{equation}
+    which is the form of Langevin equation.
+\end{example}
+\subsection{Schrödinger Operator}
+...
+

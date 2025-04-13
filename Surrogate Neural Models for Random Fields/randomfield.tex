@@ -87,6 +87,7 @@
     \end{aligned}
 \end{equation}
 \end{definition}
+In fact, a random field is an infinite-dimensional distribution over functions, and can therefore be understood as a Function Distribution/Function Space. 
 Classical methods to simulate random field are based on polynomial chaos expansion \ref{PCE} and Karhunen-Loeve expansion \ref{KLE}, See \cite{Lord_Powell_Shardlow_2014}.
 Random field can be regarded as a Hilbert space($L^2(\Omega, H)$)-valued random variable.
 \begin{definition}[$L^p(\Omega, H)$ space]
@@ -107,6 +108,7 @@ Then we can define the inner product:
       \langle\mathcal{C}_{XY}\phi, \psi\rangle_H = \operatorname{Cov}\left(\langle X, \phi\rangle_H, \langle Y, \psi\rangle_H\right), \forall \phi, \psi \in H
   \end{equation}
 \end{definition}
+The covariance operator plays a special role as it characterizes the properties of the random field, like regularity and smoothness.
 
 \begin{example}[$H = \mathbb{R}^d$]
   In finite dimensional case $H = \mathbb{R}^d$, the covariance matrix conincides with the covariance operator. 
@@ -141,13 +143,13 @@ Then we can define the inner product:
   The measure $m$ is called probability measure.
 \end{example}
 
-\begin{theorem}\label{thmtraceclass}
+\begin{definition}[Trace class]\label{thmtraceclass}
   For random field $u(x,\omega)$ with the covariance operator $\mathcal{C}$, suppose $\mathcal{C}$ is trace class with eigenpairs $(\lambda_i, \phi_i)$, 
   then the second moment of $u(x, \omega)$ is given by:
   \begin{equation}
     \mathbf{E}[\|u(x, \omega)\|^2_H] = \sum_{i=1}^{\infty} \lambda_i\leq \infty
   \end{equation}
-\end{theorem}
+\end{definition}
 
 \begin{definition}[H-valued Gaussian random variable]
   Let $H$ be a Hilbert space. An H-valued random variable $u(x, \omega)$ is Gaussian if 
@@ -189,23 +191,28 @@ First we have some definitions:
   Like $m_2$ is the Lebesgue measure, $m_1(dx) = p(x)dx$, then the Radon-Nikodym derivative is the probability density function $p(x)$. 
 \end{example}
 
-\begin{remark}
-  The KL-divergence is actually related to the Radon-Nikodym derivative:
+\begin{definition}[KL-divergence]
+  The KL-divergence is actually related to the Radon-Nikodym derivative: if $m_1 \ll m_2$, then:
   \begin{equation}
     \operatorname{KL}(m_1||m_2) = \int_H \log\left(\frac{dm_1}{dm_2}(x)\right) dm_1(x) 
     = \int_H \log\left(f(x)\right) f(x)dm_2(x)
   \end{equation}
+  This is the KL divergence between measures. We define the Radon-Nikodym derivative to be infinite if $m_1 \not\ll m_2$.
   So for $H=\mathbb{R}^d, dm_1 = p_1(x)dx, dm_2 = p_2(x)dx$, the KL-divergence can be written as:
   \begin{equation}
     \operatorname{KL}(m_1||m_2) = \int_{\mathbb{R}^d} \log\left(\frac{p_1(x)}{p_2(x)}\right) p_1(x) dx
   \end{equation}
   The Radon-Nikodym derivative captures local density ratios, and the KL divergence is their global average.
-\end{remark}
+\end{definition}
 
 Unlike the finite dimensional case, there is no natural Brownian Motion process in infinite dimensions. 
-So for any Hilbert space $H$, we need to define the Brownian Motion process on $H$ by using the Cameron-Martin space $U$.
-So if we want to define the Diffusion Process on infinite dimensional space, 
+Here is why: For example, the space time white noise $W_t$ is defined on $H=L^2([0, 1])$, but it doesn't take values in $H$ a.s.
+Since the white noise has covariance operator $I$, it is not trace class in $H$. 
+So for Hilbert space $H$, we need to define the Brownian Motion process on $H$ by using the Cameron-Martin space $U$.
+% In Cameron-Martin space, the white noise is a trace class operator.
+In other words, if we want to define the Diffusion Process on infinite dimensional space, 
 we need to consider the direction in $H$ along which translating a measure preserves the absolutely continuity.
+
 
 \begin{definition}[Cameron-Martin Space]
 The Cameron-Martin space $U$ is defined as:
@@ -214,7 +221,7 @@ The Cameron-Martin space $U$ is defined as:
 \end{equation} 
 where $T_h$ is the translation operator: $T_h(u)=u + h$, $T_h^\#m$ is the push-forward measure of $m$ by $T_h$, 
 \end{definition}
-
+So the Cameron-Martin space $U$ is more regular than the original space $H$.
 
 \begin{theorem}[Cameron-Martin Theorem]
   For $m=N(0, \mathcal{C})$, we have:
@@ -240,6 +247,10 @@ This can be generalized to general Gaussian measure cases:
   Specifically, if $\mathcal{C}_1=\mathcal{C}_2=\mathcal{C}$, we have the Radon Nikodym derivative:
   \begin{equation} 
     \frac{dm_1}{dm_2}(u) = \exp{\left(\langle \mu_1 - \mu_2, \mathcal{C}^{-1}(u - \mu_2) \rangle_H - \frac{1}{2}\|\mathcal{C}^{-1/2}(\mu_1 - \mu_2)\|^2_H\right)}
+  \end{equation}
+  Therefore, the KL divergence between $m_1$ and $m_2$ is:
+  \begin{equation}
+    \operatorname{KL}[m_1|m_2] = \frac{1}{2}\left(\|\Delta\mu, C^{-1}\Delta \mu\|^2_H\right)
   \end{equation}
 \end{theorem}
 Meanwhile, for Gaussian measure $m=N(\mu, \mathcal{C})$, we have the characteristic functional:
@@ -272,20 +283,36 @@ In the diffusion process, we add noise process $\eta$ to $u$, getting $v = u + \
 $m_0$ needs to be supported on the Cameron-Martin space $U$ of $m_1$, that is $m_0 \ll m_1$, $m_0$ should be more regular than $m_1$. 
 Only in this way, we can define the Radon-Nikodym derivative of $\nu$ with respect to $m_1$, and the perturbed measure $\nu$ is equivalent to $m_1$.
 
+Normally, to guarantee the diffusion progress, we have two choices: 1. The support of $m_{data}$ is contained in Camaron-Martin space of $N(0, \mathcal{C}_{data})$ 2. Choose a large space $K$, s.t. the support of $m_{data}$ and $N(0, \mathcal{C})$ are supported on $K$.
+
+\begin{definition}[Problem Setting]
+  Assume we have $H$-valued Random Fields $\mathcal{M(x, \omega)}$ defined on $(H, \mathcal{B}(H), m)$ and $\mathcal{N(x, \omega)}$ defined on $(H, \mathcal{B}(H), m_0)$, where $m_0$ is the initial probability measure.
+  We consider the following problem: 
+  \begin{itemize}
+    \item How to build a generative model to sample from the unknown measure $m_0$? 
+    Conversly, given the target measure and initial measure, how to build the push forward operator $\mathcal{L}$?
+    \item Given the initial measure $m_0$ and the push forward operator $\mathcal{L}$, what is the measure $m_t, \forall t\in [0, 1]$?
+  \end{itemize}
+\end{definition}
+
 \section{Related Work}
 Some references: \cite{whittle1954stationary, carrizo2022general, lindgren2020diffusion, sigrist2015stochastic, bolin2020rational, Porcu2023}
 
 \cite{dupont2022generativemodelsdistributionsfunctions}
 \cite{mittal2022pointsfunctionsinfinitedimensionalrepresentations}
 
+\paragraph{Diffusion model in function space}
 Kerrigan et al. \cite{kerrigan2023diffusiongenerativemodelsinfinite} first studied the diffusion model in function space and KL approximation. 
-In \cite{JMLR:v25:23-1271}, Pidstrigach et all. formulate the diffusion model algorithm directly on infinitedimensional spaces, and proves that this formulation is well-posed and satisfies crucial theoretical guarantees.
-This work constructs the score function using conditional expectation and theoretically proves the existence of solutions to the proposed forward and reverse SDEs for arbitrary initial conditions. 
-It also discusses the relationship between the choice of noise process $W_t$, loss norm$\|\cdot\|_K$, and data distribution $\mu_{data}$, providing an explanation for why the diffusion model settings are appropriate for image data.
-In \cite{hagemann2024multileveldiffusioninfinitedimensional}, Hagemann et al. deal with the infinite dimensional case by considering the limit of the finite-dimensional discrete stochastic differential equations and the reverse SDE theory.
-They define the isomorphism by KL expansion.
+This work can be viewed as a generalization of DDPM in function space. They first combine the diffusion model with neural operators.
+But they only consider the Gaussian measure and do discretiztion on function space to which the KL approximation is sensitive.
 In DDO\cite{lim2025scorebaseddiffusionmodelsfunction}, Lim et all. offered an alternative viewpoint with the score defined as a logarithmic derivative of a perturbed measure and sampling done by a Langevin process and its annealed version.
 They generate the notion of score and denoising score matching to infinite dimensions.
+In IDDM\cite{JMLR:v25:23-1271}, Pidstrigach et all. formulate the diffusion model algorithm directly on infinitedimensional spaces, and proves that this formulation is well-posed and satisfies crucial theoretical guarantees.
+They discussed three challenges in infinite dimensional diffusion model: 1. how to define the noise function $W_t$ 2. how to define the score function and the loss function 3. how to sample from measure space.
+All these challenges are related to the data distribution. They provide a theoretical framework for infinite dimensional diffusion model on how to solve these challenges.
+The difference between DDO and IDDM is that DDO developed infinite dimensional score matching in discrete time and Langevin process, while IDDM developed infinite dimensional diffusion model in continuous time.
+In \cite{hagemann2024multileveldiffusioninfinitedimensional}, Hagemann et al. deal with the infinite dimensional case by considering the limit of the finite-dimensional discrete stochastic differential equations and the reverse SDE theory.
+They define the isomorphism by KL expansion.
 Rissanen et al.\cite{rissanen2023generativemodellinginverseheat} proposed an inverse heat dissipation model for inverse problems(IHDM).
 Images generated by the IHDM model are characterized by a coarse-to-fine structure, smooth interpolations, disentangled color and shape, and strong locality, 
 all resulting from explicitly reversing the heat equation as a generative process. 
@@ -294,6 +321,9 @@ In \cite{bond2024infty}, Willcocks et al. defined a diffusion process in infinit
 This work allows training and sampling at arbitrary resolution.
 In \cite{franzese2023continuoustimefunctionaldiffusionprocesses}, Franzese consider the H-valued SDE, which is actually a SPDE.
 They discuss the limits of discretiztion and provide a theoretical framework for infinite dim diffusion between function space.
+
+\paragraph{Flow-based model in function space}
+The first work on flow-based model in function space is proposed by Kerrigan et al.\cite{kerrigan2023functionalflowmatching}. 
 
 
 \cite{park2025stochasticoptimalcontroldiffusion}

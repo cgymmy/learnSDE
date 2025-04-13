@@ -4,45 +4,45 @@ The top-level auxiliary file: randomfield.aux
 The style file: unsrt.bst
 Database file #1: references.bib
 Warning--empty journal in Porcu2023
-You've used 23 entries,
+You've used 24 entries,
             1791 wiz_defined-function locations,
-            562 strings with 8267 characters,
-and the built_in function-call counts, 4943 in all, are:
-= -- 368
-> -- 340
+            565 strings with 8380 characters,
+and the built_in function-call counts, 5092 in all, are:
+= -- 377
+> -- 351
 < -- 3
-+ -- 121
-- -- 98
-* -- 318
-:= -- 802
-add.period$ -- 61
-call.type$ -- 23
-change.case$ -- 22
++ -- 125
+- -- 101
+* -- 324
+:= -- 825
+add.period$ -- 63
+call.type$ -- 24
+change.case$ -- 23
 chr.to.int$ -- 0
-cite$ -- 24
-duplicate$ -- 191
-empty$ -- 475
-format.name$ -- 98
-if$ -- 1090
+cite$ -- 25
+duplicate$ -- 196
+empty$ -- 493
+format.name$ -- 101
+if$ -- 1124
 int.to.chr$ -- 0
-int.to.str$ -- 23
+int.to.str$ -- 24
 missing$ -- 14
-newline$ -- 107
-num.names$ -- 25
-pop$ -- 113
+newline$ -- 111
+num.names$ -- 26
+pop$ -- 120
 preamble$ -- 1
 purify$ -- 0
 quote$ -- 0
-skip$ -- 111
+skip$ -- 115
 stack$ -- 0
 substring$ -- 178
-swap$ -- 47
+swap$ -- 48
 text.length$ -- 3
 text.prefix$ -- 0
 top$ -- 0
 type$ -- 0
 warning$ -- 1
-while$ -- 40
-width$ -- 25
-write$ -- 221
+while$ -- 41
+width$ -- 26
+write$ -- 229
 (There was 1 warning)

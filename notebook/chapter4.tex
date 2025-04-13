@@ -1,0 +1,839 @@
+\chapter{SDE in Function Space}
+Reference: \cite{Prato_Zabczyk_2014, Lord_Powell_Shardlow_2014, Kolmogorov_Equations_for_Stochastic_PDEs}
+\section{Introduction}
+\begin{definition}
+    Random field $\mathcal{M}(x, \omega)$, where $x\in D$ and $\omega \in \Omega$, is defined as:
+\begin{equation}
+    \begin{aligned}
+        & \mathcal{M}(x, \cdot) \text{ is a random variable defined on the probability space } (\Omega, \mathcal{F}, P),\\
+        & \mathcal{M}(\cdot, \omega) \text{ is a deterministic function of } x.
+    \end{aligned}
+\end{equation}
+\end{definition}
+In fact, a random field is an infinite-dimensional distribution over functions, and can therefore be understood as a Function Distribution/Function Space. 
+Classical methods to simulate random field are based on polynomial chaos expansion \ref{PCE} and Karhunen-Loeve expansion \ref{KLE}, See \cite{Lord_Powell_Shardlow_2014}.
+Random field can be regarded as a Hilbert space($L^2(\Omega, H)$)-valued random variable.
+\begin{definition}[$L^p(\Omega, H)$ space]
+  Let $(\Omega, \mathcal{F}, \mathbb{P})$ be a probability space and $H$ is a Hilbert space with norm $\|\cdot\|$. Then $\mathcal{L}^p(\Omega, H)$ with $1\leq p<\infty$ is the space
+  of H-valued $\mathcal{F}$-measurable random vaiables $X:\Omega\rightarrow H$ with $\mathbf{E}[\|X\|^p]<\infty$ and a Banach space with norm:
+  \begin{equation}
+      \|X\|_{\mathcal{L}^p(\Omega, H)}:=\left(\int_\Omega \|X(\omega)\|^pdP(\omega)\right)^{\frac{1}{p}}=\mathbf{E}[\|X\|^p]^{\frac{1}{p}}
+  \end{equation}
+\end{definition}
+Then we can define the inner product: 
+\begin{equation}
+  \langle X, Y\rangle_{\mathcal{L}^2(\Omega, H)}:=\int_\Omega \langle X(\omega), Y(\omega)\rangle_H dP(\omega)
+\end{equation}
+
+\begin{definition}[uncorrelated, covariance operator]
+  Let $H$ be a Hilbert space. A linear operator $\mathcal{C}:H\rightarrow H$ is the covariance of $H$-valued random variables $X$ and $Y$ if 
+  \begin{equation}
+      \langle\mathcal{C}_{XY}\phi, \psi\rangle_H = \operatorname{Cov}\left(\langle X, \phi\rangle_H, \langle Y, \psi\rangle_H\right), \forall \phi, \psi \in H
+  \end{equation}
+\end{definition}
+The covariance operator plays a special role as it characterizes the properties of the random field, like regularity and smoothness.
+
+\begin{example}[$H = \mathbb{R}^d$]
+  In finite dimensional case $H = \mathbb{R}^d$, the covariance matrix conincides with the covariance operator. 
+  \begin{equation}
+      \begin{aligned}
+          &\operatorname{Cov}\left(\langle X, \phi\rangle, \langle Y, \psi\rangle\right) 
+          = \operatorname{Cov}\left(\phi^T X, \psi^T Y\right)\\
+          =&\mathbf{E}\left[\phi^T(X-\mu_X)(Y-\mu_Y)^T\psi\right] 
+          = \phi^T\mathbf{E}\left[(X-\mu_X)(Y-\mu_Y)^T\right]\psi\\
+          =&\phi^T Cov(X, Y)\psi = \langle C_{XY}\phi, \psi\rangle
+      \end{aligned}
+  \end{equation}
+\end{example}
+
+\begin{example}[X=Y]
+  When $X = Y$ noted as $u(x, \omega)\in H$, the covariance operator:
+  The covariance operator $\mathcal{C}$ can be defined as:
+  \begin{equation}
+    \begin{aligned}
+      &Cov\left(\langle u, \phi\rangle_{H}, \langle u, \psi\rangle_{H}\right)\\
+      =&\mathbb{E}_m\left[\langle u, \phi\rangle_{H}\langle u, \psi\rangle_{H}\right]\\
+      =& \int_{H}\langle u, \phi\rangle_{H}\langle u, \psi\rangle_{H} m(du)\\
+      =&\int_D\left(\int_D Cov(u(x), u(y)) \phi(x) dx \right) \psi(y) dy\\
+      =& \langle\mathcal{C}_u\phi, \psi\rangle_{H} 
+    \end{aligned}
+   \end{equation}
+  So that for $\forall x\in D$,
+  \begin{equation}
+  (\mathcal{C}_u\phi)(x) = \int_D Cov(u(x), u(y)) \phi(y) dy
+  \end{equation}
+  That is any $L^2(D)$-valued random variable $u(x)$ can defines a R.F. with $\mu(x)$ and $C(x, y)$ equal to the integral kernel of $\mathcal{C}$.
+  The measure $m$ is called probability measure.
+\end{example}
+
+\begin{definition}[Trace class]\label{thmtraceclass}
+  For random field $u(x,\omega)$ with the covariance operator $\mathcal{C}$, suppose $\mathcal{C}$ is trace class with eigenpairs $(\lambda_i, \phi_i)$, 
+  then the second moment of $u(x, \omega)$ is given by:
+  \begin{equation}
+    \mathbf{E}[\|u(x, \omega)\|^2_H] = \sum_{i=1}^{\infty} \lambda_i\leq \infty
+  \end{equation}
+\end{definition}
+
+\begin{definition}[H-valued Gaussian random variable]
+  Let $H$ be a Hilbert space. An H-valued random variable $u(x, \omega)$ is Gaussian if 
+  $\langle u(x, \omega), \phi\rangle_H$ is a real-valued Gaussian random variable for all $\phi \in H$.
+  Here the real-valued Gaussian Random Variable is defined as:
+  \begin{equation}
+    \langle u, \phi\rangle_H \sim N(\langle \mu, \phi\rangle_H, \langle \mathcal{C}_u\phi, \phi\rangle_H)
+  \end{equation}
+  This actually defines the Gaussian Measure $m$ on $H$: $u\sim N(\mu, \mathcal{C}_u):= m$. 
+  The covariance operator of $u$ is the symmetric, positive-definite operator $\mathcal{C}_u : H \rightarrow H$.
+\end{definition}
+
+\begin{proposition}
+  If $u(x, \omega)$ is a Gaussian random field, then $\mathcal{C}_u$ is trace class. 
+  Reversely, if $\mathcal{C}_u$ is a positive, symmetric, trace class operator in H, then there exists a Gasussian measure $m=N(0, \mathcal{C}_u)$ on H.
+\end{proposition}
+
+\subsection{Gaussian Measure}
+Since we consider infinite dimensional case, unlike finite dimensions, not all translations preserve the measure. 
+We need to cansider those directions in $H$ along which translating a Gaussian measure does not change its essential nature (i.e., keeps it equivalent). 
+
+Including the SPDE, also these problems are dealed with in Hilbert Space.
+First we have some definitions:
+\begin{definition}
+  Let $m_1, m_2$ be two measures on $H$.
+  \begin{itemize}
+    \item $m_1 \ll m_2$ means measure $m_1$ is absoutely continuous respect to $m_2$: if $m_1(A) = 0$ for all $A$ s.t. $m_2(A) = 0$. 
+     This means that the support of $m_1$ is a subset of the support of $m_2$.
+    \item If $m_1 \ll m_2, m_2 \ll m_1$, $m_1, m_2$ are said to be equivalent $m_1 \sim m_2$.
+    \item If there exists a measurable set $A$ s.t. $m_1(A) = 0$ and $m_2(A^c) =1$, then $m_1, m_2$ are singular $m_1 \perp m_2$. 
+  \end{itemize}
+\end{definition}
+
+\begin{theorem}[Radon-Nikodym Theorem]
+  Let $S = (H,\mathcal{B}(H))$ be a measurable space. $m_1, m_2$ are two $\sigma$-finite measures on $S$. If $m_1 \ll m_2$, then there exists a measurable function $f:H\rightarrow [0, \infty)$ s.t. $m_1(A) = \int_A f m_2(du), \forall A \in \mathcal{B}(H)$.
+
+  The function $f$ is called the Radon-Nikodym derivative of $m_1$ with respect to $m_2$ and is denoted by $f = \frac{dm_1}{dm_2}$.
+\end{theorem}
+
+\begin{example}
+  In finite dimensional case, the Radon-Nikodym derivative is the probability density function. 
+  Like $m_2$ is the Lebesgue measure, $m_1(dx) = p(x)dx$, then the Radon-Nikodym derivative is the probability density function $p(x)$. 
+\end{example}
+
+\begin{definition}[KL-divergence]
+  The KL-divergence is actually related to the Radon-Nikodym derivative: if $m_1 \ll m_2$, then:
+  \begin{equation}
+    \operatorname{KL}(m_1||m_2) = \int_H \log\left(\frac{dm_1}{dm_2}(x)\right) dm_1(x) 
+    = \int_H \log\left(f(x)\right) f(x)dm_2(x)
+  \end{equation}
+  This is the KL divergence between measures. We define the Radon-Nikodym derivative to be infinite if $m_1 \not\ll m_2$.
+  So for $H=\mathbb{R}^d, dm_1 = p_1(x)dx, dm_2 = p_2(x)dx$, the KL-divergence can be written as:
+  \begin{equation}
+    \operatorname{KL}(m_1||m_2) = \int_{\mathbb{R}^d} \log\left(\frac{p_1(x)}{p_2(x)}\right) p_1(x) dx
+  \end{equation}
+  The Radon-Nikodym derivative captures local density ratios, and the KL divergence is their global average.
+\end{definition}
+
+Then we need to consider the characteristic functional of Gaussian measure, cause one can show that characteristic functions of two measures are identical, then the measures are identical as well:
+\begin{definition}[Characteristic Functional]
+  The characteristic functional of a measure $m$ is defined as:
+  \begin{equation}
+    \hat{m}(\lambda) = \int_H e^{i\langle \lambda, u\rangle_H} m(du)
+  \end{equation}
+\end{definition}
+For Gaussian measure $m=N(\mu, \mathcal{C})$, we have the characteristic functional:
+\begin{equation}
+  \hat{m}(\lambda) = \int_H e^{i\langle \lambda, u\rangle_H} m(du) = e^{i\langle \lambda, \mu\rangle_H-\frac{1}{2}\langle \lambda, \mathcal{C}\lambda\rangle_H}, \qquad \lambda\in H
+\end{equation}
+So conversely, let $\mu\in H, \mathcal{C}$ is a trace class operator on $H$. Then there exists a unique probability measure $m$ on $H$ s.t. $\hat{m}(\lambda) = e^{i\langle \lambda, \mu\rangle_H-\frac{1}{2}\langle \lambda, \mathcal{C}\lambda\rangle_H}, \forall \lambda\in H$. Here $m=N(\mu, \mathcal{C})$. Meanwhile, we have $\int_H \|x\|^2_H m(dx) =\operatorname{Tr}(\mathcal{C}) + \|\mu\|^2_H$.
+
+
+\begin{definition}[Reproducing Kernel Hilbert Space]
+    The subspace $\mathcal{C}^{1/2}H$ is called the reproducing kernel of measure $N_{\mathcal{C}}$. If $\operatorname{Ker}(\mathcal{C})=0$, then $\mathcal{C}^{1/2}H$ is dense in $H$. 
+\end{definition}
+Then we have an isomorphism between $H$ and $L^2(H, N_{\mathcal{C}})$:
+\begin{equation}
+    f\in \mathcal{C}^{1/2}H \rightarrow W_f\in L^2(H, N_{\mathcal{C}}), \qquad W_f(x)=\langle \mathcal{C}^{-1/2}f, x\rangle_H,\quad x\in H
+\end{equation}
+for $\int_H W_f(x) W_g(x) N_{\mathcal{C}}(dx) = \langle f, g\rangle_{\mathcal{C}}, \quad \forall f, g\in H$.
+
+\subsection{Camaron Martin Space}
+Unlike the finite dimensional case, there is no natural Brownian Motion process in infinite dimensions. 
+Here is why: For example, the space time white noise $W_t$ is defined on $H=L^2([0, 1])$, but it doesn't take values in $H$ a.s.
+Since the white noise has covariance operator $I$, it is not trace class in $H$. 
+So for Hilbert space $H$, we need to define the Brownian Motion process on $H$ by using the Cameron-Martin space $U$.
+% In Cameron-Martin space, the white noise is a trace class operator.
+In other words, if we want to define the Diffusion Process on infinite dimensional space, 
+we need to consider the direction in $H$ along which translating a measure preserves the absolutely continuity.
+
+
+\begin{definition}[Cameron-Martin Space]
+The Cameron-Martin space $U$ is defined as:
+\begin{equation}
+  U:=\{h\in H| m_h\ll m\},m_h(A)=T_h^\#m(A):= m(A-h),\forall A \in \mathcal{B}(H)
+\end{equation} 
+where $T_h$ is the translation operator: $T_h(u)=u + h$, $T_h^\#m$ is the push-forward measure of $m$ by $T_h$, 
+\end{definition}
+So the Cameron-Martin space $U$ is more regular than the original space $H$.
+
+\begin{theorem}[Cameron-Martin Theorem]
+  For $m=N(0, \mathcal{C})$, we have:
+  \begin{equation}
+    m_h\sim m \text{ if and only if } h\in \mathcal{C}^\frac{1}{2}H:=U
+  \end{equation}
+  Since $\mathcal{C}^{-1}$ is unbounded, $U$ is a proper subspace of $U = \mathcal{C}^{1/2}H$.
+  The inner product is defined as:
+\begin{equation}
+  \langle \phi, \psi\rangle_U = \langle \mathcal{C}^{-1/2}\phi, \mathcal{C}^{-1/2}\psi\rangle_H
+\end{equation}
+\end{theorem}
+
+This can be generalized to general Gaussian measure cases:
+\begin{theorem}[Feldman-Hajek Theorem\cite{Prato_Zabczyk_2014}]
+  The following statements hold:\\
+  1. $m_1 = N(\mu_1, \mathcal{C}_1), m_2 = N(\mu_2, \mathcal{C}_2)$ are either singular or equivalent.\\
+  2. They are equivalent if and only if 
+  \begin{itemize}
+      \item $\mathcal{C}_1^{1/2}(H) = \mathcal{C}_2^{1/2}(H)=H_0$, $\mu_1 - \mu_2 \in H_0$
+      \item $(\mathcal{C}_1^{-1/2}\mathcal{C}_2^{1/2})(\mathcal{C}_1^{-1/2}\mathcal{C}_2^{1/2})^*-I$ is a Hilbert-Schmidt operator.
+  \end{itemize}
+  Specifically, if $\mathcal{C}_1=\mathcal{C}_2=\mathcal{C}$, we have the Radon Nikodym derivative:
+  \begin{equation} 
+    \frac{dm_1}{dm_2}(u) = \exp{\left(\langle \mu_1 - \mu_2, \mathcal{C}^{-1}(u - \mu_2) \rangle_H - \frac{1}{2}\|\mathcal{C}^{-1/2}(\mu_1 - \mu_2)\|^2_H\right)}
+  \end{equation}
+  Therefore, the KL divergence between $m_1$ and $m_2$ is:
+  \begin{equation}
+    \operatorname{KL}[m_1|m_2] = \frac{1}{2}\left(\|\Delta\mu, C^{-1}\Delta \mu\|^2_H\right)
+  \end{equation}
+\end{theorem}
+
+
+First we assume define the Cylindrical Wiener Process $\hat{W}_t$ on $H$, but it does not take values in $H$ cause $I$ is not a trace class.
+Here we suppose $\hat{W}_t$ is $H_1$-valued:
+\begin{equation}
+  \hat{W}_t = \sum_{i=1}^{\infty} \beta_i(t) \phi_i
+\end{equation}
+where $\beta_i(t)$ are independent standart Brownian motions and $\phi_i$ are the eigenbasis of $H$.
+Normally, we can define the $\mathcal{C}$-Wiener Process on $H$ as:
+\begin{definition}[$\mathcal{C}$-Wiener Process]
+  A H-valued process $W_t$ is called $\mathcal{C}$-Wiener process if:
+  1. $W_0 = 0$
+  2. $W_t$ has continuous trajectories: $\mathbb{R}^+\rightarrow H$
+  3. $W_t$ has independent Gaussian increments: $m(W_t - W_s) = N(0, (t-s)\mathcal{C})$
+\end{definition}
+Therefore by applying the covariance operator $\mathcal{C}$ to cylindrical Wiener Process $\hat{W}_t$, we can define the $H$-valued $\mathcal{C}$-Wiener process $W_t$ as:
+\begin{equation}
+  W_t = \sum_{i=1}^{\infty} \sqrt{\lambda_i} \beta_i(t) \phi_i = \mathcal{C}^{1/2}\hat{W}_t
+\end{equation}
+where $\lambda_i$ are the eigenvalues of $\mathcal{C}$. 
+So $H$ is actually the Cameron-Matin space of $H_1$.
+
+To sum up, in infinite dimensional diffusion model, suppose we have $u\sim m_0, \eta\sim m_1$, where $m_0$ is the initial measure and $m_1$ is the target measure, all defined on $H$.
+In the diffusion process, we add noise process $\eta$ to $u$, getting $v = u + \eta$. Then $v\sim \nu=m_0 * m_1$. Here we need to do some assumptions on measure $m_0$ and $m_1$: 
+$m_0$ needs to be supported on the Cameron-Martin space $U$ of $m_1$, that is $m_0 \ll m_1$, $m_0$ should be more regular than $m_1$. 
+Only in this way, we can define the Radon-Nikodym derivative of $\nu$ with respect to $m_1$, and the perturbed measure $\nu$ is equivalent to $m_1$.
+
+Normally, to guarantee the diffusion progress, we have two choices: 1. The support of $m_{data}$ is contained in Camaron-Martin space of $N(0, \mathcal{C}_{data})$ 2. Choose a large space $K$, s.t. the support of $m_{data}$ and $N(0, \mathcal{C})$ are supported on $K$.
+
+\begin{definition}
+    If A is a linear operator from $\mathcal{D}(A) \subset H$ to Hilbert space $H$, with an orthonormal basis of eigenfunctions $\{\phi_j\}$ 
+    and corresponding increasing eigenvalues $\{\lambda_j\}$, 
+    then $A^{\alpha}$ is defined as:
+    \begin{equation}
+        A^{\alpha}u = \sum_{j=1}^\infty \lambda_j^\alpha \langle u, \phi_j\rangle \phi_j
+    \end{equation}
+    and the domain $\mathcal{D}(A^{\alpha})$ is the set of all $u\in H$ such that $A^{\alpha}u\in H$.
+\end{definition}
+
+\begin{definition}[Problem Setting]
+  Assume we have $H$-valued Random Fields $\mathcal{M(x, \omega)}$ defined on $(H, \mathcal{B}(H), m)$ and $\mathcal{N(x, \omega)}$ defined on $(H, \mathcal{B}(H), m_0)$, where $m_0$ is the initial probability measure.
+  We consider the following problem: 
+  \begin{itemize}
+    \item How to build a generative model to sample from the unknown measure $m_0$? 
+    Conversly, given the target measure and initial measure, how to build the push forward operator $\mathcal{L}$?
+    \item Given the initial measure $m_0$ and the push forward operator $\mathcal{L}$, what is the measure $m_t, \forall t\in [0, 1]$?
+  \end{itemize}
+\end{definition}
+
+\section{Stationary SPDEs}
+\subsection{Definition}
+\begin{definition}[Stationary SPDE]
+    Assume given $a, f\in L^2(\Omega, L^2(D))$ are random fields, try to seek $u:\bar{D}\times \Omega \to \mathbb{R}$ in weak sense s.t. $\mathbb{P}$-a.s.:
+    \begin{equation}\left\{
+        \begin{aligned}
+            -\nabla \cdot (a(x, w)\nabla u(x, w)) = f(x, w),\qquad x\in D\\
+            u(x, w) = g(x),\qquad x\in \partial D
+        \end{aligned}\right.\label{spde1model}
+    \end{equation}
+    To ensure the existence of solution, we need to impose some conditions on $g$.
+\end{definition}
+
+\begin{definition}[Weak solution on $D\times \Omega$]
+    A weak solution to Eq(\ref{spde1model}) with $g=0$ is a function $u\in V=L^2(\Omega, H_0^1(D))$ s.t. for any $v\in V$,
+    \begin{equation}
+        a(u, v) = l(v)\label{spde1weak}
+    \end{equation}
+    where\begin{equation}\left\{
+        \begin{aligned}
+            a(u, v) &= E\left[\int_D a(x, \cdot)\nabla u(x, \cdot)\cdot \nabla v(x, \cdot)dx\right]\\
+            l(v) &= E\left[\int_D f(x, \cdot)v(x, \cdot)dx\right]
+        \end{aligned}\right.
+    \end{equation}
+    If $g\neq 0$, a weak solution to Eq(\ref{spde1model}) is a function $u\in W=L^2(\Omega, H_g^1(D))$ s.t. for any $v\in V$,
+    \begin{equation}
+        a(u, v) = l(v)\label{spde1weaknh}
+    \end{equation}
+    where $a(\cdot, \cdot):W\times V\to \mathbb{R}$ and $l:V\to \mathbb{R}$:
+    \begin{equation}\left\{
+        \begin{aligned}
+            a(u, v) &= E\left[\int_D a(x, \cdot)\nabla u(x, \cdot)\cdot \nabla v(x, \cdot)dx\right]\\
+            l(v) &= E\left[\int_D f(x, \cdot)v(x, \cdot)dx\right]
+        \end{aligned}\right.
+    \end{equation}
+\end{definition}
+
+\begin{theorem}[Existence and uniqueness of weak solution]
+    Note for all $x\in D$
+    \begin{equation}\label{assumption1}
+        0<a_{\min}\leq a(x, \cdot)\leq a_{\max}<\infty
+    \end{equation} as a basic assumption.
+
+    If $f\in L^2(\Omega, L^2(D)),g=0$, and Assumption (\ref{assumption1}) holds, then SPDE \ref{spde1weak} has a unique weak solution $u\in V$.
+
+    If Assumption (\ref{assumption1}) holds, $f\in L^2(\Omega, L^2(D))$, and $g\in H^{\frac{1}{2}}(\partial D)$, 
+    then SPDE \ref{spde1weaknh} has a unique weak solution $u\in W$.
+\end{theorem}
+
+Assume we have the approximate random fields $\tilde{a}, \tilde{f}: D\times \Omega \to \mathbb{R}$ s.t. (\ref{assumption1}) holds.
+
+Then as mentioned before, we can expand $a, f$ in terms of (truncated) Karhunen-Loeve expansion as:
+\begin{equation}\left\{
+    \begin{aligned}
+        &a(x, w) = \mu_a(x) + \sum_{i=1}^{N_a}\sqrt{v_i^a}\phi_i^a(x)\xi_i^a(w)\\
+        &f(x, w) = \mu_f(x) + \sum_{i=1}^{N_f}\sqrt{v_i^f}\phi_i^f(x)\xi_i^f(w)
+    \end{aligned}\right.\label{expansion}
+\end{equation}
+where $(v_i^a, \phi_i^a), (v_i^f, \phi_i^f)$ are the eigenpairs of the covariance operators of $a, f$ respectively, 
+and $\xi_i^a, \xi_i^f$ are i.i.d. random variables.
+
+The next question is how to compute:
+\begin{equation}
+    \begin{aligned}
+        a(u, v) &= E\left[\int_D a(x, \cdot)\nabla u(x, \cdot)\cdot \nabla v(x, \cdot)dx\right]\\
+        &=\int_\Omega \int_D a(x, w)\nabla u(x, w)\cdot \nabla v(x, w)dxdP(w)\\
+    \end{aligned}
+\end{equation}
+
+Since the truncated KL expansion of $a(x, w)$ depends on a finite number $N_a$ of random variables $\xi_i^a:\Omega\to \Gamma_i$(same as $f(x,w)$), 
+we consider weak form of Eq(\ref{spde1model}) on $D\times \Gamma$, where $\Gamma = \prod_{i=1}^{N_a}\Gamma_i$.
+
+\begin{definition}[finite-dimensional noise]
+    A function $v\in L^2(\Omega, L^2(D))$ of the form $v(x, \xi(w))$ for $\forall x\in D,w\in \Omega$, where $\xi = [\xi_1, \cdots, \xi_{N}]^T:\Omega\to \Gamma$, is called a finite-dimensional noise.
+\end{definition}
+
+\begin{definition}[Weak solution on $D\times \Gamma$]
+    Let $\tilde{a}(x)$ and $\tilde{f}(x)$ be finite-dimensional noises defined in Eq(\ref{expansion}), then the solution to Eq (\ref{spde1model}) is also finite-dimensional noise. 
+    Define
+    \begin{equation}
+        W:=L^2_p(\Gamma, H^1_g(D)) = \left\{v:D\times \Gamma\to \mathbb{R}: \int_\Gamma \|v(\xi, \cdot)\|_{H^1_g(D)}^2d\xi<\infty\right\}
+    \end{equation}
+    A weak solution to Eq(\ref{spde1model}) on $D\times \Gamma$ is a function $u\in W=L^2_p(\Gamma, H^1_g(D))$ s.t. for any $v\in V=L^2_p(\Gamma, H^1_0(D))$,
+    \begin{equation}
+        a(u, v) = l(v)\label{weakfd}
+    \end{equation}
+    where
+    \begin{equation}\left\{
+        \begin{aligned}
+            a(u, v) &= \int_\Gamma p(\xi)\int_D \tilde{a}(x, \xi)\nabla u(x, \xi)\cdot \nabla v(x, \xi)dxd\xi\\
+            l(v) &= \int_\Gamma p(\xi)\int_D \tilde{f}(x, \xi)v(x, \xi)dxd\xi
+        \end{aligned}\right.
+    \end{equation}
+\end{definition}
+\subsection{Stochastic Galerkin Method}
+Therefore, we have the stochastic Galerkin solution: seek $u_{hk}\in W^{hk}\subset L^2(\Gamma, H^1_g(D))$ s.t. for any $v_{hk}\in V^{hk}\subset L^2(\Gamma, H^1_0(D))$.
+
+By define the inner product:
+\begin{equation}
+    \langle v, w\rangle_{p} = \int_\Gamma v(\xi)w(\xi)P(\xi)d\xi
+\end{equation}
+We can construct a sequence of polynomials $P_i(\xi)$ on $\Gamma$. Hence:
+\begin{equation}
+    L^2_p(\Gamma):=\{v:\Gamma\to \mathbb{R}: \|v\|^2_{L^2_p(\Gamma)} = \langle v, v\rangle_p<\infty\}
+\end{equation}
+
+\begin{definition}
+    Note $S^k$ be the set of polynomials of degree $k$ or less on $\Gamma$:
+    \begin{equation}
+        \begin{aligned}
+            S^k &= \operatorname{span}\{\prod_{i=1}^{M}P_i^{\alpha_i}(\xi_i): \alpha_i\in \mathbb{N}_0, \sum_{i=1}^{M}\alpha_i\leq k\}\\
+            &= \operatorname{span}\{\psi_1, \psi_2, \cdots, \psi_Q\}
+        \end{aligned}
+    \end{equation}
+    where $P_i(\xi_i)$ is some polynomial. And $Q=\operatorname{dim}S^k = \binom{M+k}{k}$.
+\end{definition}
+We need $S^k\subset L^2_p(\Gamma)$ where $\Gamma \subset \mathbb{R}^M$. If $\{\xi_i\}$ are independent, then the joint density $p$ is:
+\begin{equation}
+    p(\xi) = \prod_{i=1}^{M}p_i(\xi_i)
+\end{equation}
+Recall $V^h=\operatorname{span}\{\phi_i\}_{i=1}^{J}\subset H^1_0(D)$ is the finite element space, we have tensor product space:
+\begin{equation}
+    V^{hk}:= V^h\otimes S^k = \operatorname{span}\{\phi_i\psi_j\}_{i=1, j=1}^{J,Q}
+\end{equation}
+
+Then 
+\begin{equation}
+    W^{hk}:=V^{hk}\oplus \operatorname{span}\{\phi_{J+1},\cdots, \phi_{J+J_{b}}\}
+\end{equation}
+where $J_b$ is finite element functions associated with Dirichlet boundary vertices.
+
+\begin{theorem}[Stochastic basis functions]
+    If $\{\xi_i\}$ are independent, suppose that $\{P_i^{\alpha_i}(\xi_i)\}_{\alpha_i=1}^{M}$ are orthonormal with $\langle\cdot,\cdot\rangle_{p_i}$ on $\Gamma_i$.
+    Then the complete orthonormal polynomials $\{\psi_j\}_{j=1}^{Q}$ are orthonormal with $\langle\cdot,\cdot\rangle_p$ on $\Gamma$.
+\end{theorem}
+
+Then $u_{hk}$ can be written as:
+\begin{equation}
+    u_{hk}(x, \xi) = \sum_{i=1}^{J}\sum_{j=1}^{Q}u_{ij}\phi_i(x)\psi_j(\xi)+w_g
+\end{equation}
+
+\begin{theorem}[Mean and covariance]
+    The Galerkin solution can be rewritten as:
+    \begin{equation}
+        \begin{aligned}
+            u_{hk}(x, \xi) &=\sum_{j=1}^{Q}\left(\sum_{i=1}^{J}u_{ij}\phi_i(x)\right)\psi_j(\xi)+w_g\\
+            &=\sum_{j=1}^{Q}u_j\psi_j(\xi)+w_g\\
+            &= (u_1(x)+w_g(x))\psi_1(\xi) + \sum_{j=2}^{Q}u_j(x)\psi_j(\xi)\\
+        \end{aligned}
+    \end{equation}
+    Then the mean and covariance is 
+    \begin{equation}\left\{
+        \begin{aligned}
+            E[u_{hk}] &= u_1+w_g\\
+            Var(u_{hk}) &= \sum_{j=2}^{Q}u_j^2
+        \end{aligned}\right.
+    \end{equation}
+\end{theorem}
+\subsection{Algorithm}
+Expand $u_{hk}$ in terms of basis functions $v = \phi_r \psi_s$ for $r=1,2,\cdots, J, s=1,2,\cdots, Q$, we have the linear system:
+\begin{equation}
+    A = \begin{pmatrix}
+        A_{11} & A_{12} & \cdots & A_{1Q}\\
+        A_{21} & A_{22} & \cdots & A_{2Q}\\
+        \vdots & \vdots & \ddots & \vdots\\
+        A_{Q1} & A_{Q2} & \cdots & A_{QQ}
+    \end{pmatrix},
+    \mathbf{u} = \begin{pmatrix}
+        \mathbf{u}_1\\
+        \mathbf{u}_2\\
+        \vdots\\
+        \mathbf{u}_Q
+    \end{pmatrix},
+    \mathbf{b} = \begin{pmatrix}
+        \mathbf{b}_1\\
+        \mathbf{b}_2\\
+        \vdots\\
+        \mathbf{b}_Q
+    \end{pmatrix}
+\end{equation}
+where
+\begin{equation}
+    \mathbf{u}_j = [u_{1j}, u_{2j}, \cdots, u_{Jj}]^T, j=1,2,\cdots, Q
+\end{equation}
+and each submatrix $A_{ij}$ is a $J\times J$ matrix, $i,j=1,2,\cdots, Q$:
+\begin{equation}
+    A_{ij} = K_0\langle \psi_i, \psi_j\rangle_p + \sum_{l=1}^{P}K_l\langle \psi_i, \psi_j\xi_l\rangle_p
+\end{equation}
+where
+\begin{equation}\left\{
+    \begin{aligned}
+        \left[K_0\right]_{rs} &= \int_D \mu_a(x)\nabla\phi_r\cdot \nabla\phi_sdx\\
+        \left[K_l\right]_{rs} &= \int_D (\sqrt{v_l^a}\phi_l^a)\nabla\phi_r\cdot \nabla\phi_sdx
+    \end{aligned}\right., \qquad r,s=1,2,\cdots, J
+\end{equation}
+
+And $\mathbf{b}_s$ is a $J\times 1$ vector:
+\begin{equation}
+    \mathbf{b}_s = \langle \psi_1, \psi_s\rangle_pF_0 + \sum_{l=1}^{P}F_l\langle \xi_l, \psi_s\rangle_p - \langle W, \psi_s\rangle_p
+\end{equation}
+where
+\begin{equation}\left\{
+    \begin{aligned}
+        \left[F_0\right]_{i} &= \int_D \mu_f(x)\phi_i(x)dx\\
+        \left[F_l\right]_{i} &= \int_D (\sqrt{v_l^f}\phi_l^f)\phi_i(x)dx\\
+        W &= K^T_{0B}\mathbf{w}_B+\sum_{l=1}^{P}K^T_{lB}\xi_l\mathbf{w}_B
+    \end{aligned}\right.
+\end{equation}
+
+\section{Semilinear Stochastic PDEs}
+\subsection{Definition}
+Then we come to the time-dependent SPDE. We study the stochastic semilinear evolution equation:
+\begin{equation}
+    du = [\Delta u + f(u)]dt + G(u)dW(t, x)
+\end{equation}
+\begin{definition}[Semilinear SPDE]
+    Simmilar to normal time-dependent PDE, we treat SPDE like this as semilinear SODEs on a Hilbert space, like
+\begin{equation}
+    du = [-Au+f(u)]dt + G(u)dW(t)
+\end{equation}
+where $-A$ is a linear operator that generates a semigroup $S(t)=e^{-tA}$. 
+\end{definition}
+
+\begin{example}[Phase-field model]
+\begin{equation}
+    du = [\epsilon \Delta u + u - u^3]dt + \sigma dW(t, x)
+\end{equation}
+\end{example}
+
+\begin{example}[Fluid Flow]
+    \begin{equation}
+        \begin{aligned}
+            &u_t = \epsilon \Delta u - \nabla p - (u\cdot \nabla)u\\
+            &\nabla\cdot u = 0
+        \end{aligned}
+    \end{equation}
+\end{example}
+
+
+So like we deal with integration of stochastic process like Itos or stratonovich, we need to generalize the Brownian Motion by introducing spatial variable to W(t). 
+Here we define Q-Wiener Process. 
+
+First, we assume $U$ is a Hilbert space. And $(\Omega, \mathbf{F}, \mathbf{F}_t, \mathbb{R})$ is a filtered probability space. 
+\begin{definition}[Q]\label{Q}
+    $Q \in \mathcal{L}(U)$ is non-negative definite and symmetric. 
+    Further, Q has an orthonormal basis $\{ \mathcal{X}_j : j \in \mathcal{N}\}$ of eigenfunctions with corresponding eigenvalues $q_j \geq 0$  such that $\sum_{j\in\mathcal{N}} q_j < \infty$ (i.e., Q is of trace class).
+\end{definition}
+
+\begin{definition}[Q-Wiener Process]
+    A U-valued stochastic process $\{W(t):t\geq 0\}$ is $Q$-Wiener process if 
+    \begin{itemize}
+        \item W(0) = 0 a.s.
+        \item W(t) is a continuous function $\mathbb{R}^+\rightarrow U$, for each $\omega \in \Omega$.
+        \item W(t) is $\mathcal{F}_t$-adapted and $W(t) - W(s)$ is independent of $\mathcal{F}_s$ for $s\leq t$
+        \item $W(t) - W(s)\sim N(0, (t-s)Q)$ for all $0\leq s\leq t$
+    \end{itemize}
+\end{definition}
+
+\begin{theorem}[Q-Wiener Process]
+    Assume we have $Q$ defined in \ref{Q}. Then, $W(t)$ is a Q-Wiener process if and only if 
+    \begin{equation}
+        W(t)=\sum_{j=1}^\infty \sqrt{q_j}\mathcal{X}_j\beta_j(t)
+    \end{equation}
+    which is converges in $L^2\left(\Omega, C([0, T], U)\right)$ and $\beta_j(t)$ are iid $\mathcal{F}_t$-Brownian motions and the series converges in $L^2(\Omega,U)$.
+\end{theorem}
+
+
+\begin{theorem}[$H_{\operatorname{per}}^r(0, a)$-valued process]
+    ...
+\end{theorem}
+
+\begin{theorem}[$H_0^r(0, a)$-valued process]
+    ...
+\end{theorem}
+
+So, in place of $L^2(D)$, we develop the theory on a separable Hilbert space U with norm $\|\cdot\|_U$ and inner product $\langle \cdot, \cdot\rangle _U$ and define the Q-Wiener process ${W (t) : t \geq 0}$ as a U-valued process. 
+
+We mention the important case of Q = I, which is not trace class on an infinite-dimensional space U (as $q_j = 1$ for all j) so that the series does not converge in $L^2(\Omega,U)$ . To extend the definition of a Q-Wiener process, we introduce the cylindrical Wiener process.
+
+The key point is to introduce a second space U1 such that $U\subset U_1$ and Q = I is a trace class operator when extended to $U_1$. 
+
+Then we can define cylindrical Wiener process:  
+\begin{definition}[Cylindrical Wiener Process]
+Let  U  be a separable Hilbert space. The cylindrical Wiener process (also called space-time white noise) is the  U-valued stochastic process  W(t)  defined by
+$$W(t)=\sum_{j=1}^{\infty} \mathcal{X}_{j} \beta_{j}(t)$$
+where  $\left\{\mathcal{X}_{j}\right\}$  is any orthonormal basis of  U  and  $\beta_{j}(t)$  are iid  $\mathcal{F}_{t}$-Brownian motions. 
+\end{definition}
+
+\begin{theorem}
+    If for the second Hilbert space $U_1$, and the inclusion map $\mathcal{I}: U \rightarrow U_1$ is Hilbert-Schmidt. 
+    Then, the cylindrical Wiener process is a Q-Wiener process well-defined on $U_1$(Converges in $L^2(U, U_1)$).
+\end{theorem}
+
+\subsection{Ito integral solution}
+Here we consider the Ito integral $\int_0^t B(s)dW(s)$ for a Q-Wiener process $W(s)$. 
+Since $dW_t$ takes value in Hilbert space $U$, and we treat SPDE in Hilbert space $H$, the integral will also take value in Hilbert space $H$.
+
+Hence, $B(s)$ should be $\mathcal{L}_0^2(U_0, H)$-valued process, where $U_0\subset U$ known as Cameron-Martin space. 
+So, $B(s)$ is an operator from $U_0$ to $H$. Then, we consider the set of operator $B$.
+\begin{definition}[$L_0^2$ space]
+    Let $U_0:=\{Q^{\frac{1}{2}}u: u\in U\}$, the set of linear operators $B:U_0\rightarrow H$ is noted as $L_0^2$ s.t. 
+    \begin{equation}
+        \|B\|_{L_0^2} := \left(\sum_{j=1}^\infty \|BQ^{\frac{1}{2}}\mathcal{X}_j\|^2\right)^{\frac{1}{2}} = \|BQ^{\frac{1}{2}}\|_{\operatorname{HS}(U_0, H)}<\infty
+    \end{equation}
+\end{definition}
+\begin{remark}
+    If $G$ is invertible, $L_0^2$ is the space of Hilbert-Schmidt operators $\operatorname{HS}(U_0, H)$.
+\end{remark}
+
+\begin{definition}
+    The stochastic integral can be defined by
+    \begin{equation}
+    \int_0^t B(s)dW(s) := \sum_{j=1}^\infty \int_0^t B(s)\sqrt{q_j}\mathcal{X}_j d\beta_j(s)
+\end{equation}
+So, we can have the truncated form:
+\begin{equation}
+    \int_0^t B(s)dW^J(s) = \sum_{j=1}^J \int_0^t B(s)\sqrt{q_j}\mathcal{X}_j d\beta_j(s)
+\end{equation}
+\end{definition}
+
+
+\subsection{Solution}
+Consider the semilinear SPDE:
+\begin{equation}
+    du = [-Au+f(u)]dt + G(u)dW(t)
+\end{equation}
+given the initial condition $u_0\in H$ and $A:\mathcal{D}\subset H\rightarrow H$ is a linear operator, $f: H\rightarrow H$ and $G: H\rightarrow L_0^2$.
+\begin{example}
+    Consider the stochastic heat equation:
+    \begin{equation}
+        du = \Delta u dt + \sigma dW(t, x), u(0, x) = u_0(x)\in L^2(D)
+    \end{equation}
+    where $D$ is a bounded domain in $\mathbb{R}^d$ and $\sigma$ is a constant. 
+    Also, homogeneous Dirichlet boundary condition is imposed on D. Hence,
+    \begin{equation}
+        H = U = L^2(D), f(u) = 0, G(u) = \sigma I
+    \end{equation}
+    We see that $A = -\Delta$ with domain $\mathcal{D}(A) = H^2(D)\cap H_0^1(D)$.
+\end{example}
+In the deterministic setting of PDEs, there are a number of different concepts of solution. Here is the same for SPDEs.
+We can also define strong solution, weak solution and mild solution.
+\begin{definition}[strong solution]
+    A predictable  H -valued process  $\{u(t): t \in[0, T]\}$  is called a strong solution if
+\begin{equation}
+u(t)=u_{0}+\int_{0}^{t}[-A u(s)+f(u(s))] d s+\int_{0}^{t} G(u(s)) d W(s), \quad \forall t \in[0, T] 
+\end{equation}
+\end{definition}
+
+\begin{definition}[weak solution]
+    A predictable  H -valued process  $\{u(t): t \in[0, T]\}$  is called a weak solution if
+\begin{equation}
+\langle u(t), v\rangle=  \left\langle u_{0}, v\right\rangle+\int_{0}^{t}[-\langle u(s), A v\rangle+\langle f(u(s)), v\rangle] d s +\int_{0}^{t}\langle G(u(s)) d W(s), v\rangle, \quad \forall t \in[0, T], v \in \mathcal{D}(A)
+\end{equation}
+where
+$$\int_{0}^{t}\langle G(u(s)) d W(s), v\rangle:=\sum_{j=1}^{\infty} \int_{0}^{t}\left\langle G(u(s))\sqrt{q_{j}} \mathcal{X}_{j}, v\right\rangle d \beta_{j}(s) .$$
+\end{definition}
+
+\begin{definition}[mild solution]\label{mild solution}
+A predictable  H -valued process  $\{u(t): t \in[0, T]\}$  is called a mild solution if for  $t \in[0, T] $
+$$u(t)=\mathrm{e}^{-t A} u_{0}+\int_{0}^{t} \mathrm{e}^{-(t-s) A} f(u(s)) d s+\int_{0}^{t} \mathrm{e}^{-(t-s) A} G(u(s)) d W(s),$$
+where  $\mathrm{e}^{-t A}$  is the semigroup generated by  $-A$. The right hand side is also called stochastic convolution.
+\end{definition}
+
+\begin{example}[stochastic heat equation in one dimension]
+    Consider the weak solution of 1D heat SPDE with  $D=(0, \pi)$, so that  $-A$  has eigenfunctions  $\phi_{j}(x)=\sqrt{2 / \pi} \sin (j x)$ 
+    and eigenvalues  $\lambda_{j}=j^{2}$  for  $j \in \mathbb{N}$. Suppose that  $W(t)$  is a  Q -Wiener process 
+    and the eigenfunctions  $\mathcal{X}_{j}$ of Q are the same as the eigenfunctions  $\phi_{j}$  of  A. A weak solution satisfies: $\forall v \in \mathcal{D}(A)$, 
+
+\begin{equation}
+    \begin{aligned}
+    \langle u(t), v\rangle_{L^{2}(0, \pi)}= & \left\langle u_{0}, v\right\rangle_{L^{2}(0, \pi)}+\int_{0}^{t}\langle-u(s), A v\rangle_{L^{2}(0, \pi)} d s \\
+    & +\sum_{j=1}^{\infty} \int_{0}^{t} \sigma \sqrt{q_{j}}\left\langle\phi_{j}, v\right\rangle_{L^{2}(0, \pi)} d \beta_{j}(s)
+    \end{aligned}
+\end{equation}
+Assume $u(t)=\sum_{j=1}^{\infty} \hat{u}_{j}(t) \phi_{j}$  for  $\hat{u}_{j}(t):=\left\langle u(t), \phi_{j}\right\rangle_{L^{2}(0, \pi)}$ . Take  $v=\phi_{j}$ , we have 
+\begin{equation}
+    \hat{u}_{j}(t)=\hat{u}_{j}(0)+\int_{0}^{t}\left(-\lambda_{j}\right) \hat{u}_{j}(s) d s+\int_{0}^{t} \sigma \sqrt{q}_{j} d \beta_{j}(s) .
+\end{equation}
+Hence,  $\hat{u}_{j}(t)$  satisfies the SODE
+\begin{equation}
+d \hat{u}_{j}=-\lambda_{j} \hat{u}_{j} d t+\sigma \sqrt{q_{j}} d \beta_{j}(t)
+\end{equation}
+Therefore, each coefficient  $\hat{u}_{j}(t)$  is an Ornstein-Uhlenbeck (OU) process (see Examples 8.1 and 8.21), which is a Gaussian process with variance
+\begin{equation}
+\operatorname{Var}\left(\hat{u}_{j}(t)\right)=\frac{\sigma^{2} q_{j}}{2 \lambda_{j}}\left(1-\mathrm{e}^{-2 \lambda_{j} t}\right)
+\end{equation}
+
+For initial data  $u_{0}=0$ , we obtain, by the Parseval identity (1.43),
+\begin{equation}
+\|u(t)\|_{L^{2}\left(\Omega, L^{2}(0, \pi)\right)}^{2}=\mathbb{E}\left[\sum_{j=1}^{\infty}\left|\hat{u}_{j}(t)\right|^{2}\right]=\sum_{j=1}^{\infty} \frac{\sigma^{2} q_{j}}{2 \lambda_{j}}\left(1-\mathrm{e}^{-2 \lambda_{j} t}\right) .
+\end{equation}
+\end{example}
+
+\section{SPDE as infinite-dimensional SDEs}
+\subsection{Kolmogorov's backward equation}
+Refer to Chapter 7 of \cite{Da_Prato_Zabczyk_2002}.
+
+We have studied the semilinear SPDE, which can be rewritten as infinite-dimensional SDEs $X(t, x), x\in H$, here x can be viewed as $u(t)$:
+\begin{equation}\left\{
+    \begin{aligned}
+        &dX(t, x) = [AX(t, x)+F(t, X(t, x))]dt + G(X(t, x))dW(t)\\
+        &X(0, x) = x\in H
+    \end{aligned}\right.
+\end{equation}
+where $A$ is the generator of a semigroup $S(t)=e^{tA}$ and $G$ is a Hilbert-Schmidt operator. We also assume $U, H$ are separable Hilbert spaces, $W_t$ is a Q weiner process taking values in $U\supset U_0$, $U_0$ is the Cameron-Martin space of $U$, x is actually $u_0$, an H-valued random variable. Note $\mathcal{L}_0^2=\mathcal{L}(U_0, H)$. $F, G$ need to be formulated Lipschitz and linear growth. Here are the details:
+\begin{theorem}[Hypothesis]
+    We fix $T > 0$ and impose first the following conditions on coefficients $A, F, G$ of the equation.
+    \begin{itemize}
+        \item $A$ is the generator of a semigroup $S(t)=e^{tA}$ on $H$
+        \item The drift:
+        \begin{equation}
+            F: [0, T] \times \Omega \times H \rightarrow H: (t, \omega, x) \mapsto F(t, \omega, x)
+        \end{equation}
+        is a Borel measurable function from $(\Omega_T\times H, \mathcal{B}(\Omega_T)\times \mathcal{B}(H))$ to $(H, \mathcal{B}(H))$
+        \item the diffusion:
+        \begin{equation}
+            G: [0, T] \times \Omega \times H \rightarrow \mathcal{L}_0^2: (t, \omega, x) \mapsto G(t, \omega, x)
+        \end{equation}
+        is a Borel measurable function from $(\Omega_T\times H, \mathcal{B}(\Omega_T)\times \mathcal{B}(H))$ to $(\mathcal{L}_0^2, \mathcal{B}(\mathcal{L}_0^2))$
+        \item There exists a constant $C > 0$ such that for all $t\in [0, T]$, $\omega \in \Omega$, $x, y\in H$:
+        \begin{equation}
+            \|F(t, \omega, x) - F(t, \omega, y)\|_{H} + \|G(t, \omega, x) - G(t, \omega, y)\|_{L_0^2} \leq C(\|x-y\|_{H}
+        \end{equation}
+        and 
+        \begin{equation}
+            \|F(t, \omega, x)\|^2_{H} + \|G(t, \omega, x)\|^2_{L_0^2} \leq C^2(1+\|x\|^2_{H})
+        \end{equation}
+    \end{itemize}
+\end{theorem}
+
+Consider the drift and diffusion term depend only on $x$:
+\begin{equation}\label{spdesimple}
+    dX(t) = [AX(t) + F(X(t))]dt + G(X(t))dW(t)
+\end{equation}
+and the initial value is $X(0) = x$. As discussed in \ref{mild solution}, the mild solution of \ref{spdesimple} is given by:
+\begin{equation}
+    X(t) = S(t)x + \int_0^t S(t-s)F(X(s))ds + \int_0^t S(t-s)G(X(s))dW(s)
+\end{equation}
+where $S(t) = e^{tA}$ is the semigroup generated by $A$.
+
+Then assume the initial measure $m$, test function $\varphi(x), x\in H$, we shall study the transition semigroup $P_t$ defined by
+\begin{equation}
+    v(t, x) = P_t\varphi(x) = \mathbb{E}\left[\varphi(X(t, x))\right], \qquad \varphi\in \mathcal{L}_b(H)
+\end{equation}
+which is a solution of Kolmogorov's backward equation:
+\begin{equation}\label{BK}
+    \left\{\begin{aligned}
+    &v_t = \langle Ax + F(x), D_xv\rangle + \frac{1}{2}\operatorname{Tr}\left[D_{xx}v\left(GQ^{\frac{1}{2}}\right)\left(GQ^{\frac{1}{2}}\right)^*\right],\quad x\in \mathcal{D}(A), t>0\\
+    &v(0, x) = \varphi(x), \qquad x\in H
+\end{aligned}\right.
+\end{equation}
+where:
+\begin{itemize}
+    \item $A: D(A)\subset H\rightarrow H$ is a linear operator
+    \item \( D\phi(x) \) denotes the Fréchet derivative (gradient) of \( \phi \),
+    \item \( D^2\phi(x) \) denotes the second Fréchet derivative (Hessian operator),
+    \item \( \operatorname{Tr} \) denotes the trace.
+\end{itemize} 
+Here we note $v_t=\mathcal{L}v$, the generator operator $\mathcal{L}$ is on test function $v: [0+\infty)\times H \rightarrow \mathbb{R}$. 
+Under curtein condition, the BK equation \ref{BK} has a unique solution $v\in C^{1, 2}_b([0, T]; \mathcal{L}_b(H))$.
+See \cite{Prato_Zabczyk_2014} Chapter 9.0.
+
+Then if we define the measure $m_t$ on $H$, we can have the adjoint generator operator $\mathcal{L}^*$ on $m_t$:
+\begin{equation}
+    \frac{d}{dt} m_t = \mathcal{L}^* m_t
+\end{equation}
+This is called the infinite-dimensional Fokker-Planck-Kolmogorov equation. Since we have \begin{equation}
+    \int_H \mathcal{L}\varphi(x) m_t(dx) = \int_H \varphi(x) \mathcal{L}^* m_t(dx)
+\end{equation}
+If there exists a density \( \rho(t,x) \) with respect to a reference measure \( \nu \) (e.g., a Gaussian measure), guarantee absolutely continuous, such that:
+\begin{equation}
+d\mu(t,x) = \rho(t,x) \, d\nu(x),
+\end{equation}
+then \( \rho(t,x) \) satisfies the strong form of the Fokker-Planck-Kolmogorov equation:
+\begin{equation}
+\partial_t \rho(t,x) = \mathcal{L}^* \rho(t,x),
+\end{equation}
+To complete the proof, we need to generalize the Ito's formula to infinite dimension case:
+\begin{theorem}[Ito's Formula for Infinite Dimension]
+    Consider test function $\varphi(X_t): H\rightarrow \mathbb{R}$ which is twice Frechet differentiable and $X_t$ is the solution to:
+    \begin{equation}
+        dX_t = F(X_t, t)dt + G(X_t, t)dW_t
+    \end{equation}
+    where $F: [0, T] \times \Omega \times H \rightarrow H$ and $G: [0, T] \times \Omega \times H \rightarrow \mathcal{L}_0^2$ are Hilbert-Schmidt operators. Then we have: 
+    \begin{equation}
+        d\varphi(X_t) = \langle D\varphi(X_t), dX_t\rangle_H + \frac{1}{2}\operatorname{Tr}\left(GQG^*D^2\varphi(X_t)\right)dt
+    \end{equation}
+\end{theorem}
+Then the proof is straightforward.
+
+Assume the measure are all relatively absolutely continuous with respect to the Gaussian measure $N(0, Q)$, then we have measure density $\rho(t, x)$ satisfies:
+\begin{equation}
+    \begin{aligned}
+        \frac{d}{dt} \rho(t, x) &= -\operatorname{div}\left((Ax + F(x))\rho\right) + \frac{1}{2}\operatorname{div}^2\left(GQG^*\rho\right)\\
+        &= -\operatorname{div}\left(\left(Ax + F(x)\right)\rho - \frac{1}{2}D\left(GQG^*\rho\right)\right)\\
+    \end{aligned}
+\end{equation}
+If $G$ is independent of $x$, then we have:
+\begin{equation}
+    \begin{aligned}
+        \frac{d}{dt} \rho(t, x) = -\operatorname{div}\left(\left((Ax + F(x)) - \frac{1}{2}GQG^*D\log\rho\right)\rho\right)
+    \end{aligned}
+\end{equation}
+Similar to the case of finite dimension, we can define:
+\begin{equation}
+    V(t, x) = (Ax + F(x)) - \frac{1}{2}GQG^*D\log\rho
+\end{equation}
+Then we can define the Flow $\phi_t$ decided by field $V$ by:
+\begin{equation}
+    \frac{d\phi_t(x)}{dt} = V(t, \phi_t(x)), \qquad x\in H, \phi_0(x) = x
+\end{equation}
+
+\subsection{Absolutely Continuous Measure}
+Assume we have $X_t,\tilde{X}_t$ are weak solutions of:
+\begin{equation}
+    \begin{aligned}
+        &dX_t = [AX_t + F(X_t)]dt + G(X_t)dW_t,\qquad X(0)=x\\
+        &d\tilde{X}_t = [\tilde{A}\tilde{X}_t + \tilde{F}(\tilde{X}_t)]dt + \tilde{G}(\tilde{X}_t)d\tilde{W}_t,\qquad \tilde{X}(0)=x
+    \end{aligned}
+\end{equation}
+where W is a cylindrical Wiener process on Hilbert Space $U$. We denote by $\{e_k\}$ a complete orthonormal basis of $U$ and by $\{\beta_k\}$ a sequence of independent Brownian motions s.t.
+\begin{equation}
+    \langle W(t), x\rangle = \sum_{k=1}^\infty \langle x, e_k\rangle \beta_k(t), \qquad x\in H
+\end{equation}
+\subsection{Girsanov's theorem}
+Here $U_0$ is the Camaron-Martin space of $U$ and note the norm of $U_0$ is $\|\cdot\|_{U_0}$.
+\begin{theorem}
+    Assume $\psi(\cdot)$ is a $U_0$-valued $\mathscr{F}_t$-adapted process s.t.
+    \begin{equation}
+        \mathbb{E}\left[\exp\left(\int_0^T\langle \psi(s), dW(s)\rangle_{U_0}-\frac{1}{2}\int_0^T\|\psi(s)\|_{U_0}^2ds\right)\right] = 1
+    \end{equation}
+    Then the process
+    \begin{equation}
+        \widehat{W}(t) = W(t) - \int_0^t \psi(s)ds, \quad t\in [0, T]
+    \end{equation}
+    is $Q$-Wiener process with respect to the filtration $\{\mathscr{F}_t\}$ on $(\Omega, \mathscr{F}, \widehat{\mathbb{P}})$ where
+    \begin{equation}
+        d\widehat{\mathbb{P}} = \exp\left(\int_0^T\langle \psi(s), dW(s)\rangle_{U_0}-\frac{1}{2}\int_0^T\|\psi(s)\|_{U_0}^2ds\right)d\mathbb{P}
+    \end{equation}
+\end{theorem}
+
+
+
+
+% By \( C_b^n(H) \) (respectively \( C_b^n(H, H) \)), \( n \in \mathbb{N} \), we denote the space of all functions \( \varphi : H \to \mathbb{R} \) (respectively \( \varphi : H \to H \)) that are \( n \)-times continuously Fréchet differentiable with all derivatives up to order \( n \) bounded. If \( n < \infty \), the space \( C_b^n(H) \) (respectively \( C_b^n(H, H) \)) is endowed with its natural norm, which will be denoted by \( \|\cdot\|_n \).
+
+% Moreover, by \( C_b^{k,n}([0,T] \times H) \) (respectively \( C_b^{k,n}([0,T] \times H, H) \)), \( n,k \in \mathbb{N} \), we denote the space of all functions \( \varphi : [0,T] \times H \to \mathbb{R} \) (respectively \( \varphi : [0,T] \times H \to H \)) that are \( k \)-times continuously Fréchet differentiable with respect to \( t \) and \( n \)-times continuously Gâteaux differentiable with respect to \( x \), with all their partial derivatives continuous and bounded in \( [0,T] \times H \).
+
+% To study the properties of $P_t$, an important tool is invariant measure:
+% \begin{definition}[invariant measure]
+%     A Borel probability measure $\nu$ on $H$ is called invariant for the semigroup $P_t$ if
+%     \begin{equation}
+%         \int_H P_t\phi d\nu = \int_H \phi d\nu
+%     \end{equation}
+%     for all continuous and bounded function $\phi: H\rightarrow \mathbb{R}$.
+% \end{definition}
+
+
+% The infinitesimal generator \( L \) associated to the semigroup is formally given by:
+% \begin{equation}
+% L \phi(x) = \langle A x + F(x), D\phi(x) \rangle_H + \frac{1}{2} \operatorname{Tr}\left( \left(G(x)Q^{1/2}\right)\left(G(x)Q^{1/2}\right)^* D^2 \phi(x) \right),
+% \end{equation}
+
+
+% The evolution of the probability measure \( \mu(t, \cdot) \) satisfies the weak form:
+% \begin{equation}
+% \frac{d}{dt} \int_H \phi(x) \, d\mu(t,x) = \int_H L \phi(x) \, d\mu(t,x),
+% \quad \forall \phi \in C_b^2(H).
+% \end{equation}
+
+% That is, for all test functions \( \phi \), the time derivative of the expectation of \( \phi \) under \( \mu(t, \cdot) \) equals the expectation of \( L\phi \) under \( \mu(t, \cdot) \).
+
+
+
+
+
+
+
+
+
+
+
+
+
+
