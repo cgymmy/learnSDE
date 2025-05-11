@@ -776,6 +776,26 @@ where W is a cylindrical Wiener process on Hilbert Space $U$. We denote by $\{e_
 \begin{equation}
     \langle W(t), x\rangle = \sum_{k=1}^\infty \langle x, e_k\rangle \beta_k(t), \qquad x\in H
 \end{equation}
+We hope to define derivative and integral on $H$ which is related to Gateaux derivative and Fomin differentiable measure.
+\begin{definition}[smooth cylinder function]
+    The smooth cylinder function is the set of functions of the form:
+    \begin{equation}
+        \mathcal{F}\mathcal{C}_b^\infty:=\left\{f(\varphi_1, \varphi_2, \cdots, \varphi_n): \mathcal{H}\rightarrow \mathbb{R}| f\in \mathcal{C}_b^\infty(\mathbb{R}^m), \varphi_i\in \mathcal{H}^*, m\in \mathbb{N}\right\}
+    \end{equation}
+    where $\varphi_i \in \mathcal{H}^*$ is a linear functional: $\mathcal{H}\rightarrow \mathbb{R}$.
+\end{definition}
+
+\begin{definition}[Gateaux derivative]
+    The Gateaux derivative of $f_{\varphi_{1:m}}\in \mathcal{F}\mathcal{C}_b^\infty$ at $u\in \mathcal{H}$ in the direction of $\xi\in \mathcal{H}_0$, which is the Camaron Martin Space of measure $\mathcal{C}$, is defined by:
+    \begin{equation}
+        \langle Df_{\varphi_{1:m}}, \xi\rangle_{\mathcal{H}_0} = \sum_{i=1}^m \partial_i f_{\varphi_{1:m}}(u) \langle \mathcal{C} \varphi_i, \xi\rangle_{\mathcal{H}_0}
+    \end{equation}
+\end{definition}
+
+
+
+
+
 \subsection{Girsanov's theorem}
 Here $U_0$ is the Camaron-Martin space of $U$ and note the norm of $U_0$ is $\|\cdot\|_{U_0}$.
 \begin{theorem}

@@ -1,7 +1,7 @@
 # learnSDE
 Code and notes of learning SDE from scratch
 ## Theory
-See [Theory](./paper/paper.pdf)
+See [Theory](./notebook/main.pdf)
 
 ## Stochastic Neural Network
 
@@ -10,7 +10,7 @@ See [Theory](./paper/paper.pdf)
 - **Scalable Gradients for Stochastic Differential Equations**  
   [[paper]](https://arxiv.org/abs/2001.01328) [[code]](https://github.com/google-research/torchsde)
 - **Efficient and Accurate Gradients for Neural SDEs**  
-  [[paper]](https://arxiv.org/abs/2105.13493) [[code]](https://github.com/patrick-kidger/torchcde) [[code]](https://github.com/google-research/torchsde)
+  [[paper]](https://arxiv.org/abs/2105.13493) [[code]](https://github.com/patrick-kidger/torchcde) 
 - **Neural Stochastic Differential Equations: Deep Latent Gaussian Models in the Diffusion Limit**    
   [[paper]](https://arxiv.org/abs/1905.09883)
 - **Neural SDEs as Infinite-Dimensional GANs**  
@@ -58,18 +58,38 @@ See [Theory](./paper/paper.pdf)
 
 ---
 
-## SODE
+## SDE
+- **Neural SDE: Stabilizing Neural ODE Networks with Stochastic Noise**  2019-2020CVPR
+  [paper](https://arxiv.org/abs/192019-2020CVPR06.02355)
 
-- **Neural SDE: Stabilizing Neural ODE Networks with Stochastic Noise**  
-  [paper](https://arxiv.org/abs/1906.02355)
+- **SDE-Net: Equipping Deep Neural Networks with Uncertainty Estimates.** ICML2020
+  [[paper]](10.48550/arXiv.2008.10546)
 
-- **Learning stochastic dynamics with statistics-informed neural network**  
+- **Neural SDEs as Infinite-Dimensional GANs**  2021ICML
+  [[paper]](https://arxiv.org/abs/2102.03657) [[code]](https://github.com/google-research/torchsde)
+
+- **Efficient and Accurate Gradients for Neural SDEs**  NIPS2021
+  [[paper]](https://arxiv.org/abs/2105.13493) [[code]](https://github.com/patrick-kidger/torchcde)
+
+- **Learning stochastic dynamics with statistics-informed neural network**  JCP2023
   [paper](https://www.sciencedirect.com/science/article/pii/S0021999122008828)
 
-- **Implicit Stochastic Gradient Descent for Training Physics-informed Neural Networks**  
+- **Implicit Stochastic Gradient Descent for Training Physics-informed Neural Networks**  2023AAAI
   [paper](https://arxiv.org/pdf/2303.01767)
 
----
+- **Neural Stochastic Differential Equations: Deep Latent Gaussian Models in the Diffusion Limit**  
+  [paper](https://arxiv.org/abs/1905.09883)
+
+
+- **Theoretical guarantees for sampling and inference in generative models with latent diffusions**  
+
+- **Neural Jump Stochastic Differential Equations**
+
+- **Stochastic Normalizing Flows.**
+- **Robust Pricing and Hedging via Neural SDEs.**
+- **Scalable Gradients and Variational Inference for Stochastic Differential Equations.**
+
+
 
 
 ## Infinite Dimensional Diffusion
@@ -148,8 +168,7 @@ See [Theory](./paper/paper.pdf)
   [code](https://github.com/jhhuangchloe/DiffusionPDE)
 
 - **Diffusion-Based Inverse Solver on Function Spaces With Applications to PDEs** NIPS2024  
-  [paper](https://ml4physicalsciences.git
-  hub.io/2024/files/NeurIPS_ML4PS_2024_253.pdf)
+  [paper](https://ml4physicalsciences.github.io/2024/files/NeurIPS_ML4PS_2024_253.pdf)
 
 ## Neural Operator
 
@@ -157,3 +176,10 @@ See [Theory](./paper/paper.pdf)
   [paper](https://arxiv.org/abs/2205.03017)
   [code](https://github.com/neuraloperator/GANO)
   
+## MultiPhysics
+- **M2PDE: Compositional Generative Multiphysics and Multi-component PDE Simulation** ICLR 2025  
+  [paper](10.48550/arXiv.2412.04134)
+
+##
+- **Neural ODE**
+- **Efficient and Accurate Gradients for Neural SDEs**

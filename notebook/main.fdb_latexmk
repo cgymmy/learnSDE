@@ -1,22 +1,23 @@
 # Fdb version 4
-["bibtex main"] 1744357832.79109 "main.aux" "main.bbl" "main" 1744357837.14967 0
+["bibtex main"] 1746757314.50382 "main.aux" "main.bbl" "main" 1746757318.52985 0
   "./refs.bib" 1743907418 18253 41ed8f4c21a5715ecf02d1fa1bfb7ef4 ""
   "./splncs04.bst" 1743825942 32156 58a331316697cd151a83d1b35357dbb6 ""
-  "appendix1.aux" 1744357835 2697 855ae4f988875910fb0baa1a3f2bc323 "pdflatex"
-  "main.aux" 1744357835 12881 884328a0b6f561bad7bad17edc925de0 "pdflatex"
+  "appendix1.aux" 1746757317 2697 0a3c4880a0acf4c2400f871b1bd7eb5d "pdflatex"
+  "main.aux" 1746757317 13078 fe2e039e76d10a214b9a10ea86fed7d6 "pdflatex"
   (generated)
   "main.bbl"
   "main.blg"
   (rewritten before read)
-["pdflatex"] 1744357833.3912 "d:/Research/github/learnSDE/notebook/main.tex" "main.pdf" "main" 1744357837.15159 0
+["pdflatex"] 1746757315.07544 "d:/Research/github/learnSDE/notebook/main.tex" "main.pdf" "main" 1746757318.53097 0
   "abstract.tex" 1743826610 167 5dbd59d32564ac876ef6f687ddd50e8c ""
-  "appendix1.aux" 1744357835 2697 855ae4f988875910fb0baa1a3f2bc323 "pdflatex"
+  "appendix1.aux" 1746757317 2697 0a3c4880a0acf4c2400f871b1bd7eb5d "pdflatex"
   "appendix1.tex" 1743825942 6265 473b487461d64175b3ab95acc930288a ""
   "chapter1.tex" 1743990991 30464 d2ff44de3a8c1f86b4666050b734e9ff ""
   "chapter2.tex" 1743825942 34061 4a82d0890a4de9ab0355efa0079db8cf ""
   "chapter3.tex" 1743827191 18811 3968fbcf449459d143cba996c71f65d8 ""
-  "chapter4.tex" 1744357827 44393 f283e6a0b3d9a8dd0857bb532a1ed2ce ""
-  "d:/Research/github/learnSDE/notebook/main.tex" 1743826179 1579 6cf9fc85b2f3144f25ed3845d4a04db9 ""
+  "chapter4.tex" 1744633394 45504 90087a90f47ea8a6b166d5bf036c7f92 ""
+  "chapter5.tex" 1746757297 42 d12c65dffe49e06e592061aa63737a3f ""
+  "d:/Research/github/learnSDE/notebook/main.tex" 1746757308 1621 6b0262ad384814523c28d5c34f146442 ""
   "d:/texlive/2024/texmf-dist/fonts/enc/dvips/lm/lm-ec.enc" 1733058880 2375 baa924870cfb487815765f9094cf3728 ""
   "d:/texlive/2024/texmf-dist/fonts/enc/dvips/lm/lm-mathex.enc" 1733058880 3486 c7eadf5dcc57b3b2d11736679f6636ba ""
   "d:/texlive/2024/texmf-dist/fonts/enc/dvips/lm/lm-mathit.enc" 1733058880 2405 5dcf2c1b967ee25cc46c58cd52244aed ""
@@ -206,13 +207,13 @@
   "d:/texlive/2024/texmf-var/fonts/map/pdftex/updmap/pdftex.map" 1733059852 5421091 287ecf793ecd0deda92deb72de2a5ec0 ""
   "d:/texlive/2024/texmf-var/web2c/pdftex/pdflatex.fmt" 1733060056 6862173 0da567ec12f498cd2af12c8ed049759d ""
   "d:/texlive/2024/texmf.cnf" 1733059827 713 e69b156964470283e0530f5060668171 ""
-  "main.aux" 1744357835 12881 884328a0b6f561bad7bad17edc925de0 "pdflatex"
-  "main.bbl" 1744357833 1391 3c54a56962c01f4f96ab1247f255b155 "bibtex main"
-  "main.lof" 1744357835 130 f826c84079cca262924fc91efb7dde9a "pdflatex"
-  "main.lot" 1744357835 130 f826c84079cca262924fc91efb7dde9a "pdflatex"
-  "main.out" 1744357835 10761 c4cbd0feb8753709378f43eb3ceaf5bf "pdflatex"
-  "main.tex" 1743826179 1579 6cf9fc85b2f3144f25ed3845d4a04db9 ""
-  "main.toc" 1744357835 5441 4d6ceb59777a43b27123dc7b4b7d5daa "pdflatex"
+  "main.aux" 1746757317 13078 fe2e039e76d10a214b9a10ea86fed7d6 "pdflatex"
+  "main.bbl" 1746757315 1391 3c54a56962c01f4f96ab1247f255b155 "bibtex main"
+  "main.lof" 1746757317 150 7460b00ca4c2d98f724b7acc062e00fd "pdflatex"
+  "main.lot" 1746757317 150 7460b00ca4c2d98f724b7acc062e00fd "pdflatex"
+  "main.out" 1746757317 10968 9ffaeece5677f7a575a5b40cfa3b9410 "pdflatex"
+  "main.tex" 1746757308 1621 6b0262ad384814523c28d5c34f146442 ""
+  "main.toc" 1746757317 5521 b72d163c097cf256c67eb3dd8b781db8 "pdflatex"
   "project.sty" 1743825942 2675 31d2a8c9fd3e6d027a51870e1d9ea2f9 ""
   (generated)
   "appendix1.aux"

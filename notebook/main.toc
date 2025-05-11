@@ -57,7 +57,8 @@
 \contentsline {subsection}{\numberline {4.4.1}Kolmogorov's backward equation}{45}{subsection.4.4.1}%
 \contentsline {subsection}{\numberline {4.4.2}Absolutely Continuous Measure}{48}{subsection.4.4.2}%
 \contentsline {subsection}{\numberline {4.4.3}Girsanov's theorem}{48}{subsection.4.4.3}%
-\contentsline {chapter}{Bibliography}{49}{equation.4.4.90}%
+\contentsline {chapter}{\numberline {5}About Vlasov Models of Plasma}{49}{chapter.5}%
+\contentsline {chapter}{Bibliography}{51}{chapter.5}%
 \contentsline {chapter}{\numberline {A}Appendix}{A.1}{appendix.A}%
 \contentsline {section}{\numberline {A.1}Fourier Transform}{A.1}{section.A.1}%
 \contentsline {section}{\numberline {A.2}Polynomial Chaos Expansion}{A.1}{section.A.2}%
