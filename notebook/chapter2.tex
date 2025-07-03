@@ -1,9 +1,274 @@
 \chapter{Generative Model}\label{cap2}
 
-\section{Generative Model}
+\section{Flow and Diffusion Model}
+As discussed before, the SDE and ODE are strong related through the Fokker-Planck equation. In this section, we will discuss how to use the SDE and ODE to generate data. \cite{flowsanddiffusions2025}
+\subsection{The training targets}
+We constructed flow and diffusion models where we obtain trajectories $(X_t)_{0 \leq t \leq 1}$ by simulating the ODE/SDE
+\begin{align}
+    X_0 &\sim p_{\text{init}}, \quad \mathrm{d}X_t = u_t^\theta(X_t)\, \mathrm{d}t \tag{10} \quad \text{(Flow model)} \\
+    X_0 &\sim p_{\text{init}}, \quad \mathrm{d}X_t = u_t^\theta(X_t)\, \mathrm{d}t + \sigma_t \, \mathrm{d}W_t \tag{11} \quad \text{(Diffusion model)}
+\end{align}
+where $u_t^\theta$ is a neural network and $\sigma_t$ is a fixed diffusion coefficient. Naturally, if we just randomly initialize the parameters $\theta$ of our neural network $u_t^\theta$, simulating the ODE/SDE will just produce nonsense. As always in machine learning, we need to train the neural network. We accomplish this by minimizing a loss function $\mathcal{L}(\theta)$, such as the mean-squared error:
+\[
+\mathcal{L}(\theta) = \left\| u_t^\theta(x) - 
+\underbrace{u_t^{\text{target}}(x)}_{\text{\textcolor{blue}{training target}}} 
+\right\|^2,
+\]
+where $u_t^{\text{target}}(x)$ is the training target that we would like to approximate. To derive a training algorithm, we proceed in two steps: In this chapter, our goal is to \textbf{find an equation for the training target} $u_t^{\text{target}}$. Naturally, like the neural network $u_t^\theta$, the training target should itself be a vector field $u_t^{\text{target}} : \mathbb{R}^d \times [0,1] \to \mathbb{R}^d$. Further, $u_t^{\text{target}}$ should do what we want $u_t^\theta$ to do: convert noise into data. \textbf{Therefore, the goal of this chapter is to derive a formula for the training target $u_t^{\text{ref}}$ such that the corresponding ODE/SDE converts $p_{\text{init}}$ into $p_{\text{data}}$}. Along the way we will encounter two fundamental results from physics and stochastic calculus: the continuity equation and the Fokker-Planck equation, which we have discussed in the previous chapter. Next, we will derive the conditional and marginal probability path, vector fields and score functions.
 
-\subsection{Diffusion Model}
-\subsubsection{Diffusion}
+For a data point $z\in \mathbb{R}^d$, we have the Dirac delta distribution $\delta_z$. Then we can construct a conditional probability path: a set of distributions $p_t(x|z)$ over $x\in \mathbb{R}^d$ for $t\in [0,1]$ s.t.
+\begin{equation}
+    p_0(\cdot|z ) = p_{init}, p_1(\cdot|z ) = \delta_z,\qquad \forall z\in \mathbb{R}^d 
+\end{equation}
+In other words, a conditional probability path gradually converts a single data point into the distribution $p_{init}$. You can think of a probability path as a trajectory in the space of distributions. Every conditional probability path $p_t(x|z)$ induces a marginal probability path $p_t(x)$ defined as the distribution that we obtain by first sampling a data point $z \sim p_{\text{data}}$ from the data distribution and then sampling from $p_t(\cdot | z)$:
+\begin{equation}
+z \sim p_{\text{data}}, \quad x \sim p_t(\cdot | z)
+\quad \Rightarrow \quad x \sim p_t,\quad 
+p_t(x) = \int p_t(x|z) p_{\text{data}}(z) \, \mathrm{d}z
+\end{equation}
+
+Note that we know how to sample from $p_t$ but we don't know the density values $p_t(x)$ as the integral is intractable. Check for yourself that because of the conditions on $p_t(\cdot | z)$, the marginal probability path $p_t$ interpolates between $p_{\text{init}}$ and $p_{\text{data}}$:
+\begin{equation}
+    p_0 = p_{\text{init}} \quad \text{and} \quad p_1 = p_{\text{data}}.
+\end{equation}
+Normally, we choose $p_{init}$ as a Gaussian distribution.
+
+For every data point $z \in \mathbb{R}^d$, let $u_t^{\text{target}}(\cdot | z)$ denote a conditional vector field, defined so that the corresponding ODE yields the conditional probability path $p_t(\cdot | z)$,
+\begin{equation}
+    X_0 \sim p_{\text{init}}, \quad \frac{d}{dt} X_t = u_t^{\text{target}}(X_t | z) 
+    \quad \Rightarrow \quad X_t \sim p_t(\cdot | z), \quad (0 \leq t \leq 1).
+\end{equation}
+
+Then the marginal vector field $u_t^{\text{target}}(x)$ is defined by
+\begin{equation}
+    u_t^{\text{target}}(x) = \int u_t^{\text{target}}(x | z) \frac{p_t(x | z) \, p_{\text{data}}(z)}{p_t(x)},dz.
+\end{equation}
+follows the marginal probability path, i.e.
+\begin{equation}
+    X_0 \sim p_{\text{init}}, \quad \frac{d}{dt} X_t = u_t^{\text{target}}(X_t) 
+    \quad \Rightarrow \quad X_t \sim p_t \quad (0 \leq t \leq 1).
+\end{equation}
+
+In particular, $X_1 \sim p_{\text{data}}$ for this ODE, so that we might say 
+``$u_t^{\text{target}}$ converts noise $p_{\text{init}}$ into data $p_{\text{data}}$.''
+
+Similarly, we can express the marginal score function via conditional score function:
+\begin{equation}
+    \begin{aligned}
+    \nabla \log p_t(x) &
+    = \frac{\nabla p_t(x)}{p_t(x)} 
+    = \frac{\nabla \int p_t(x|z)\, p_{\text{data}}(z)\, \mathrm{d}z}{p_t(x)} \\
+    & = \frac{\int \nabla p_t(x|z)\, p_{\text{data}}(z)\, \mathrm{d}z}{p_t(x)} \\
+    & = \int \nabla \log p_t(x|z)\, \frac{p_t(x|z)\, p_{\text{data}}(z)}{p_t(x)}\, \mathrm{d}z
+    \end{aligned}
+\end{equation}
+
+Sum up:
+\begin{table}[ht]
+    \centering
+    \begin{tabularx}{\textwidth}{|X|X|X|}
+    \hline
+    Conditional  & Notion & Gaussian Exp. \\ \hline
+    Prob. Path & $p_t(\cdot|z)$ & $N(\alpha_t z, \beta_t^2 I_d)$ \\ \hline
+    Vector Field & $u_t^{\text{target}}(x|z)$ & $(\dot{\alpha_t}-\frac{\dot{\beta_t}}{\beta_t})z+\frac{\dot{\beta_t}}{\beta_t}x$ \\ \hline
+    Score Function & $\nabla \log p_t(x|z)$ & $-\frac{x-\alpha_t z}{\beta_t^2}$ \\ \hline
+    \end{tabularx}
+    \caption{Conditional}
+\end{table}
+
+\begin{table}[ht]
+    \centering
+    \begin{tabularx}{\textwidth}{|X|X|X|}
+    \hline
+    Marginal  & Notion & Gaussian Exp. \\ \hline
+    Prob. Path & $p_t(\cdot)$ & $p_t(x) = \int p_t(x|z) p_{\text{data}}(z)$ \\ \hline
+    Vector Field & $u_t^{\text{target}}(x)$ & $ \int u_t^{\text{target}}(x | z) \frac{p_t(x | z) \, p_{\text{data}}(z)}{p_t(x)}$ \\ \hline
+    Score Function & $\nabla \log p_t(x)$ & $\int \nabla \log p_t(x|z)\, \frac{p_t(x|z)\, p_{\text{data}}(z)}{p_t(x)}$ \\ \hline
+    \end{tabularx}
+    \caption{Marginal}
+\end{table}
+
+In the next section, we will discuss how to train the model.
+First, we restrict ourselves to ODEs again, in doing
+so recovering flow matching. Second, we explain how to extend the approach to SDEs via score matching. Finally,
+we consider the special case of Gaussian probability paths, in doing so recovering denoising diffusion models. With these tools, we will at last have an end-to-end procedure to train and sample from a generative model with ODEs and SDEs.
+
+\subsection{Flow Matching}
+As before, let us consider a flow model given by
+\begin{equation}
+X_0 \sim p_{\text{init}}, \quad \mathrm{d}X_t = u_t^\theta(X_t)\, \mathrm{d}t.
+\end{equation}
+
+As we learned, we want the neural network $u_t^\theta$ to equal the marginal vector field $u_t^{\text{target}}$. In other words, we would like to find parameters $\theta$ so that $u_t^\theta \approx u_t^{\text{target}}$. In the following, we denote by $\text{Unif} = \text{Unif}[0,1]$ the uniform distribution on the interval $[0,1]$, and by $\mathbb{E}$ the expected value of a random variable. An intuitive way of obtaining $u_t^\theta \approx u_t^{\text{target}}$ is to use a mean-squared error, i.e. to use the flow matching loss defined as
+\begin{equation}
+    \begin{aligned}
+    \mathcal{L}_{\text{FM}}(\theta) &= \mathbb{E}_{t \sim \text{Unif},\, x \sim p_t} \left[ \left\| u_t^\theta(x) - u_t^{\text{target}}(x) \right\|^2 \right] \\
+    &= \mathbb{E}_{t \sim \text{Unif},\, z \sim p_{\text{data}},\, x \sim p_t(\cdot | z)} \left[ \left\| u_t^\theta(x) - u_t^{\text{target}}(x) \right\|^2 \right]
+    \end{aligned}
+\end{equation}
+
+where $p_t(x) = \int p_t(x|z)\, p_{\text{data}}(z)\, \mathrm{d}z$ is the marginal probability path and in the second line we used the sampling procedure given by equation (13). Intuitively, this loss says: First, draw a random time $t \in [0,1]$. Second, draw a random point $z$ from our data set, sample from $p_t(\cdot | z)$ (e.g., by adding some noise), and compute $u_t^\theta(x)$. Finally, compute the mean-squared error between the output of our neural network and the marginal vector field $u_t^{\text{target}}(x)$. Unfortunately, we are not done here. While we do know the formula for $u_t^{\text{target}}$ by: 
+\begin{equation}
+u_t^{\text{target}}(x) = \int u_t^{\text{target}}(x | z) \frac{p_t(x | z)\, p_{\text{data}}(z)}{p_t(x)}\, \mathrm{d}z,
+\end{equation}
+
+we cannot compute it efficiently because the above integral is intractable. Instead, we will exploit the fact that the conditional velocity field $u_t^{\text{target}}(x|z)$ is tractable. To do so, let us define the conditional flow matching loss
+\begin{equation}
+\mathcal{L}_{\text{CFM}}(\theta) = \mathbb{E}_{z \sim p_{\text{data}},\, x \sim p_t(\cdot | z)} \left[ \left\| u_t^\theta(x) - u_t^{\text{target}}(x | z) \right\|^2 \right].
+\end{equation}
+
+Note the difference to equation above: we use the conditional vector field $u_t^{\text{target}}(x | z)$ instead of the marginal vector $u_t^{\text{target}}(x)$. As we have an analytical formula for $u_t^{\text{target}}(x | z)$, we can minimize the above loss easily. But wait, what sense does it make to regress against the conditional vector field if it's the marginal vector field we care about? As it turns out, by explicitly regressing against the tractable conditional vector field, we are implicitly regressing against the intractable, marginal vector field. The next result makes this intuition precise.
+
+\begin{theorem}
+    The marginal flow matching loss equals the conditional flow matching loss up to a constant. That is,
+    \begin{equation}
+    \mathcal{L}_{\text{FM}}(\theta) = \mathcal{L}_{\text{CFM}}(\theta) + C,
+    \end{equation}
+    where $C$ is independent of $\theta$. Therefore, their gradients coincide:
+    \begin{equation}
+    \nabla_\theta \mathcal{L}_{\text{FM}}(\theta) = \nabla_\theta \mathcal{L}_{\text{CFM}}(\theta).
+    \end{equation}
+
+    
+    Hence, minimizing $\mathcal{L}_{\text{CFM}}(\theta)$ with e.g., stochastic gradient descent (SGD) is equivalent to minimizing $\mathcal{L}_{\text{FM}}(\theta)$ in the same fashion. In particular, for the minimizer $\theta^*$ of $\mathcal{L}_{\text{CFM}}(\theta)$, it will hold that $u_t^{\theta^*} = u_t^{\text{target}}$ (assuming an infinitely expressive parameterization).
+\end{theorem}
+\begin{proof}
+    The proof works by expanding the mean-squared error into three components and removing constants:
+    \begin{equation}
+        \begin{aligned}
+    \mathcal{L}_{\text{FM}}(\theta)
+    &= \mathbb{E}_{t \sim \text{Unif}, z \sim p_{\text{data}}, x \sim p_t(\cdot | z)} \left[ \left\| u_t^\theta(x) - u_t^{\text{target}}(x) \right\|^2 \right] \\
+    &= \mathbb{E}_{t \sim \text{Unif}, z \sim p_{\text{data}}, x \sim p_t(\cdot | z)} \left[ \|u_t^\theta(x)\|^2 - 2 u_t^\theta(x)^T u_t^{\text{target}}(x) + \|u_t^{\text{target}}(x)\|^2 \right] \\
+    &= \mathbb{E}_{t \sim \text{Unif}, x \sim p_t} \left[ \|u_t^\theta(x)\|^2 \right]
+    - 2 \mathbb{E}_{t \sim \text{Unif}, x \sim p_t} \left[ u_t^\theta(x)^T u_t^{\text{target}}(x) \right]
+    + \mathbb{E}_{t \sim \text{Unif}[0,1], x \sim p_t} \left[ \|u_t^{\text{target}}(x)\|^2 \right]\\
+    &= \mathbb{E}_{t \sim \text{Unif}, x \sim p_t(\cdot | z)} \left[ \|u_t^\theta(x)\|^2 \right]
+    - 2 \mathbb{E}_{t \sim \text{Unif}, x \sim p_t} \left[ u_t^\theta(x)^T u_t^{\text{target}}(x) \right]
+    + C_1
+    \end{aligned}
+    \end{equation}
+    Let us reexpress the second summand:
+    \begin{equation}
+        \begin{aligned}
+            &\mathbb{E}_{t \sim \text{Unif}, x \sim p_t} \left[ u_t^\theta(x)^T u_t^{\text{target}}(x) \right]\\
+            &= \int_0^1 \int p_t(x) u_t^\theta(x)^T u_t^{\text{target}}(x) \, dx \, dt\\
+            &= \int_0^1 \int u_t^\theta(x)^T \left[ \int u_t^{\text{target}}(x|z) \frac{p_t(x|z) p_{\text{data}}(z)}{p_t(x)} dz \right] p_t(x) dx \, dt\\
+            &= \int_0^1 \int\int u_t^\theta(x)^T u_t^{\text{target}}(x|z) p_t(x|z) p_{\text{data}}(z) dz dx \, dt\\
+            &= \mathbb{E}_{t \sim \text{Unif}, z \sim p_{\text{data}}, x \sim p_t(\cdot | z)} \left[ u_t^\theta(x)^T u_t^{\text{target}}(x | z) \right]
+        \end{aligned}
+    \end{equation}
+
+    
+    Plug this into the expression for $\mathcal{L}_{\text{FM}}$:
+    \begin{equation}
+        \begin{aligned}
+    \mathcal{L}_{\text{FM}}(\theta)
+    =& \mathbb{E}_{t \sim \text{Unif}, z \sim p_{\text{data}}, x \sim p_t(\cdot | z)} \left[ \|u_t^\theta(x)\|^2 - 2 u_t^\theta(x)^T u_t^{\text{target}}(x|z) \right] + C_1\\
+    = &\mathbb{E}_{t \sim \text{Unif}, z \sim p_{\text{data}}, x \sim p_t(\cdot | z)} \left[ \|u_t^\theta(x)\|^2 - 2 u_t^\theta(x)^T u_t^{\text{target}}(x|z) + \|u_t^{\text{target}}(x|z)\|^2 \right]\\
+    &+ \mathbb{E}_{t \sim \text{Unif}, z \sim p_{\text{data}}, x \sim p_t(\cdot | z)} \left[ - \|u_t^{\text{target}}(x|z)\|^2 \right] + C_1\\
+    =& \mathbb{E}_{t \sim \text{Unif}, z \sim p_{\text{data}}, x \sim p_t(\cdot | z)} \left[ \|u_t^\theta(x) - u_t^{\text{target}}(x|z)\|^2 \right] + C_2 + C_1\\
+    =& \mathcal{L}_{\text{CFM}}(\theta) + C
+    \end{aligned}
+    \end{equation}
+    
+    This finishes the proof.
+\end{proof}
+
+
+\subsection{Score Matching Diffusion}
+Let us extend the algorithm we just found from ODEs to SDEs. Remember we can extend the target ODE to an SDE with the same marginal distribution given by
+\begin{equation}
+    \begin{aligned}
+    &\mathrm{d}X_t = \left[ u_t^{\text{target}}(X_t) + \frac{\sigma_t^2}{2} \nabla \log p_t(X_t) \right] \mathrm{d}t + \sigma_t \mathrm{d}W_t\\
+    &X_0 \sim p_{\text{init}} \Rightarrow \quad X_t \sim p_t \quad (0 \leq t \leq 1)
+    \end{aligned}
+\end{equation}
+where $u_t^{\text{target}}$ is the marginal vector field and $\nabla \log p_t(x)$ is the marginal score function represented via the formula
+\begin{equation}
+\nabla \log p_t(x) = \int \nabla \log p_t(x | z) \frac{p_t(x | z)\, p_{\text{data}}(z)}{p_t(x)} \, \mathrm{d}z
+\end{equation}
+To approximate the marginal score $\nabla \log p_t$, we can use a neural network that we call score network $s_t^\theta : \mathbb{R}^d \times [0, 1] \rightarrow \mathbb{R}^d$. In the same way as before, we can design a score matching loss and a conditional score matching loss:
+\begin{equation}
+    \begin{aligned}
+    &\mathcal{L}_{\text{SM}}(\theta) = \mathbb{E}_{t \sim \text{Unif},\, z \sim p_{\text{data}},\, x \sim p_t(\cdot | z)} \left[ \| s_t^\theta(x) - \nabla \log p_t(x) \|^2 \right]\\
+    &\mathcal{L}_{\text{CSM}}(\theta) = \mathbb{E}_{t \sim \text{Unif},\, z \sim p_{\text{data}},\, x \sim p_t(\cdot | z)} \left[ \| s_t^\theta(x) - \nabla \log p_t(x | z) \|^2 \right]
+    \end{aligned}
+\end{equation}
+where again the difference is using the marginal score $\nabla \log p_t(x)$ vs. using the conditional score $\nabla \log p_t(x | z)$. As before, we ideally would want to minimize the score matching loss but can’t because we don’t know $\nabla \log p_t(x)$. But similarly as before, the conditional score matching loss is a tractable alternative:
+
+\begin{theorem}
+The score matching loss equals the conditional score matching loss up to a constant:
+\begin{equation}
+\mathcal{L}_{\text{SM}}(\theta) = \mathcal{L}_{\text{CSM}}(\theta) + C,
+\end{equation}
+where $C$ is independent of parameters $\theta$. Therefore, their gradients coincide:
+\begin{equation}
+\nabla_\theta \mathcal{L}_{\text{SM}}(\theta) = \nabla_\theta \mathcal{L}_{\text{CSM}}(\theta).
+\end{equation}
+In particular, for the minimizer $\theta^*$, it will hold that $s_t^{\theta^*} = \nabla \log p_t$.
+\end{theorem}
+
+
+% We have discussed the FPK Equation in 'learnsde'. 
+% \begin{theorem}[Fokken-Planck-Kolmogorov equation]
+%     The density function $p(x, t)$ of $X_t$ s.t. 
+%     \begin{equation}
+%         dX_t = f(X_t, t)dt + G(X_t,t)dW_t
+%     \end{equation}
+%     solves the PDE:
+%     \begin{equation}
+%         \frac{\partial p(x, t)}{\partial t}=-\sum_{i} \frac{\partial}{\partial x_{i}}\left[f_{i}(x, t) p(x, t)\right]+\frac{1}{2} \sum_{i, j} \frac{\partial^{2}}{\partial x_{i} \partial x_{j}}\left[\left(G Q G^{\top}\right)_{i j} p(x, t)\right]
+%     \end{equation}
+%     The PDE is called FPK equation / forwand Kolmogorov equation.
+% \end{theorem}
+% It can be rewritten as:
+% \begin{equation}
+%     \begin{aligned}
+%         \frac{\partial p(x, t)}{\partial t} &= -\nabla\cdot\left[f(x, t) p(x, t)\right]+\frac{1}{2} \nabla^2\cdot\left[\left(G Q G^{\top}\right) p(x, t)\right] \\
+%         &=-\nabla\cdot\left[f(x, t) p(x, t)-\frac{1}{2} \nabla\cdot\left[\left(G Q G^{\top}\right) p(x, t)\right]\right]
+%     \end{aligned}
+% \end{equation}
+% Here, if we only consider $G(X_t, t)=g(t)$, then we notice that $M=GQG^T$ is independent of $X_t$, so we can write:
+% \begin{equation}
+%     \begin{aligned}
+%         \frac{\partial p(x, t)}{\partial t} &= -\nabla\cdot\left(fp-\frac{1}{2}\nabla\cdot (Mp)\right)\\
+%         &=-\nabla\cdot\left(fp-\frac{1}{2}M\nabla p\right)\\
+%         &=-\nabla\cdot\left[\left(f-\frac{1}{2}M\frac{\nabla p}{p}\right)p\right]\\
+%         &=-\nabla\cdot\left[\left(f-\frac{1}{2}M\nabla\log p\right)p\right]
+%     \end{aligned}
+% \end{equation}
+% So we find out that if we have an ODE s.t. $dZ_t=F(Z_t, t)dt$ with $Z_0 \sim p_0$, instead of a SDE, then by FPK equation, the density $p(z, t)$ satisfies:
+% \begin{equation}
+%     \frac{\partial p(z, t)}{\partial t}=-\nabla\cdot\left(F(z, t)p(z, t)\right)
+% \end{equation}
+% So if we set $F(z, t)=f(z, t) - \frac{1}{2}M(t)\nabla\log p(z, t)$, then $p(z, t)$ is exactly like the density $p(x, t)$ of $X_t$ in SDE. 
+% So theoretically, we can do the diffusion like reverse ode!
+
+% This is the topic discussed in 'Probability Flow'.
+
+% Define a flow $\phi: \mathcal{R}^d\times [0, 1]\rightarrow \mathcal{R}^d$ is a flow generated by a vector field $v: \mathcal{R}^d \times [0, 1]\rightarrow \mathcal{R}^d$ i.e.
+% \begin{equation}\left\{
+%     \begin{aligned}
+%         \frac{\partial \phi(x, t)}{\partial t} &= v(\phi(x, t), t)\\
+%         \phi(0, x)&=x
+%     \end{aligned}\right.
+% \end{equation}
+% The flow means that under the vector field $v$, if the initial point is $x$, then the flow push the point after time $t$ to $\phi(x, t)$. That is $\phi$ gives the evolution trajectory of $x$ under the vector field $v$.
+% So normally, we can consider the flow $\phi(x, t)$ as $X_t$ in SDE:
+% \begin{equation}
+%     dX_t = v(X_t, t)dt + 0dW_t
+% \end{equation}
+% with $X_0=x$. It turns out that it is actually an ODE, a SDE without diffusion term. Similar to SDE, if $X_0=x\sim p_0(x)$, we have the probability density $p(x, t)$ satisfies FPK equation:
+% \begin{equation}
+%     \frac{\partial p(x, t)}{\partial t}=-\nabla\cdot\left(v(x, t)p(x, t)\right)
+% \end{equation}
+% which is a special case of FPK equation, called \textbf{Continuity Equation}. So, typically, we can solution to an ODE is a flow.
+
+
+
+% So the objective of Flow Matching Model can be described as: Let $p_t(x)$ be the density with initial $p_0(x)$, which is designed to be a simple distribution, like normal distribution. 
+% So let $p_1(x)$ be the approximation equal in distribution to$ p_{data}$. Then we need to design a flow to match the flow s.t. $p_1$ can properly approximate $p_{data}$.
+
 \paragraph{DDPM}
 DDPM is like splitting the encoder and decoder of VAE into controllable parts. 
 For each training data point $x_0\sim p_{data}$, then a discrete Markov chain $\{x_1, \cdots, x_N\}$ is constructed by transition function:
@@ -327,7 +592,7 @@ So
 \end{equation}
 where $\xi_\theta = -\sqrt{V(t)}s_\theta$ is called denoising network.
 
-\subsubsection{With labels}
+\subsection{With labels}
 
 \paragraph{With Classifier Guidance}
 Though we can produce pictures by sampling from normal distribution, we still cannot control what we will generate. What we want to do is something like:
@@ -371,68 +636,8 @@ Then
 \end{equation}
 Hence we only need one conditional denoising network, and using null condition to represent the unconditional model.
 
-\subsection{Flow Matching}
-We have discussed the FPK Equation in 'learnsde'. 
-\begin{theorem}[Fokken-Planck-Kolmogorov equation]
-    The density function $p(x, t)$ of $X_t$ s.t. 
-    \begin{equation}
-        dX_t = f(X_t, t)dt + G(X_t,t)dW_t
-    \end{equation}
-    solves the PDE:
-    \begin{equation}
-        \frac{\partial p(x, t)}{\partial t}=-\sum_{i} \frac{\partial}{\partial x_{i}}\left[f_{i}(x, t) p(x, t)\right]+\frac{1}{2} \sum_{i, j} \frac{\partial^{2}}{\partial x_{i} \partial x_{j}}\left[\left(G Q G^{\top}\right)_{i j} p(x, t)\right]
-    \end{equation}
-    The PDE is called FPK equation / forwand Kolmogorov equation.
-\end{theorem}
-It can be rewritten as:
-\begin{equation}
-    \begin{aligned}
-        \frac{\partial p(x, t)}{\partial t} &= -\nabla\cdot\left[f(x, t) p(x, t)\right]+\frac{1}{2} \nabla^2\cdot\left[\left(G Q G^{\top}\right) p(x, t)\right] \\
-        &=-\nabla\cdot\left[f(x, t) p(x, t)-\frac{1}{2} \nabla\cdot\left[\left(G Q G^{\top}\right) p(x, t)\right]\right]
-    \end{aligned}
-\end{equation}
-Here, if we only consider $G(X_t, t)=g(t)$, then we notice that $M=GQG^T$ is independent of $X_t$, so we can write:
-\begin{equation}
-    \begin{aligned}
-        \frac{\partial p(x, t)}{\partial t} &= -\nabla\cdot\left(fp-\frac{1}{2}\nabla\cdot (Mp)\right)\\
-        &=-\nabla\cdot\left(fp-\frac{1}{2}M\nabla p\right)\\
-        &=-\nabla\cdot\left[\left(f-\frac{1}{2}M\frac{\nabla p}{p}\right)p\right]\\
-        &=-\nabla\cdot\left[\left(f-\frac{1}{2}M\nabla\log p\right)p\right]
-    \end{aligned}
-\end{equation}
-So we find out that if we have an ODE s.t. $dZ_t=F(Z_t, t)dt$ with $Z_0 \sim p_0$, instead of a SDE, then by FPK equation, the density $p(z, t)$ satisfies:
-\begin{equation}
-    \frac{\partial p(z, t)}{\partial t}=-\nabla\cdot\left(F(z, t)p(z, t)\right)
-\end{equation}
-So if we set $F(z, t)=f(z, t) - \frac{1}{2}M(t)\nabla\log p(z, t)$, then $p(z, t)$ is exactly like the density $p(x, t)$ of $X_t$ in SDE. 
-So theoretically, we can do the diffusion like reverse ode!
 
-This is the topic discussed in 'Probability Flow'.
-
-Define a flow $\phi: \mathcal{R}^d\times [0, 1]\rightarrow \mathcal{R}^d$ is a flow generated by a vector field $v: \mathcal{R}^d \times [0, 1]\rightarrow \mathcal{R}^d$ i.e.
-\begin{equation}\left\{
-    \begin{aligned}
-        \frac{\partial \phi(x, t)}{\partial t} &= v(\phi(x, t), t)\\
-        \phi(0, x)&=x
-    \end{aligned}\right.
-\end{equation}
-The flow means that under the vector field $v$, if the initial point is $x$, then the flow push the point after time $t$ to $\phi(x, t)$. That is $\phi$ gives the evolution trajectory of $x$ under the vector field $v$.
-So normally, we can consider the flow $\phi(x, t)$ as $X_t$ in SDE:
-\begin{equation}
-    dX_t = v(X_t, t)dt + 0dW_t
-\end{equation}
-with $X_0=x$. It turns out that it is actually an ODE, a SDE without diffusion term. Similar to SDE, if $X_0=x\sim p_0(x)$, we have the probability density $p(x, t)$ satisfies FPK equation:
-\begin{equation}
-    \frac{\partial p(x, t)}{\partial t}=-\nabla\cdot\left(v(x, t)p(x, t)\right)
-\end{equation}
-which is a special case of FPK equation, called \textbf{Continuity Equation}. So, typically, we can solution to an ODE is a flow.
-
-
-
-So the objective of Flow Matching Model can be described as: Let $p_t(x)$ be the density with initial $p_0(x)$, which is designed to be a simple distribution, like normal distribution. 
-So let $p_1(x)$ be the approximation equal in distribution to$ p_{data}$. Then we need to design a flow to match the flow s.t. $p_1$ can properly approximate $p_{data}$.
-
-\subsection{Variational Auto-Encoder}
+\section{Variational Auto-Encoder}
 Variational Autoencoders aim to learn both an encoder and a decoder to map input data to values in  a continuous latent space.
 In these models, the embedding can be interpreted as a latent variable in a probabilistic  generative model, and a probabilistic decoder can be formulated by a parameterized likelihood function. In addition,  the data x is assumed to be generated by some unobserved latent variable z.
 

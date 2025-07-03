@@ -1,2 +1,111 @@
-\chapter{About Vlasov Models of Plasma}
+\chapter{About KPZ Equation, some singluar SPDEs}
+After we talk about some theory about SPDE, we find that the random noise in SPDE plays a very important role in the dynamics of the system. For example, when the noise has good regularity, the solution of SPDE is smooth. But when the noise is singular, like space-time white noise, the solution is not regular functions but distributions. In this chapter, we will talk about some singular SPDEs, such as KPZ equation and some other SPDEs\cite{kardar1986dynamic}.
  
+
+\section{Edwards–Wilkinson (EW) Equation}
+The equation is given by:
+\[
+\frac{\partial h(t,x)}{\partial t} = \nu \nabla^2 h(t,x) + \eta(t,x)
+\]
+where 
+\begin{itemize}
+    \item $h(t,x)$: Surface height at time $t$ and position $x$.
+    \item $\nu$: Diffusion coefficient (surface tension).
+    \item $\nabla^2$: Laplacian operator (models smoothing).
+    \item $\eta(t,x)$: Space-time white noise, typically modeled as Gaussian with
+    \[
+    \mathbb{E}[\eta(t,x)\eta(t',x')] = 2D\,\delta(t - t')\,\delta^d(x - x')
+    \]
+\end{itemize}
+
+\begin{theorem}
+    The EW equation describes the stochastic evolution of a surface under linear diffusion and random fluctuations. It is analytically solvable and is used to model symmetric surface growth or roughening when $d=1$. 
+\end{theorem}
+
+\begin{proof}
+    Consider the Edwards–Wilkinson (EW) equation with $h(0,x) = 0$. We define the \textbf{mild solution} as:
+\[
+h(t,x) = \int_0^t \int_{\mathbb{R}^d} G(t-s, x - y)\, \eta(s,y)\, dy\, ds
+\]
+where \( G(t,x) \) is the heat kernel:
+\[
+G(t,x) = \frac{1}{(4\pi \nu t)^{d/2}} \exp\left(-\frac{|x|^2}{4\nu t}\right)
+\]
+We compute the second moment of \( h(t,x) \) to check whether it is square integrable:
+\[
+\mathbb{E}[h(t,x)^2] = \int_0^t \int_{\mathbb{R}^d} G(t-s, x - y)^2\, dy\, ds
+\]
+
+Substitute the explicit form of \( G \):
+\[
+G(t-s, y)^2 = \left(\frac{1}{(4\pi \nu (t-s))^{d/2}} \exp\left(-\frac{|y|^2}{4\nu (t-s)}\right)\right)^2
+= \frac{1}{(4\pi \nu (t-s))^d} \exp\left(-\frac{|y|^2}{2\nu (t-s)}\right)
+\]
+
+Then,
+\[
+\int_{\mathbb{R}^d} G(t-s, y)^2\, dy
+= \frac{1}{(4\pi \nu (t-s))^d} \int_{\mathbb{R}^d} \exp\left(-\frac{|y|^2}{2\nu (t-s)}\right)\, dy
+\]
+
+Using the Gaussian integral:
+\[
+\int_{\mathbb{R}^d} \exp\left(-\frac{|y|^2}{2\nu (t-s)}\right)\, dy
+= (2\pi \nu (t-s))^{d/2}
+\]
+
+So the integral becomes:
+\[
+\int_{\mathbb{R}^d} G(t-s, y)^2\, dy
+= \frac{(2\pi \nu (t-s))^{d/2}}{(4\pi \nu (t-s))^d}
+= C_d\, (t-s)^{-d/2}
+\]
+
+Therefore:
+\[
+\mathbb{E}[h(t,x)^2] = \int_0^t C_d\, (t-s)^{-d/2}\, ds
+\]
+
+This integral converges if and only if:
+\[
+\int_0^t (t-s)^{-d/2}\, ds < \infty \quad \Longleftrightarrow \quad \frac{d}{2} < 1 \quad \Longleftrightarrow \quad d < 2
+\]
+So, for \( d < 2 \), the second moment is finite, and the mild solution exists pointwise in \( L^2(\Omega) \).
+For \( d \geq 2 \), the integral diverges, thus \( \mathbb{E}[h(t,x)^2] = \infty \), and the mild solution does not exist as an \( L^2 \)-valued random variable at each point \( x \).
+
+Hence, for \( d \geq 2 \), the solution can only be interpreted as a generalized function (distribution), not a classical or square-integrable function.
+\end{proof}
+
+\section{Kardar-Parisi-Zhang (KPZ) Equation}
+The equation is given by:
+\[
+\frac{\partial h(t,x)}{\partial t} = \nu \nabla^2 h(t,x) + \frac{\lambda}{2} \left( \nabla h(t,x) \right)^2 + \eta(t,x)
+\]
+
+where the nonlinear term $\frac{\lambda}{2} (\nabla h)^2$ models slope-dependent growth (faster growth along steeper gradients).It generalizes the EW model by incorporating asymmetric growth behavior.
+
+The KPZ equation captures more realistic surface growth phenomena where the rate of height increase depends on local slope, such as in flame propagation, deposition, or biological growth.
+
+To linearize KPZ in one spatial dimension, define
+\[
+h(t,x) = \frac{2\nu}{\lambda} \log Z(t,x)
+\] as Cole-Hopf Transformation.
+
+Then $Z(t,x)$ satisfies:
+\[
+\frac{\partial Z}{\partial t} = \nu \nabla^2 Z + \frac{\lambda}{2\nu} \eta(t,x) Z
+\]
+It is a multiplicative stochastic heat equation, amenable to probabilistic and path integral methods (e.g., Feynman-Kac formula).
+If the noise term $\eta(t)=0$, it can be easily solved by Fourier transform:
+\begin{equation}
+    h(t, x) = \frac{2\nu}{\lambda} \log \left\{ 
+        \int_{\mathbb{R}^d} \frac{d^d \xi}{(4\pi \nu t)^{d/2}} \exp\left(-\frac{(x - \xi)^2}{4\nu t} + \frac{\lambda}{2\nu} h_0(\xi)\right)
+    \right\}
+\end{equation}
+
+By Feynman-Kac formula, we can get the solution of KPZ equation:
+\begin{equation}
+    h(t, x) = \frac{2\nu}{\lambda} \log \left\{ \mathbb{E}\left[ Z_0(X_t)\exp\left( \frac{\lambda}{2\nu} \int_0^t \eta(t-s, X_s) ds \right) \right] \right\}
+\end{equation}
+
+We mainly describe the KPZ equation by roughness exponent and the dynamic exponent.

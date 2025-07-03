@@ -157,24 +157,39 @@ See [Theory](./notebook/main.pdf)
 - **Probability-Flow ODE in Infinite-Dimensional Function Spaces** 2025  
   [paper](http://arxiv.org/abs/2503.10219)
 
+## Generative Operator
+- **Generative Adversarial Neural Operators** TMLR2022  
+  [paper](https://arxiv.org/abs/2205.03017)
+  [code](https://github.com/neuraloperator/GANO)
+
+- **Variational Autoencoding Neural Operators** 2023 ICML
+  [paper](https://proceedings.mlr.press/v202/seidman23a.html)
+
 ## Diffusion PDE
 
-- **Generative PDE Control**  
+- **Generative PDE Control**   ICLR2024 workshop
   [paper](https://openreview.net/pdf?id=vaKnCahjdj)
 
+- **DiffPhyCon: A Generative Approach to Control Complex Physical Systems** 2024 NIPS Oral
+  [paper](http://arxiv.org/abs/2407.06494)
 
 - **DiffusionPDE: Generative PDE-Solving Under Partial Observation** NIPS2024  
   [paper](https://arxiv.org/pdf/2406.17763)
   [code](https://github.com/jhhuangchloe/DiffusionPDE)
 
-- **Diffusion-Based Inverse Solver on Function Spaces With Applications to PDEs** NIPS2024  
+- **Diffusion-Based Inverse Solver on Function Spaces With Applications to PDEs** NIPS2024  workshop
   [paper](https://ml4physicalsciences.github.io/2024/files/NeurIPS_ML4PS_2024_253.pdf)
 
-## Neural Operator
+- **Guided Diffusion Sampling on Function Spaces with Applications to PDEs** Maybe Underreview NIPS2025
+  [paper](10.48550/arXiv.2505.17004)
 
-- **Generative Adversarial Neural Operators** TMLR2022  
-  [paper](https://arxiv.org/abs/2205.03017)
-  [code](https://github.com/neuraloperator/GANO)
+- **FunDiff: Diffusion Models over Function Spaces for Physics-Informed Generative Modeling** 
+  [paper](https://arxiv.org/pdf/2506.07902) 
+
+- **A Denoising Diffusion Model for Fluid Field Prediction**
+  [paper](http://arxiv.org/abs/2301.11661)
+
+
   
 ## MultiPhysics
 - **M2PDE: Compositional Generative Multiphysics and Multi-component PDE Simulation** ICLR 2025  

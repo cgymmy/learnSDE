@@ -285,6 +285,107 @@ Consequently, the equilibrium probability flux is a divergence-free vector field
      \end{equation}
 \end{theorem}
 
+The Feynman-Kac Formula bridges PDE and certain stochastic value of SDE solutions. Consider $u(x, t)$ satisfied the following PDE:
+\begin{equation}
+    \frac{\partial u}{\partial t}+f(x) \frac{\partial u}{\partial x}+\frac{1}{2} L^{2}(x) \frac{\partial^{2} u}{\partial x^{2}}=0 . \quad u(x, T)=\psi(x) .
+\end{equation}
+
+Then we define a stochastic process $X(t)$  on  $\left[t^{\prime}, T\right]$  as
+
+\begin{equation}
+    d X=f(X) d t+L(X) d W_{t} \quad X\left(t^{\prime}\right)=x^{\prime}
+\end{equation}
+By Ito formula:
+\begin{equation}
+    \begin{aligned}
+    d u & =\frac{\partial u}{\partial t} d t+\frac{\partial u}{\partial x} d x+\frac{1}{2} \frac{\partial^{2} u}{\partial x^{2}} d x^{2} \\
+    & =\frac{\partial u}{\partial t} d t+\frac{\partial u}{\partial x}\left(f(x) d t+L(x) d W_{t}\right)+\frac{1}{2} \frac{\partial^{2} u}{\partial x^{2}} L^{2}(x) d t \\
+    & =\left(\frac{\partial u}{\partial t}+\frac{\partial u}{\partial x} f(x)+\frac{1}{2} \frac{\partial^{2} u}{\partial x^{2}} L^{2}(x)\right) d t+\frac{\partial u}{\partial x} L(x) d W_{t} . \\
+    & =\frac{\partial u}{\partial x} L(x) d W_{t} .
+    \end{aligned}
+\end{equation}
+
+Integrating both sises from $t^{\prime}$  to  T:
+\begin{equation}
+    \begin{aligned}
+        \int_{t^{\prime}}^{T} \frac{\partial u}{\partial x} L(x) d W_{t} &= u(X(T), T) - u(X(t'), t')\\
+        &= \psi(X(T)) - u(x', t')
+    \end{aligned}
+\end{equation}
+Take expectation of both sides:
+\begin{equation}
+    u\left(x^{\prime}, t^{\prime}\right)=E[\psi(X(T))]
+\end{equation}  
+\begin{theorem}[Feynman-Kac Formula]
+    This can be generalized to PDE like:
+\begin{equation}
+    \frac{\partial u}{\partial t}+f(x) \frac{\partial u}{\partial x}+\frac{1}{2} L^{2}(x) \frac{\partial^{2} u}{\partial x^{2}}-V(x, t) u=0 . \quad u(x, T)=\psi(x) \text {. }
+\end{equation}
+By consider the Ito formula of $e^{-\int_0^t V(x, s) ds}u(x, t)$, we can similarly compute the resulting Feynman-Kac equation as 
+\begin{equation}
+    u(x', t') = e^{-\int_0^t V(x, s) ds}E\left[\psi(X(t))\right]
+\end{equation}
+\end{theorem}
+
+This means we can get the value of PDE at $(x', t')$ by simulating SDE paths beginning at $(x', t')$, and compute corresponding $E\left[\psi(X(T))\right]$. 
+
+Reversely, if we consider the PDE the inital condition $u(x, 0)$:
+\begin{equation}\left\{
+    \begin{aligned}
+        &\frac{\partial u}{\partial t}(t,x) = \mathcal{L} u(t,x) + V(t,x) u(t,x), & t > 0,\ x \in \mathbb{R}^d \\
+        &u(0,x) = \psi(x)
+    \end{aligned}\right.
+\end{equation}
+where $\mathcal{L} u(t,x) = \sum_{i=1}^d f_i(t,x) \frac{\partial u}{\partial x_i} + \frac{1}{2} \sum_{i,j=1}^d L^2_{ij}(t,x) \frac{\partial^2 u}{\partial x_i \partial x_j}$, then we can get the solution of PDE by Feynman-Kac formula:
+\begin{equation}
+    \begin{aligned}
+        &u(x, t) = E\left[\psi(X(t))e^{\int_0^t V(X_s, s) ds}|X(0)=x\right]\\
+        &dX_t = f(X_t, t)dt + L(X_t, t)dW_t\operatorname{with}X(0)=x
+    \end{aligned}
+\end{equation}
+
+
+
+We can get more generalized conclusion:
+\begin{algorithm}[Solve Backward PDE]
+
+    To compute the backward PDE: $(\mathcal{A}_t-r)(u)=0$, i.e.
+    \begin{equation}
+        \frac{\partial u}{\partial t} + \sum_{i} \frac{\partial u(x, t)}{\partial x_{i}} f_{i}(x, t)+\frac{1}{2} \sum_{i, j}\left(\frac{\partial^{2}u(x, t)}{\partial x_{i} \partial x_{j}}\right)\left[G(x, t)Q G^{\top}(x, t)\right]_{i j} - ru(x, t)=0
+    \end{equation}
+    with boundary condition $u(x, T)=\psi(x)$. Then for any fixed points $(x', t')$ where $t'\leq T, x'\in D$, $u(x', t')$ can be computed as:\\
+    Step1. Simulate N sample paths of SDE from $t'$ to $T$:
+    \begin{equation}
+        dX_t=f(X_t, t)dt + G(X_t, t)dW_t\operatorname{with}X(t')=x'
+    \end{equation}
+    Step2. Estimate $u(x', t') = e^{-r(T-t')}E\left[\psi(X(T))\right]$
+\end{algorithm}
+
+\begin{algorithm}[Solve Forward PDE]
+    Consider the solution $u(x, t)$ of forward PDE: $\frac{\partial u}{\partial t}=(\mathcal{A}-r)(u)$, i.e.
+    \begin{equation}
+        \frac{\partial u}{\partial t}=\sum_{i} \frac{\partial u(x, t)}{\partial x_{i}} f_{i}(x, t)+\frac{1}{2} \sum_{i, j}\left(\frac{\partial^{2}u(x, t)}{\partial x_{i} \partial x_{j}}\right)\left[G(x, t) Q G^{\top}(x, t)\right]_{i j} - ru(x, t)
+    \end{equation}
+    with initial condition $u(x, 0)=\psi(x)$. Then for any fixed points $(x', t')$ where $t'\leq T, x'\in D$, $u(x', t')$ can be computed as:\\
+    Step1. Simulate N sample paths of SDE from $0$ to $t'$:
+    \begin{equation}
+        dX_t=f(X_t, t)dt + G(X_t, t)dW_t\operatorname{with}X(0)=x'
+    \end{equation}
+    Step2. Estimate $u(x', t') = e^{-rt'}E\left[\psi(X(t'))\right]$
+\end{algorithm}
+\begin{algorithm}[Solve Boundary Value Problem]
+    For solution $u(x)$ to the following elliptic PDE defined on some domain $D$:
+    \begin{equation}
+        \sum_{i} \frac{\partial u(x)}{\partial x_{i}} f_{i}(x)+\frac{1}{2} \sum_{i, j}\left(\frac{\partial^{2}u(x)}{\partial x_{i} \partial x_{j}}\right)\left[G(x) Q G^{\top}(x)\right]_{i j} - ru(x)=0
+    \end{equation}
+    with boundary condition $u(x)=\psi(x)$ on $\partial D$. Then for any fixed points in $D$ can be computed as:\\
+    Step1. Simulate N sample paths of SDE from $t'$ to the first exit time $T_e$:
+    \begin{equation}
+        dX_t=f(X_t)dt + G(X_t)dW_t\operatorname{with}X(t')=x'
+    \end{equation}
+    Step2. Estimate $u(x') = e^{-r(T_e-t')}E\left[\psi(X(T_e))\right]$
+\end{algorithm}
+
 
 
 
